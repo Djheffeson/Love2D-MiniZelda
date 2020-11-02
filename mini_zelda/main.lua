@@ -4,8 +4,11 @@ WINDOW_HEIGHT = 768
 VIRTUAL_WIDTH = 320
 VIRTUAL_HEIGHT = 240
 
-local push = require "push"
+Class = require 'class'
+local push = require 'push'
+require 'Player'
 
+player = Player()
 
 function love.load()
 
@@ -18,15 +21,19 @@ function love.load()
         vsync = true,
         resizable = false
     })
+
+    player:init()
 end
 
 function love.update(dt)
-
+    player:update(dt)
 end
 
 function love.draw()
     push:start()
-    love.graphics.print("Hello, World")
+
+    player:render()
+    
     push:finish()
 end
 
