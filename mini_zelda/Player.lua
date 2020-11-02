@@ -1,8 +1,9 @@
 Player = Class{}
 
 require 'Util'
+anim8 = require 'anim8'
 
-WALK_SPEED = 100
+WALK_SPEED = 70
 
 function Player:init()
     self.x = 100
