@@ -1,8 +1,8 @@
-WINDOW_WIDTH = 1024
-WINDOW_HEIGHT = 768
+WINDOW_WIDTH = 256 * 3
+WINDOW_HEIGHT = 224 * 3
 
-VIRTUAL_WIDTH = 320
-VIRTUAL_HEIGHT = 240
+VIRTUAL_WIDTH = 256
+VIRTUAL_HEIGHT = 224    
 
 Class = require 'class'
 
@@ -17,7 +17,6 @@ map = Map()
 function love.load()
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
-
     love.graphics.setFont(love.graphics.newFont('font/font.ttf', 16))
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,  {
@@ -25,6 +24,8 @@ function love.load()
         vsync = true,
         resizable = false
     })
+
+    map:init(   )
     player:init()
 end
 

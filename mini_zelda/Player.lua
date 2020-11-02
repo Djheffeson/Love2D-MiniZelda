@@ -5,8 +5,8 @@ require 'Util'
 WALK_SPEED = 100
 
 function Player:init()
-    self.x = 50
-    self.y = 50
+    self.x = 100
+    self.y = 100
 
     self.dx = 0
     self.dy = 0
