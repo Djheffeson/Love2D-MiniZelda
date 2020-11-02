@@ -23,19 +23,18 @@ function Player:update(dt)
     elseif love.keyboard.isDown('down') then
         self.dy = WALK_SPEED * dt
     else
-        self.dy = 0
-    end
-
-    if love.keyboard.isDown('left') then
-        self.dx = -WALK_SPEED * dt
-    elseif love.keyboard.isDown('right') then
-        self.dx = WALK_SPEED * dt
-    else
-        self.dx = 0
+        if love.keyboard.isDown('left') then
+            self.dx = -WALK_SPEED * dt
+        elseif love.keyboard.isDown('right') then
+            self.dx = WALK_SPEED * dt
+        end
     end
 
     self.x = self.x + self.dx
     self.y = self.y + self.dy
+    
+    self.dx = 0
+    self.dy = 0
 end
 
 function Player:render()

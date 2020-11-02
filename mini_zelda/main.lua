@@ -6,9 +6,12 @@ VIRTUAL_HEIGHT = 240
 
 Class = require 'class'
 local push = require 'push'
+
 require 'Player'
+require 'Map'
 
 player = Player()
+map = Map()
 
 function love.load()
 
@@ -23,6 +26,7 @@ function love.load()
     })
 
     player:init()
+    map:init()
 end
 
 function love.update(dt)
@@ -33,7 +37,8 @@ function love.draw()
     push:start()
 
     player:render()
-    
+    map:render()
+
     push:finish()
 end
 
