@@ -37,6 +37,6 @@ function Player:update(dt)
     self.dy = 0
 end
 
-function Player:render()
+function Player:draw()
     love.graphics.draw(self.spritesheet, self.sprites[1], self.x, self.y)
 end

@@ -7,11 +7,12 @@ VIRTUAL_HEIGHT = 240
 Class = require 'class'
 
 local push = require 'push'
-local sti = require "sti"
 
 require 'Player'
+require 'Map'
 
 player = Player()
+map = Map()
 
 function love.load()
 
@@ -24,22 +25,19 @@ function love.load()
         vsync = true,
         resizable = false
     })
-
-    map = sti('tilemaps/testmap.lua')
-
     player:init()
 end
 
 function love.update(dt)
-    player:update(dt)
     map:update(dt)
+    player:update(dt)
 end
 
 function love.draw()
     push:start()
 
-    player:render()
-    map:render()
+    map:draw()
+    player:draw()
 
     push:finish()
 end
