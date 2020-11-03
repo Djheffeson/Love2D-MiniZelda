@@ -1,7 +1,6 @@
 Map = Class{}
 
 local sti = require 'sti'
-
 local SCROLL_SPEED = 50
 
 function Map:init()

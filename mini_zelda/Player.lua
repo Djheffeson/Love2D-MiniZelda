@@ -17,31 +17,32 @@ function Player:init()
     -- Create the animation of the player
     self.spritesheet = love.graphics.newImage('graphics/player_sheet.png')
     walkGrid = anim8.newGrid(16, 16, self.spritesheet:getWidth(), self.spritesheet:getHeight())
+    
     self.walkDown = anim8.newAnimation(walkGrid('1-2', 1), 0.1)
     self.walkRight = anim8.newAnimation(walkGrid('1-2', 2), 0.1)
     self.walkLeft = anim8.newAnimation(walkGrid('1-2', 2), 0.1):flipH()
     self.walkUp = anim8.newAnimation(walkGrid('1-2', 3), 0.1)
-    self.actualAnimation = self.walkDown
+    self.currentAnimation = self.walkDown
 
 end
 
 function Player:update(dt)
     if love.keyboard.isDown('up') then
         self.dy = -WALK_SPEED * dt
-        self.actualAnimation = self.walkUp
+        self.currentAnimation = self.walkUp
         self.walkUp:update(dt)
     elseif love.keyboard.isDown('down') then
         self.dy = WALK_SPEED * dt
-        self.actualAnimation = self.walkDown
+        self.currentAnimation = self.walkDown
         self.walkDown:update(dt)
     else
         if love.keyboard.isDown('left') then
             self.dx = -WALK_SPEED * dt
-            self.actualAnimation = self.walkLeft
+            self.currentAnimation = self.walkLeft
             self.walkLeft:update(dt)
         elseif love.keyboard.isDown('right') then
             self.dx = WALK_SPEED * dt
-            self.actualAnimation = self.walkRight
+            self.currentAnimation = self.walkRight
             self.walkRight:update(dt)
         end
     end
@@ -56,7 +57,7 @@ end
 
 function Player:draw()
     -- Draw the animation
-    self.actualAnimation:draw(
+    self.currentAnimation:draw(
         self.spritesheet, player.x, player.y
     )
 end

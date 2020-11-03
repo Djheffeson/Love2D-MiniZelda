@@ -2,9 +2,10 @@ WINDOW_WIDTH = 256 * 3
 WINDOW_HEIGHT = 224 * 3
 
 VIRTUAL_WIDTH = 256
-VIRTUAL_HEIGHT = 224    
+VIRTUAL_HEIGHT = 224
 
 Class = require 'class'
+windfield = require 'windfield'
 
 local push = require 'push'
 
@@ -30,12 +31,17 @@ function love.load()
     map:init()
     player:init()
     GUI:init()
+
+    world = windfield.newWorld(0, 0, true)
+    player.collider = world:newRectangleCollider(player.x + 5, player.y + 8, 8, 8)
 end
 
 function love.update(dt)
     map:update(dt)
     player:update(dt)
     GUI:update(dt)
+    world:update(dt)
+
 end
 
 function love.draw()
@@ -44,6 +50,7 @@ function love.draw()
     map:draw()
     player:draw()
     GUI:draw()
+    world:draw()
 
     push:finish()
 end
