@@ -2,6 +2,7 @@ Player = Class{}
 
 anim8 = require 'assets/libraries/anim8'
 
+Player.isMoving = true
 WALK_SPEED = 70
 
 function Player:init()
@@ -28,6 +29,7 @@ function Player:init()
     self.walkRight = anim8.newAnimation(walkGrid('1-2', 2), 0.1)
     self.walkLeft = anim8.newAnimation(walkGrid('1-2', 2), 0.1):flipH()
     self.walkUp = anim8.newAnimation(walkGrid('1-2', 3), 0.1)
+    self.atackDown = anim8.newAnimation(walkGrid(3, 1), 1)
     self.currentAnimation = self.walkDown
 
 end
@@ -36,25 +38,25 @@ function Player:update(dt)
     px, py = self.collider:getPosition()
     if love.keyboard.isDown('up') then
         self.vectorY = -1
-
         self.currentAnimation = self.walkUp
-        self.walkUp:update(dt)
     elseif love.keyboard.isDown('down') then
         self.vectorY = 1
-
         self.currentAnimation = self.walkDown
-        self.walkDown:update(dt)
 
     elseif love.keyboard.isDown('left') then
         self.vectorX = -1
-
         self.currentAnimation = self.walkLeft
-        self.walkLeft:update(dt)
+
     elseif love.keyboard.isDown('right') then
         self.vectorX = 1
-
         self.currentAnimation = self.walkRight
-        self.walkRight:update(dt)
+        
+    elseif love.keyboard.wasPressed('f') then
+        Player:attack()
+    end
+
+    if player.isMoving then
+        self.currentAnimation:update(dt)
     end
 
     self.collider:setLinearVelocity(self.vectorX * WALK_SPEED, self.vectorY * WALK_SPEED)
@@ -69,4 +71,13 @@ function Player:draw()
     self.currentAnimation:draw(
         self.spritesheet, px-9, py-10
     )
+end
+
+function Player:attack()
+    animTmp = self.currentAnimation
+    self.currentAnimation = self.atackDown
+    if dt < 1/60 then
+        love.timer.sleep(1 - dt)
+    end
+        self.currentAnimation = animTmp
 end
