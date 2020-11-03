@@ -9,9 +9,13 @@ function Player:init()
     self.x = 100
     self.y = 100
 
-    self.dx = 0
-    self.dy = 0
+    -- Create a vector for collision
+    self.vectorX = 0
+    self.vectorY = 0
 
+    self.collider = world:newRectangleCollider(self.x, self.y, 8, 8)
+    self.collider:setObject(self)
+    
     self.health = 3
     
     -- Create the animation of the player
@@ -27,37 +31,41 @@ function Player:init()
 end
 
 function Player:update(dt)
+    px, py = self.collider:getPosition()
     if love.keyboard.isDown('up') then
-        self.dy = -WALK_SPEED * dt
+        self.vectorY = -1
+
         self.currentAnimation = self.walkUp
         self.walkUp:update(dt)
     elseif love.keyboard.isDown('down') then
-        self.dy = WALK_SPEED * dt
+        self.vectorY = 1
+
         self.currentAnimation = self.walkDown
         self.walkDown:update(dt)
     else
         if love.keyboard.isDown('left') then
-            self.dx = -WALK_SPEED * dt
+            self.vectorX = -1
+
             self.currentAnimation = self.walkLeft
             self.walkLeft:update(dt)
         elseif love.keyboard.isDown('right') then
-            self.dx = WALK_SPEED * dt
+            self.vectorX = 1
+
             self.currentAnimation = self.walkRight
             self.walkRight:update(dt)
         end
     end
-    
-    self.x = self.x + self.dx
-    self.y = self.y + self.dy
-    
-    self.dx = 0
-    self.dy = 0
+
+    self.collider:setLinearVelocity(self.vectorX * WALK_SPEED, self.vectorY * WALK_SPEED)
+
+    self.vectorX = 0
+    self.vectorY = 0
 
 end
 
 function Player:draw()
     -- Draw the animation
     self.currentAnimation:draw(
-        self.spritesheet, player.x, player.y
+        self.spritesheet, px-9, py-12
     )
 end
