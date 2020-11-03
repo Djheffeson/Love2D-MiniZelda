@@ -1,7 +1,6 @@
 Player = Class{}
 
-require 'Util'
-anim8 = require 'anim8'
+anim8 = require 'assets/libraries/anim8'
 
 WALK_SPEED = 70
 
@@ -13,13 +12,16 @@ function Player:init()
     self.vectorX = 0
     self.vectorY = 0
 
+    world:addCollisionClass('Player')
+
     self.collider = world:newRectangleCollider(self.x, self.y, 8, 8)
+    self.collider:setCollisionClass('Player')
     self.collider:setObject(self)
-    
+
     self.health = 3
     
     -- Create the animation of the player
-    self.spritesheet = love.graphics.newImage('graphics/player_sheet.png')
+    self.spritesheet = love.graphics.newImage('assets/graphics/player_sheet.png')
     walkGrid = anim8.newGrid(16, 16, self.spritesheet:getWidth(), self.spritesheet:getHeight())
     
     self.walkDown = anim8.newAnimation(walkGrid('1-2', 1), 0.1)

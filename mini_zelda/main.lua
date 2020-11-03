@@ -4,9 +4,9 @@ WINDOW_HEIGHT = 224 * 3
 VIRTUAL_WIDTH = 256
 VIRTUAL_HEIGHT = 224
 
-Class = require 'class'
+Class = require 'assets/libraries/class'
 
-local push = require 'push'
+local push = require 'assets/libraries/push'
 
 require 'GUI'
 require 'Map'
@@ -19,7 +19,7 @@ function love.load()
     gui = GUI()
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    love.graphics.setFont(love.graphics.newFont('font/font.ttf', 16))
+    love.graphics.setFont(love.graphics.newFont('assets/font/font.ttf', 16))
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,  {
         fullscreen = false,
         vsync = true,
