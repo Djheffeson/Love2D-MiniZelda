@@ -14,7 +14,7 @@ function Player:init()
 
     world:addCollisionClass('Player')
 
-    self.collider = world:newRectangleCollider(self.x, self.y, 8, 8)
+    self.collider = world:newCircleCollider(self.x, self.y, 6)
     self.collider:setCollisionClass('Player')
     self.collider:setObject(self)
 
@@ -44,18 +44,17 @@ function Player:update(dt)
 
         self.currentAnimation = self.walkDown
         self.walkDown:update(dt)
-    else
-        if love.keyboard.isDown('left') then
-            self.vectorX = -1
 
-            self.currentAnimation = self.walkLeft
-            self.walkLeft:update(dt)
-        elseif love.keyboard.isDown('right') then
-            self.vectorX = 1
+    elseif love.keyboard.isDown('left') then
+        self.vectorX = -1
 
-            self.currentAnimation = self.walkRight
-            self.walkRight:update(dt)
-        end
+        self.currentAnimation = self.walkLeft
+        self.walkLeft:update(dt)
+    elseif love.keyboard.isDown('right') then
+        self.vectorX = 1
+
+        self.currentAnimation = self.walkRight
+        self.walkRight:update(dt)
     end
 
     self.collider:setLinearVelocity(self.vectorX * WALK_SPEED, self.vectorY * WALK_SPEED)
@@ -68,6 +67,6 @@ end
 function Player:draw()
     -- Draw the animation
     self.currentAnimation:draw(
-        self.spritesheet, px-9, py-12
+        self.spritesheet, px-9, py-10
     )
 end
