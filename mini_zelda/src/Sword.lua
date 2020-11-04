@@ -1,16 +1,15 @@
 Sword = Class{}
 
-anim8 = require 'assets/libraries/anim8'
-
 function Sword:init()
     Sword.sound = love.audio.newSource('assets/sounds/sword_sound.wav', 'stream')
     Sword.x = 0
     Sword.y = 0
     Sword.direction = "down"
+    Sword.directionVector = vector(0, 1) -- down
     Sword.state = 'invisible'
-    Sword.timer = 0
-    Sword.spriteSheet = love.graphics.newImage('assets/graphics/wooden_sword_sheet.png')
+    Sword.timer = -1
 
+    Sword.spriteSheet = love.graphics.newImage('assets/graphics/wooden_sword_sheet.png')
     Sword.grid = anim8.newGrid(16, 16, Sword.spriteSheet:getWidth(), Sword.spriteSheet:getHeight())
 
     Sword.down = anim8.newAnimation(Sword.grid(1, 1), 1)
@@ -27,11 +26,23 @@ function Sword:update(dt)
         Sword.timer = Sword.timer - dt
         if Sword.timer < 0 then
             if Sword.state == 'attack' then
+                Sword.state = 'pause'
+                Sword.timer = 0.3
+            elseif Sword.state == 'pause' then
+                Sword.timer = 0.07
+                Sword.state = 'back'
+                Sword.directionVector:rotateInplace(math.pi)
+            else
                 Sword.state = 'invisible'
             end
         end
     end
 
+    if Sword.state == 'attack' or Sword.state == 'back' then
+        local dx, dy = (Sword.directionVector * dt * 100):unpack()
+        Sword.x =  Sword.x + dx
+        Sword.y =  Sword.y + dy
+    end
 end
 
 function Sword:draw()
@@ -43,25 +54,49 @@ end
 
 function Sword:attack()
     if Sword.state ~= 'invisible' then        
-        return false
+        return
     end
-    Sword.x = px - 10
-    Sword.y = py - 10
     Sword.sound:stop()
     Sword.sound:play()
+    -- Sword.x recive the same position of the player
+    Sword.x = px - 10
+    Sword.y = py - 10
     Sword.direction = Player.direction
+    getDirectionVector()
     if Sword.direction == 'down' then
         Sword.currentAnimation = Sword.down
-        --Sword.x = 
+
+        Sword.x = Sword.x + 1
+        Sword.y = Sword.y + 5
     elseif Sword.direction == 'left' then
         Sword.currentAnimation = Sword.left
+
+        Sword.x = Sword.x - 4
+        Sword.y = Sword.y + 1
     elseif Sword.direction == 'up' then
         Sword.currentAnimation = Sword.up
+
+        Sword.x = Sword.x - 1
+        Sword.y = Sword.y - 5
     elseif Sword.direction == 'right' then
         Sword.currentAnimation = Sword.right
+
+        Sword.x = Sword.x + 6
+        Sword.y = Sword.y + 1
     end
 
     Sword.state = 'attack'
-    Sword.timer = 0.3
-    return true
+    Sword.timer = 0.07
+end
+
+function getDirectionVector()
+    if Sword.direction == 'down' then
+        Sword.directionVector = vector(0, 1)
+    elseif Sword.direction == 'left' then
+        Sword.directionVector = vector(-1, 0)
+    elseif Sword.direction == 'up' then
+        Sword.directionVector = vector(0, -1)
+    elseif Sword.direction == 'right' then
+        Sword.directionVector = vector(1, 0)
+    end
 end

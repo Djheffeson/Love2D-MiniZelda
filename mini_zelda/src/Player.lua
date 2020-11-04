@@ -33,17 +33,17 @@ function Player:init()
     Player.walkLeft = anim8.newAnimation(walkGrid('1-2', 2), 0.1):flipH()
     Player.walkUp = anim8.newAnimation(walkGrid('1-2', 3), 0.1)
 
-    Player.atackDown = anim8.newAnimation(walkGrid(3, 1), 0.3, attackComplete)
-    Player.atackRight = anim8.newAnimation(walkGrid(3, 2), 0.3, attackComplete)
-    Player.atackLeft = anim8.newAnimation(walkGrid(3, 2), 0.3, attackComplete):flipH()
-    Player.atackUp = anim8.newAnimation(walkGrid(3, 3), 0.3, attackComplete)
+    Player.atackDown = anim8.newAnimation(walkGrid(2,1, 3,1, 2,1), {0.07, 0.3, 0.07}, attackComplete)
+    Player.atackRight = anim8.newAnimation(walkGrid(2,2, 3,2, 2,2), {0.07, 0.3, 0.07}, attackComplete)
+    Player.atackLeft = anim8.newAnimation(walkGrid(2,2, 3,2, 2,2), {0.07, 0.3, 0.07}, attackComplete):flipH()
+    Player.atackUp = anim8.newAnimation(walkGrid(2,3, 3,3, 2,3), {0.07, 0.3, 0.07}, attackComplete)
 
     Player.currentAnimation = Player.walkDown
 
 end
 
 function Player:update(dt)
-    if love.keyboard.wasPressed('f') then
+    if love.keyboard.wasPressed('f') and Sword.timer < 0 then
         Player:attack()
     end
 
@@ -89,7 +89,7 @@ function Player:update(dt)
     elseif Player.state == 'attacking' then
         Player.currentAnimation:update(dt)
     end
-    print(px, py)
+    --print(px, py)
 end
 
 function Player:draw()
@@ -101,20 +101,18 @@ end
 
 function Player:attack()
     if Player.state == 'walking' then
-        if Sword.attack() then
-            Player.state = 'attacking'
-            Player.collider:setLinearVelocity(0, 0)
-            if Player.direction == 'up' then
-                Player.currentAnimation = Player.atackUp
-            elseif Player.direction == 'down' then
-                Player.currentAnimation = Player.atackDown
-            elseif Player.direction == 'left' then
-                Player.currentAnimation = Player.atackLeft
-            elseif Player.direction == 'right' then
-                Player.currentAnimation = Player.atackRight
-            end
-            Sword.attack()
+        Player.state = 'attacking'
+        Player.collider:setLinearVelocity(0, 0)
+        if Player.direction == 'up' then
+            Player.currentAnimation = Player.atackUp
+        elseif Player.direction == 'down' then
+            Player.currentAnimation = Player.atackDown
+        elseif Player.direction == 'left' then
+            Player.currentAnimation = Player.atackLeft
+        elseif Player.direction == 'right' then
+            Player.currentAnimation = Player.atackRight
         end
+        Sword.attack()
     end
 end
 

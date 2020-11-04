@@ -1,6 +1,5 @@
 Map = Class{}
 
-local sti = require 'assets/libraries/sti'
 windfield = require 'assets/libraries/windfield'
 
 function Map:init()
