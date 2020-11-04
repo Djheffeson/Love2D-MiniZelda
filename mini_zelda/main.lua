@@ -10,12 +10,14 @@ local push = require 'assets/libraries/push'
 require 'src/GUI'
 require 'src/Map'
 require 'src/Player'
+require 'src/Sword'
+
+map = Map()
+player = Player()
+gui = GUI()
+sword = Sword()
 
 function love.load()
-
-    map = Map()
-    player = Player()
-    gui = GUI()
 
     love.window.setTitle('Mini Zelda')
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -26,9 +28,14 @@ function love.load()
         resizable = false
     })
     
+    music = love.audio.newSource('assets/sounds/overworld.mp3', 'stream')
+    music:setLooping(true)
+    --music:play()
+
     map:init()
     player:init()
     GUI:init()
+    sword:init()
 
     love.keyboard.keysPressed = {}
 end
@@ -38,6 +45,7 @@ function love.update(dt)
     player:update(dt)
     GUI:update(dt)
     world:update(dt)
+    sword:update(dt)
 
     love.keyboard.keysPressed = {}
 
@@ -49,7 +57,8 @@ function love.draw()
     map:draw()
     player:draw()
     GUI:draw()
-    world:draw()
+    --world:draw()
+    sword:draw()
 
     push:finish()
 end
