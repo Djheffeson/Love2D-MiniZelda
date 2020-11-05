@@ -10,16 +10,18 @@ function gameStart()
     anim8 = require 'assets/libraries/anim8'
     sti = require 'assets/libraries/sti'
     vector = require 'assets/libraries/hump/vector'
-    
+
     require 'src/GUI'
     require 'src/Map'
     require 'src/Player'
     require 'src/Sword'
+    require 'src/Enemy'
     
     map = Map()
     sword = Sword()
     player = Player()
     GUI = GUI()
+    enemy = Enemy()
 
     love.window.setTitle('Mini Zelda')
     love.graphics.setDefaultFilter('nearest', 'nearest')
