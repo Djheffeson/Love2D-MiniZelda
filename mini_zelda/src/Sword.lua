@@ -27,19 +27,19 @@ function Sword:update(dt)
         if Sword.timer < 0 then
             if Sword.state == 'attack' then
                 Sword.state = 'pause'
-                Sword.timer = 0.3
+                Sword.timer = 0.077
             elseif Sword.state == 'pause' then
                 Sword.timer = 0.07
-                Sword.state = 'back'
                 Sword.directionVector:rotateInplace(math.pi)
+                Sword.state = 'back'
             else
                 Sword.state = 'invisible'
             end
         end
     end
 
-    if Sword.state == 'attack' or Sword.state == 'back' then
-        local dx, dy = (Sword.directionVector * dt * 100):unpack()
+    if Sword.state == 'back' then
+        local dx, dy = (Sword.directionVector * dt * 105):unpack()
         Sword.x =  Sword.x + dx
         Sword.y =  Sword.y + dy
     end
@@ -63,25 +63,26 @@ function Sword:attack()
     Sword.y = py - 10
     Sword.direction = Player.direction
     getDirectionVector()
+
     if Sword.direction == 'down' then
         Sword.currentAnimation = Sword.down
 
         Sword.x = Sword.x + 1
-        Sword.y = Sword.y + 5
+        Sword.y = Sword.y + 12
     elseif Sword.direction == 'left' then
         Sword.currentAnimation = Sword.left
 
-        Sword.x = Sword.x - 4
+        Sword.x = Sword.x - 11
         Sword.y = Sword.y + 1
     elseif Sword.direction == 'up' then
         Sword.currentAnimation = Sword.up
 
         Sword.x = Sword.x - 1
-        Sword.y = Sword.y - 5
+        Sword.y = Sword.y - 12
     elseif Sword.direction == 'right' then
         Sword.currentAnimation = Sword.right
 
-        Sword.x = Sword.x + 6
+        Sword.x = Sword.x + 13
         Sword.y = Sword.y + 1
     end
 

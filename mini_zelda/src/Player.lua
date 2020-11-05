@@ -1,7 +1,9 @@
 Player = Class{}
 
 anim8 = require 'assets/libraries/anim8'
-WALK_SPEED = 70
+PLAYER_WIDTH = 16
+PLAYER_HEIGHT = 16
+WALK_SPEED = 80
 
 function Player:init()
 
@@ -16,35 +18,41 @@ function Player:init()
     Player.state = 'walking'
     Player.direction = 'down'
 
+    Player.max_hearts = 3
+    Player.hearts = Player.max_hearts
+
     world:addCollisionClass('Player')
 
     Player.collider = world:newCircleCollider(Player.x, Player.y, 6)
     Player.collider:setCollisionClass('Player')
     Player.collider:setObject(Player)
-
-    Player.health = 3
     
     -- Create the animation of the player
     Player.spritesheet = love.graphics.newImage('assets/graphics/player_sheet.png')
-    walkGrid = anim8.newGrid(16, 16, Player.spritesheet:getWidth(), Player.spritesheet:getHeight())
+    walkGrid = anim8.newGrid(PLAYER_WIDTH, PLAYER_HEIGHT, Player.spritesheet:getWidth(), Player.spritesheet:getHeight())
     
     Player.walkDown = anim8.newAnimation(walkGrid('1-2', 1), 0.1)
     Player.walkRight = anim8.newAnimation(walkGrid('1-2', 2), 0.1)
     Player.walkLeft = anim8.newAnimation(walkGrid('1-2', 2), 0.1):flipH()
     Player.walkUp = anim8.newAnimation(walkGrid('1-2', 3), 0.1)
 
-    Player.atackDown = anim8.newAnimation(walkGrid(2,1, 3,1, 2,1), {0.07, 0.3, 0.07}, attackComplete)
-    Player.atackRight = anim8.newAnimation(walkGrid(2,2, 3,2, 2,2), {0.07, 0.3, 0.07}, attackComplete)
-    Player.atackLeft = anim8.newAnimation(walkGrid(2,2, 3,2, 2,2), {0.07, 0.3, 0.07}, attackComplete):flipH()
-    Player.atackUp = anim8.newAnimation(walkGrid(2,3, 3,3, 2,3), {0.07, 0.3, 0.07}, attackComplete)
+    Player.atackDown = anim8.newAnimation(walkGrid(3,1, 3,1, 3,1), {0.07, 0.077, 0.07}, attackComplete)
+    Player.atackRight = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete)
+    Player.atackLeft = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete):flipH()
+    Player.atackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
 
     Player.currentAnimation = Player.walkDown
 
 end
 
 function Player:update(dt)
+    if Player.hearts <= 0 then
+        print("YOU DIE")
+        return
+    end
     if love.keyboard.wasPressed('f') and Sword.timer < 0 then
         Player:attack()
+        --Player.hearts = Player.hearts - 0.5
     end
 
     if Player.state == 'walking' then
