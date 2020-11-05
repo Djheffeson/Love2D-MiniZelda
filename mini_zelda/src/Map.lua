@@ -5,7 +5,8 @@ windfield = require 'assets/libraries/windfield'
 function Map:init()
     map = sti('assets/tilemaps/testmap.lua', { 'box2d' })
     world = windfield.newWorld()
-    
+    world:addCollisionClass('Enemy', {ignores = {'Enemy'}})
+    world:addCollisionClass('Wall')
     -- Create a collision layer to check where put a collision box
     collideLayer = map.layers[3].objects
     for i, j in pairs(collideLayer) do
@@ -19,6 +20,7 @@ function Map:init()
             16,
             16
         )
+        collideBox:setCollisionClass('Wall')
         collideBox:setType('static')
     end
 

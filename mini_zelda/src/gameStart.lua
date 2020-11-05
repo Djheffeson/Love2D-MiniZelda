@@ -16,12 +16,13 @@ function gameStart()
     require 'src/Player'
     require 'src/Sword'
     require 'src/Enemy'
-    
+
     map = Map()
     sword = Sword()
     player = Player()
     GUI = GUI()
     enemy = Enemy()
+    enemy1 = Enemy()
 
     love.window.setTitle('Mini Zelda')
     love.graphics.setDefaultFilter('nearest', 'nearest')

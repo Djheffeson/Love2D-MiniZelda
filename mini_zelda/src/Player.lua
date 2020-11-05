@@ -47,12 +47,16 @@ end
 
 function Player:update(dt)
     if Player.hearts <= 0 then
-        print("YOU DIE")
+        print("Dead")
         return
+    else
+        --print('Alive')
+    end
+    if Player.hearts > Player.max_hearts then
+        Player.hearts = Player.max_hearts
     end
     if love.keyboard.wasPressed('f') and Sword.timer < 0 then
         Player:attack()
-        --Player.hearts = Player.hearts - 0.5
     end
 
     if Player.state == 'walking' then
