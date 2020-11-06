@@ -21,8 +21,6 @@ function Player:init()
     Player.max_hearts = 3
     Player.hearts = Player.max_hearts
 
-    world:addCollisionClass('Player')
-
     Player.collider = world:newCircleCollider(Player.x, Player.y, 6)
     Player.collider:setCollisionClass('Player')
     Player.collider:setObject(Player)
