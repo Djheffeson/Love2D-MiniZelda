@@ -2,16 +2,16 @@ Enemy = Class{}
 
 function Enemy:init()
     
-    self.x = 100
-    self.y = 150
+    self.x = love.math.random(100,150)
+    self.y = love.math.random(100,150)
 
     self.walk = love.math.random(40, 80)
 
     self.vectorX = 0
-    self.vectorY = -1
-    --self.vectorX = love.math.random(-1, 1)
+    self.vectorY = 0
 
-    self.direction = getDirection(self.vectorX, self.vectorY)
+    local directions = {'up', 'down', 'left', 'right'}
+    self.direction = directions[math.random(#directions)]
     self.state = 'walking'
     
     self.collider = world:newCircleCollider(self.x, self.y, 7)
@@ -39,16 +39,13 @@ function Enemy:update(dt)
 
     self.ex, self.ey = self.collider:getPosition()
     self.collider:setLinearVelocity(self.vectorX * self.walk, self.vectorY * self.walk)
-    --self.state = 'walking'
 
     if self.collider_front:enter('Wall') then
         self.state = 'colliding'
-        --print('enter')
     end
 
     if self.collider_front:exit('Wall') then
         self.state = 'walking'
-        --print('exit')
     end
 
 
@@ -73,25 +70,23 @@ function Enemy:update(dt)
     if self.direction == 'up' then
         self.vectorY = -1
         self.currentAnimation = self.animationUp
-        self.collider_front:setPosition(self.ex, self.ey-5)
+        self.collider_front:setPosition(self.ex, self.ey-6)
 
     elseif self.direction == 'down' then
         self.vectorY = 1
         self.currentAnimation = self.animationDown
-        self.collider_front:setPosition(self.ex, self.ey+5)
+        self.collider_front:setPosition(self.ex, self.ey+6)
 
     elseif self.direction == 'left' then
         self.vectorX = -1
         self.currentAnimation = self.animationLeft
-        self.collider_front:setPosition(self.ex-5, self.ey)
+        self.collider_front:setPosition(self.ex-6, self.ey)
 
     elseif self.direction == 'right' then
         self.vectorX = 1
         self.currentAnimation = self.animationRight
-        self.collider_front:setPosition(self.ex+5, self.ey)
+        self.collider_front:setPosition(self.ex+6, self.ey)
     end
-
-    --print(self.state, self.direction)
 
 end
 
@@ -108,8 +103,6 @@ function getDirection(vectX, vectY)
         direction = 'left'
     elseif vectX == 1 then
         direction = 'right'
-    else
-        direction = 'stopped'
     end
     return direction
 end

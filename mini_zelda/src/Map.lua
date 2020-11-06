@@ -25,7 +25,7 @@ function Map:init()
         collideBox:setCollisionClass('Wall')
         collideBox:setType('static')
     end
-
+    map:removeLayer('Collide')
 end
 
 function Map:update(dt)

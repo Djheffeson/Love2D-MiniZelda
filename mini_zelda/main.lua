@@ -26,13 +26,14 @@ end
 
 function love.draw()
     push:start()
+    
     map:draw()
     enemy:draw()
     enemy1:draw()
     sword:draw()
     player:draw()
     GUI:draw()
-    --world:draw()
+    world:draw()
 
     push:finish()
 end
