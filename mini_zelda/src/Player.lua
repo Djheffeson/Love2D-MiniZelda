@@ -16,7 +16,9 @@ function Player:init()
 
     Player.isMoving = false
     Player.state = 'walking'
-    Player.direction = 'down'
+    Player.direction = 'up'
+    Player.invincible = false
+    Player.recive_damage = false
 
     Player.max_hearts = 3
     Player.hearts = Player.max_hearts
@@ -39,17 +41,37 @@ function Player:init()
     Player.atackLeft = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete):flipH()
     Player.atackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
 
-    Player.currentAnimation = Player.walkDown
+    Player.currentAnimation = Player.walkUp
+
+    Player.timer = 0
 
 end
 
 function Player:update(dt)
-    if Player.hearts <= 0 then
-        print("Dead")
-        return
-    else
-        --print('Alive')
+
+    if Player.recive_damage then
+        Player.invincible = true
+        Player.recive_damage = false
+        Player.state = 'pushed'
+        damage_timer = 0
     end
+    if Player.invincible then
+        Player.timer = Player.timer + 1 * dt
+        --print('invincible', Player.timer)
+    end
+
+    
+    if Player.timer >= 0.750 then
+        Player.timer = 0
+        if Player.invincible then
+            Player.invincible = false
+        end
+    end
+    if Player.hearts <= 0 then
+        print("YOU DIE")
+        return
+    end
+
     if Player.hearts > Player.max_hearts then
         Player.hearts = Player.max_hearts
     end
@@ -98,15 +120,32 @@ function Player:update(dt)
     
     elseif Player.state == 'attacking' then
         Player.currentAnimation:update(dt)
+
+    elseif Player.state == 'pushed' then
+        px, py = Player.collider:getPosition()
+        
+        -- link is pushed
+        local v1, v2 = ((getDirectionVector(Player.direction):rotateInplace(math.pi)) * dt * 300):unpack()
+        Player.collider:setLinearVelocity(v1 * WALK_SPEED, v2 * WALK_SPEED)
+        damage_timer = damage_timer + 1 * dt
+        if damage_timer >= 0.133 then
+            damage_timer = 0
+            Player.state = 'walking'
+        end
     end
-    --print(px, py)
 end
 
 function Player:draw()
+    if Player.invincible then
+        love.graphics.setColor(1, 0, 0, 1)
+    else
+        love.graphics.setColor(1, 1, 1, 1)
+    end
     -- Draw the animation
     Player.currentAnimation:draw(
         Player.spritesheet, px-9, py-10
     )
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 function Player:attack()
@@ -139,4 +178,15 @@ function attackComplete()
             Player.currentAnimation = Player.walkRight
         end
     end
+end
+
+function playerDamage(value)
+    if Player.invincible == false then
+        Player.hearts = player.hearts - value
+        Player.recive_damage = true
+    end
+end
+
+function playerHeal(value)
+    Player.hearts = player.hearts + value
 end

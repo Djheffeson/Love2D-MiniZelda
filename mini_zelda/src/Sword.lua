@@ -22,6 +22,7 @@ function Sword:init()
 end
 
 function Sword:update(dt)
+
     if Sword.timer > 0 then
         Sword.timer = Sword.timer - dt
         if Sword.timer < 0 then
@@ -46,13 +47,15 @@ function Sword:update(dt)
 end
 
 function Sword:draw()
-    love.graphics.setColor(1, 1, 1, 1)
+
     if Sword.state ~= 'invisible' then
+        love.graphics.setColor(1, 1, 1, 1)
         Sword.currentAnimation:draw(Sword.spriteSheet, Sword.x, Sword.y)
     end
 end
 
 function Sword:attack()
+    
     if Sword.state ~= 'invisible' then        
         return
     end
@@ -62,7 +65,7 @@ function Sword:attack()
     Sword.x = px - 10
     Sword.y = py - 10
     Sword.direction = Player.direction
-    getDirectionVector()
+    Sword.directionVector = getDirectionVector(Sword.direction)
 
     if Sword.direction == 'down' then
         Sword.currentAnimation = Sword.down
@@ -88,16 +91,4 @@ function Sword:attack()
 
     Sword.state = 'attack'
     Sword.timer = 0.07
-end
-
-function getDirectionVector()
-    if Sword.direction == 'down' then
-        Sword.directionVector = vector(0, 1)
-    elseif Sword.direction == 'left' then
-        Sword.directionVector = vector(-1, 0)
-    elseif Sword.direction == 'up' then
-        Sword.directionVector = vector(0, -1)
-    elseif Sword.direction == 'right' then
-        Sword.directionVector = vector(1, 0)
-    end
 end

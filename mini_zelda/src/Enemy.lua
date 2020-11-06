@@ -10,15 +10,22 @@ function Enemy:init()
     self.vectorX = 0
     self.vectorY = 0
 
+    self.damage = 0.5
+
+    -- Choose a direction for the enemy start
     local directions = {'up', 'down', 'left', 'right'}
     self.direction = directions[math.random(#directions)]
     self.state = 'walking'
     
+    -- Create a collision for the enemy
     self.collider = world:newCircleCollider(self.x, self.y, 7)
     self.collider:setCollisionClass('Enemy')
+    self.collider:setObject(self)
+
+    -- Create a colider in front of the enemy for check if they collide with anything 
     self.collider_front = world:newCircleCollider(self.x, self.y, 4)
     self.collider_front:setCollisionClass('Enemy')
-    self.collider:setObject(self)
+    
     
     self.spritesheet = love.graphics.newImage('assets/graphics/red_octorok_sprite.png')
     self.grid = anim8.newGrid(16, 16, self.spritesheet:getWidth(), self.spritesheet:getHeight())
@@ -50,16 +57,17 @@ function Enemy:update(dt)
 
 
     if self.state == 'colliding' then
-        directAvailable = testDirection(self.ex, self.ey)
+        directAvailable = checkDirection(self.ex, self.ey)
         self.direction = directAvailable[math.random(#directAvailable)]
         self.vectorX = 0
         self.vectorY = 0
     end
+
     timer = timer + 1 * dt
     if timer > 1 then
         timer = 0
         if math.random(3) == 1 then
-            directAvailable = testDirection(self.ex, self.ey)
+            directAvailable = checkDirection(self.ex, self.ey)
             self.direction = directAvailable[math.random(#directAvailable)]
             self.vectorX = 0
             self.vectorY = 0
@@ -67,6 +75,11 @@ function Enemy:update(dt)
         end
     end
 
+    -- Check if enemy collide with player
+    if self.collider:enter('Player') then
+        playerDamage(self.damage)
+    end
+    
     if self.direction == 'up' then
         self.vectorY = -1
         self.currentAnimation = self.animationUp
@@ -107,7 +120,7 @@ function getDirection(vectX, vectY)
     return direction
 end
 
-function testDirection(px, py)
+function checkDirection(px, py)
 
     cLeft = world:queryCircleArea(px-9, py, 4, {'Wall'})
     cRight = world:queryCircleArea(px+9, py, 4, {'Wall'})

@@ -11,6 +11,7 @@ function gameStart()
     sti = require 'assets/libraries/sti'
     vector = require 'assets/libraries/hump/vector'
 
+    require 'src/Util'
     require 'src/GUI'
     require 'src/Map'
     require 'src/Player'

@@ -5,9 +5,10 @@ windfield = require 'assets/libraries/windfield'
 function Map:init()
     map = sti('assets/tilemaps/testmap.lua', { 'box2d' })
     world = windfield.newWorld()
+
     world:addCollisionClass('Player')
     world:addCollisionClass('Wall')
-    world:addCollisionClass('Enemy', {ignores = {'Enemy'}})
+    world:addCollisionClass('Enemy', {ignores = {'Enemy', 'Player'}})
     world:setQueryDebugDrawing(true)
     -- Create a collision layer to check where put a collision box
     collideLayer = map.layers[3].objects
