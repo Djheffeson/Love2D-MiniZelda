@@ -4,7 +4,7 @@ function love.load()
 
     map:init()
     enemy:init()
-    --enemy1:init()
+    enemy1:init()
     sword:init()
     player:init()
     GUI:init()
@@ -19,7 +19,7 @@ function love.update(dt)
     GUI:update(dt)
     world:update(dt)
     enemy:update(dt)
-    --enemy1:update(dt)
+    enemy1:update(dt)
     
     love.keyboard.keysPressed = {}
 end
@@ -29,11 +29,11 @@ function love.draw()
     
     map:draw()
     enemy:draw()
-    --enemy1:draw()
+    enemy1:draw()
     sword:draw()
     player:draw()
     GUI:draw()
-    world:draw() -- debug collisions
+    --world:draw() -- debug collisions
 
     push:finish()
 end
