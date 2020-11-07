@@ -28,23 +28,21 @@ function Player:init()
     Player.collider:setObject(Player)
     
     -- Create the animation of the player
-    Player.spritesheet = love.graphics.newImage('assets/graphics/player_sheet.png')
-    walkGrid = anim8.newGrid(PLAYER_WIDTH, PLAYER_HEIGHT, Player.spritesheet:getWidth(), Player.spritesheet:getHeight())
+    walkGrid = anim8.newGrid(PLAYER_WIDTH, PLAYER_HEIGHT, 
+        sprites.linkSheet:getWidth(), sprites.linkSheet:getHeight())
     
     Player.walkDown = anim8.newAnimation(walkGrid('1-2', 1), 0.1)
     Player.walkRight = anim8.newAnimation(walkGrid('1-2', 2), 0.1)
     Player.walkLeft = anim8.newAnimation(walkGrid('1-2', 2), 0.1):flipH()
     Player.walkUp = anim8.newAnimation(walkGrid('1-2', 3), 0.1)
+    Player.currentAnimation = Player.walkUp
 
     Player.atackDown = anim8.newAnimation(walkGrid(3,1, 3,1, 3,1), {0.07, 0.077, 0.07}, attackComplete)
     Player.atackRight = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete)
     Player.atackLeft = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete):flipH()
     Player.atackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
 
-    Player.currentAnimation = Player.walkUp
-
     Player.timer = 0
-
 end
 
 function Player:update(dt)
@@ -57,9 +55,7 @@ function Player:update(dt)
     end
     if Player.invincible then
         Player.timer = Player.timer + 1 * dt
-        --print('invincible', Player.timer)
     end
-
     
     if Player.timer >= 0.750 then
         Player.timer = 0
@@ -67,6 +63,7 @@ function Player:update(dt)
             Player.invincible = false
         end
     end
+    
     if Player.hearts <= 0 then
         print("YOU DIE")
         return
@@ -75,7 +72,8 @@ function Player:update(dt)
     if Player.hearts > Player.max_hearts then
         Player.hearts = Player.max_hearts
     end
-    if love.keyboard.wasPressed('f') and Sword.timer < 0 then
+    
+    if love.keyboard.wasPressed('f') and Sword.timer < 0 and Player.state == 'walking' then
         Player:attack()
     end
 
@@ -143,7 +141,7 @@ function Player:draw()
     end
     -- Draw the animation
     Player.currentAnimation:draw(
-        Player.spritesheet, px-9, py-10
+        sprites.linkSheet, px-9, py-10
     )
     love.graphics.setColor(1, 1, 1, 1)
 end

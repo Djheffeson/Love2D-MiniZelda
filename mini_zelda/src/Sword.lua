@@ -9,8 +9,7 @@ function Sword:init()
     Sword.state = 'invisible'
     Sword.timer = -1
 
-    Sword.spriteSheet = love.graphics.newImage('assets/graphics/wooden_sword_sheet.png')
-    Sword.grid = anim8.newGrid(16, 16, Sword.spriteSheet:getWidth(), Sword.spriteSheet:getHeight())
+    Sword.grid = anim8.newGrid(16, 16, sprites.wodeenSword:getWidth(), sprites.wodeenSword:getHeight())
 
     Sword.down = anim8.newAnimation(Sword.grid(1, 1), 1)
     Sword.left = anim8.newAnimation(Sword.grid(2, 1), 1)
@@ -50,7 +49,7 @@ function Sword:draw()
 
     if Sword.state ~= 'invisible' then
         love.graphics.setColor(1, 1, 1, 1)
-        Sword.currentAnimation:draw(Sword.spriteSheet, Sword.x, Sword.y)
+        Sword.currentAnimation:draw(sprites.wodeenSword, Sword.x, Sword.y)
     end
 end
 
