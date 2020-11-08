@@ -27,13 +27,12 @@ function gameStart()
     require 'src/Map'
     require 'src/Player'
     require 'src/Sword'
-    require 'src/octorok'
-    --require 'src/Enemy'
+    require 'src/Enemy'
 
     map = Map()
     sword = Sword()
     player = Player()
     GUI = GUI()
-    --enemy = Enemy()
+    
 
 end

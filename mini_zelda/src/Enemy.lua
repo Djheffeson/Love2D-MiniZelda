@@ -40,13 +40,13 @@ function Enemy:init()
 
     self.currentAnimation = self.animationDown
     
-    timer = 1
+    self.timer_actions = 0
     self.timer_attack = 0
     shot = false
 end
 
 function Enemy:update(dt)
-    print(self.collider_projectile:getLinearVelocity(), self.vectorX, self.vectorY, shot)
+    --print(self.collider_projectile:getLinearVelocity(), self.vectorX, self.vectorY, shot)
 
     self.timer_attack = self.timer_attack + 1 * dt
     if self.state == 'attacking' then 
@@ -99,9 +99,9 @@ function Enemy:update(dt)
             self.state = 'walking'
         end
 
-        timer = timer + 1 * dt
-        if timer > 1 then
-            timer = 0
+        self.timer_actions = self.timer_actions + 1 * dt
+        if self.timer_actions > 1 then
+            self.timer_actions = 0
             if math.random(3) == 1 then
                 directAvailable = checkDirection(self.ex, self.ey)
                 self.direction = directAvailable[math.random(#directAvailable)]
