@@ -10,6 +10,7 @@ function Enemy:init()
     self.vectorX = 0
     self.vectorY = 0
 
+    self.health = 1
     self.damage = 0.5
 
     self.projectileHit = true
@@ -29,7 +30,7 @@ function Enemy:init()
     self.collider_front:setCollisionClass('Enemy')
 
     -- Create a collider for the projectile
-    self.collider_projectile = world:newCircleCollider(self.x, self.y, 6)
+    self.collider_projectile = world:newCircleCollider(self.x, self.y, 5)
     self.collider_projectile:setCollisionClass('Enemy')
     
     self.grid = anim8.newGrid(16, 16, sprites.octorokSheet:getWidth(), sprites.octorokSheet:getHeight())
@@ -42,106 +43,115 @@ function Enemy:init()
     
     self.timer_actions = 0
     self.timer_attack = 0
-    shot = false
+    self.shot = false
 end
 
 function Enemy:update(dt)
-    --print(self.collider_projectile:getLinearVelocity(), self.vectorX, self.vectorY, shot)
-
-    self.timer_attack = self.timer_attack + 1 * dt
-    if self.state == 'attacking' then 
-        
-        self.collider:setLinearVelocity(0, 0)
-        if self.timer_attack >= 0.850 then
-            self.state = 'walking'
-            directAvailable = checkDirection(self.ex, self.ey)
-            self.direction = directAvailable[math.random(#directAvailable)]
-            self.vectorX = 0
-            self.vectorY = 0
-        end
-        
-        if self.timer_attack >= 0.600 and shot == false then
-            self.collider_projectile:setLinearVelocity(self.vectorX * 200, self.vectorY * 200)
-            self.projectileHit = false
-            shot = true
-        end
-    end
-
-    if self.collider_projectile:enter('Wall') or self.collider_projectile:enter('Player')then
-        self.projectileHit = true
-        self.collider_projectile:setLinearVelocity(0, 0)
-    end
-
-    self.currentAnimation:update(dt)
-    self.cX, self.cY = self.collider_projectile:getPosition()
-
-    -- Check if enemy or projectile collide with player
-    if self.collider:enter('Player') or self.collider_projectile:enter('Player') then
-        playerDamage(self.damage)
-    end
-
-    if self.state ~= 'attacking' then
-        self.ex, self.ey = self.collider:getPosition()
-
-        if self.collider_front:enter('Wall') then
-            self.state = 'colliding'
+    if not (self.health <= 0) then
+        if self.collider:enter('Weapon') then
+            self.health = self.health - Sword.damage
         end
 
-        if self.collider_front:exit('Wall') then
-            self.state = 'walking'
+        if self.collider_front:enter('Wall') then self.state = 'colliding' end
+        if self.collider_front:exit('Wall') then self.state = 'walking' end
+
+        self.timer_attack = self.timer_attack + 1 * dt
+        if self.state == 'attacking' then 
+            
+            self.collider:setLinearVelocity(0, 0)
+            self.collider_front:setLinearVelocity(0, 0)
+
+            if self.timer_attack >= 0.850 then
+                self.state = 'walking'
+                directAvailable = checkDirection(self.x, self.y)
+                if not contains(self.direction, directAvailable) then
+                    self.direction = directAvailable[math.random(#directAvailable)]
+                    self.vectorX = 0
+                    self.vectorY = 0
+                end
+            end
+            
+            if self.timer_attack >= 0.600 and self.shot == false then
+                self.collider_projectile:setLinearVelocity(self.vectorX * 200, self.vectorY * 200)
+                self.projectileHit = false
+                self.shot = true
+            end
         end
 
-        if self.state == 'colliding' then
-            directAvailable = checkDirection(self.ex, self.ey)
-            self.direction = directAvailable[math.random(#directAvailable)]
-            self.vectorX = 0
-            self.vectorY = 0
-            self.state = 'walking'
+        if self.collider_projectile:enter('Wall') or self.collider_projectile:enter('Player') then
+            self.projectileHit = true
+            self.collider_projectile:setLinearVelocity(0, 0)
         end
 
-        self.timer_actions = self.timer_actions + 1 * dt
-        if self.timer_actions > 1 then
-            self.timer_actions = 0
-            if math.random(3) == 1 then
-                directAvailable = checkDirection(self.ex, self.ey)
+        self.currentAnimation:update(dt)
+        self.cX, self.cY = self.collider_projectile:getPosition()
+
+        -- Check if enemy or projectile collide with player
+        if self.collider:enter('Player') or self.collider_projectile:enter('Player') then
+            playerDamage(self.damage)
+        end
+
+        if self.state ~= 'attacking' then
+            self.x, self.y = self.collider:getPosition()
+
+            if self.state == 'colliding' then
+                directAvailable = checkDirection(self.x, self.y)
                 self.direction = directAvailable[math.random(#directAvailable)]
                 self.vectorX = 0
                 self.vectorY = 0
                 self.state = 'walking'
+            end
 
-            elseif math.random(3) == 1 then
-                self.state = 'attacking'
-                self.timer_attack = 0
-                shot = false
+            self.timer_actions = self.timer_actions + 1 * dt
+            if self.timer_actions > 1 then
+                self.timer_actions = 0
+                if math.random(3) == 1 then
+                    directAvailable = checkDirection(self.x, self.y)
+                    self.direction = directAvailable[math.random(#directAvailable)]
+                    self.vectorX = 0
+                    self.vectorY = 0
+                    self.state = 'walking'
+
+                elseif math.random(3) == 1 then
+                    self.state = 'attacking'
+                    self.timer_attack = 0
+                    self.shot = false
+                end
+            end
+
+            if self.direction == 'up' then
+                self.vectorY = -1
+                self.currentAnimation = self.animationUp
+                self.collider_front:setPosition(self.x, self.y-6)
+
+            elseif self.direction == 'down' then
+                self.vectorY = 1
+                self.currentAnimation = self.animationDown
+                self.collider_front:setPosition(self.x, self.y+6)
+
+            elseif self.direction == 'left' then
+                self.vectorX = -1
+                self.currentAnimation = self.animationLeft
+                self.collider_front:setPosition(self.x-6, self.y)
+
+            elseif self.direction == 'right' then
+                self.vectorX = 1
+                self.currentAnimation = self.animationRight
+                self.collider_front:setPosition(self.x+6, self.y)
+            end
+
+            self.collider:setLinearVelocity(self.vectorX * self.walk, self.vectorY * self.walk)
+            self.collider_front:setLinearVelocity(self.vectorX * self.walk, self.vectorY * self.walk)
+
+            self.direction = getDirection(self.vectorX, self.vectorY)
+            if self.projectileHit then
+                self.collider_projectile:setPosition(self.x, self.y)
             end
         end
-
-        if self.direction == 'up' then
-            self.vectorY = -1
-            self.currentAnimation = self.animationUp
-            self.collider_front:setPosition(self.ex, self.ey-6)
-
-        elseif self.direction == 'down' then
-            self.vectorY = 1
-            self.currentAnimation = self.animationDown
-            self.collider_front:setPosition(self.ex, self.ey+6)
-
-        elseif self.direction == 'left' then
-            self.vectorX = -1
-            self.currentAnimation = self.animationLeft
-            self.collider_front:setPosition(self.ex-6, self.ey)
-
-        elseif self.direction == 'right' then
-            self.vectorX = 1
-            self.currentAnimation = self.animationRight
-            self.collider_front:setPosition(self.ex+6, self.ey)
-        end
-
-        self.collider:setLinearVelocity(self.vectorX * self.walk, self.vectorY * self.walk)
-        self.direction = getDirection(self.vectorX, self.vectorY)
-        if self.projectileHit then
-            self.collider_projectile:setPosition(self.ex, self.ey)
-        end
+    else
+        self.collider:destroy()
+        self.collider_front:destroy()
+        self.collider_projectile:destroy()
     end
 end
 
@@ -149,7 +159,7 @@ function Enemy:draw()
     if self.projectileHit == false then
         love.graphics.draw(sprites.octorok_projectile, self.cX-4, self.cY-4)
     end
-    self.currentAnimation:draw(sprites.octorokSheet, self.ex-8, self.ey-8)
+    self.currentAnimation:draw(sprites.octorokSheet, self.x-8, self.y-8)
 end
 
 function getDirection(vectX, vectY)
@@ -165,12 +175,12 @@ function getDirection(vectX, vectY)
     return direction
 end
 
-function checkDirection(px, py)
+function checkDirection(x, y)
 
-    cLeft = world:queryCircleArea(px-9, py, 4, {'Wall'})
-    cRight = world:queryCircleArea(px+9, py, 4, {'Wall'})
-    cBack = world:queryCircleArea(px, py+9, 4, {'Wall'})
-    cFront = world:queryCircleArea(px, py-9, 4, {'Wall'})
+    cLeft = world:queryCircleArea(x-9, y, 4, {'Wall'})
+    cRight = world:queryCircleArea(x+9, y, 4, {'Wall'})
+    cBack = world:queryCircleArea(x, y+9, 4, {'Wall'})
+    cFront = world:queryCircleArea(x, y-9, 4, {'Wall'})
 
     directAvailable = {}
     if #cLeft <= 0 then

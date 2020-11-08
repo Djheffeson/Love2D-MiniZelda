@@ -86,7 +86,7 @@ function Player:update(dt)
         Player.vectorX = 0
         Player.vectorY = 0
 
-        px, py = Player.collider:getPosition()
+        Player.x, Player.y = Player.collider:getPosition()
         if love.keyboard.isDown('up') then
             Player.vectorY = -1
             Player.currentAnimation = Player.walkUp
@@ -120,7 +120,7 @@ function Player:update(dt)
         Player.currentAnimation:update(dt)
 
     elseif Player.state == 'pushed' then
-        px, py = Player.collider:getPosition()
+        Player.x, Player.y = Player.collider:getPosition()
         
         -- link is pushed
         local v1, v2 = ((getDirectionVector(Player.direction):rotateInplace(math.pi)) * dt * 300):unpack()
@@ -141,7 +141,7 @@ function Player:draw()
     end
     -- Draw the animation
     Player.currentAnimation:draw(
-        sprites.linkSheet, px-9, py-10
+        sprites.linkSheet, Player.x-9, Player.y-10
     )
     love.graphics.setColor(1, 1, 1, 1)
 end

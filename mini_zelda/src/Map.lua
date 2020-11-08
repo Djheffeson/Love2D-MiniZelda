@@ -9,6 +9,7 @@ function Map:init()
     world:addCollisionClass('Player')
     world:addCollisionClass('Wall')
     world:addCollisionClass('Enemy', {ignores = {'Enemy', 'Player'}})
+    world:addCollisionClass('Weapon', {ignores = {'Player', 'Wall', 'Enemy'}})
     world:setQueryDebugDrawing(true)
     -- Create a collision layer to check where put a collision box
     collideLayer = map.layers[3].objects

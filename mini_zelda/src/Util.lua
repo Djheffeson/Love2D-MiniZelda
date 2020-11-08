@@ -11,3 +11,12 @@ function getDirectionVector(direction)
     end
     return vectorDirection
 end
+
+function contains(value, list)
+    for _, v in pairs(list) do
+        if v == value then
+            return true
+        end
+    end
+    return false
+end
