@@ -67,7 +67,7 @@ function Enemy:update(dt)
         end
     end
 
-    if self.collider_projectile:enter('Wall') then
+    if self.collider_projectile:enter('Wall') or self.collider_projectile:enter('Player')then
         self.projectileHit = true
         self.collider_projectile:setLinearVelocity(0, 0)
     end

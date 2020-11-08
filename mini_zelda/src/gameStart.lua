@@ -14,7 +14,7 @@ function gameStart()
 
     love.window.setTitle('Mini Zelda')
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    love.graphics.setFont(love.graphics.newFont('assets/font/font.ttf', 16))
+    love.graphics.setFont(love.graphics.newFont('assets/font/font.ttf', 8))
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,  {
         fullscreen = false,
         vsync = true,
@@ -27,13 +27,13 @@ function gameStart()
     require 'src/Map'
     require 'src/Player'
     require 'src/Sword'
-    require 'src/Enemy'
+    require 'src/octorok'
+    --require 'src/Enemy'
 
     map = Map()
     sword = Sword()
     player = Player()
     GUI = GUI()
-    enemy = Enemy()
-    enemy1 = Enemy()
+    --enemy = Enemy()
 
 end

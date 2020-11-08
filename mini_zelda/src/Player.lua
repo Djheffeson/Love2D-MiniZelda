@@ -20,7 +20,7 @@ function Player:init()
     Player.invincible = false
     Player.recive_damage = false
 
-    Player.max_hearts = 3
+    Player.max_hearts = 8
     Player.hearts = Player.max_hearts
 
     Player.collider = world:newCircleCollider(Player.x, Player.y, 6)
@@ -47,6 +47,15 @@ end
 
 function Player:update(dt)
 
+    if Player.hearts <= 0 then
+        print("YOU DIE")
+        return
+    end
+
+    if Player.hearts > Player.max_hearts then
+        Player.hearts = Player.max_hearts
+    end
+    
     if Player.recive_damage then
         Player.invincible = true
         Player.recive_damage = false
@@ -62,15 +71,6 @@ function Player:update(dt)
         if Player.invincible then
             Player.invincible = false
         end
-    end
-    
-    if Player.hearts <= 0 then
-        print("YOU DIE")
-        return
-    end
-
-    if Player.hearts > Player.max_hearts then
-        Player.hearts = Player.max_hearts
     end
     
     if love.keyboard.wasPressed('f') and Sword.timer < 0 and Player.state == 'walking' then

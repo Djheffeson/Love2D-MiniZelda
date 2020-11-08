@@ -3,11 +3,13 @@ function love.load()
     gameStart()
 
     map:init()
-    enemy:init()
-    enemy1:init()
     sword:init()
     player:init()
     GUI:init()
+    enemies = {}
+
+    newOctorok(100, 100)
+    newOctorok(100, 100)
     
     love.keyboard.keysPressed = {}
 end
@@ -18,8 +20,9 @@ function love.update(dt)
     player:update(dt)
     GUI:update(dt)
     world:update(dt)
-    enemy:update(dt)
-    enemy1:update(dt)
+    for i, enemie in pairs(enemies) do
+        enemie:update(dt)
+    end
     
     love.keyboard.keysPressed = {}
 end
@@ -28,12 +31,13 @@ function love.draw()
     push:start()
     
     map:draw()
-    enemy:draw()
-    enemy1:draw()
+    for i, enemie in pairs(enemies) do
+        enemie:draw()
+    end
     sword:draw()
     player:draw()
     GUI:draw()
-    --world:draw() -- debug collisions
+    world:draw() -- debug collisions
 
     push:finish()
 end
