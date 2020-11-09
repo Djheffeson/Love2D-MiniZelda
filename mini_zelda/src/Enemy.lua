@@ -18,6 +18,8 @@ function Enemy:init()
 
     self.collisionDestroyed = false
 
+    self.drops = {1}
+
     -- Choose a direction for the enemy start
     local directions = {'up', 'down', 'left', 'right'}
     self.direction = directions[math.random(#directions)]
@@ -158,8 +160,7 @@ function Enemy:update(dt)
             self.collider_projectile:destroy()
             self.collisionDestroyed = true
         end
-        self.alive = enemyDrop(self.x, self.y)
-        
+        self.alive = enemyDrop(self.x, self.y, self.drops)
     end
 end
 
@@ -214,7 +215,13 @@ small = anim8.newAnimation(grid(1, 1), 1)
 big = anim8.newAnimation(grid(2, 1), 1)
 currentAnimation = small
 
-function enemyDrop(x, y)
+function enemyDrop(x, y, drops)
     -- trying to make a enemy drop someting and make the death animation
+    -- 10% chance of drop a item
+    if math.random(10) == 1 then
+        local item_drop = drops[math.random(#drops)]
+        spawnItem(1, x, y, item_drop)
+    end
+    
     return false
 end

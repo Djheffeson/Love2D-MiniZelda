@@ -28,6 +28,7 @@ function gameStart()
     require 'src/Player'
     require 'src/Sword'
     require 'src/Enemy'
+    require 'src/items'
 
     map = Map()
     sword = Sword()

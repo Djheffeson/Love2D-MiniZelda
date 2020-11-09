@@ -10,3 +10,4 @@ sprites.heart_half = love.graphics.newImage('assets/graphics/heart_half.png')
 sprites.heart_empty = love.graphics.newImage('assets/graphics/heart_empty.png')
 
 sprites.deathSheet = love.graphics.newImage('assets/graphics/death_sheet.png')
+sprites.recoverHeart = love.graphics.newImage('assets/graphics/recovery_heart_sheet.png')

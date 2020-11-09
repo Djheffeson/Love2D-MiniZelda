@@ -131,6 +131,7 @@ function Player:update(dt)
             Player.state = 'walking'
         end
     end
+    Player:pickupItems()
 end
 
 function Player:draw()
@@ -187,4 +188,15 @@ end
 
 function playerHeal(value)
     Player.hearts = player.hearts + value
+end
+
+function Player:pickupItems()
+    for i, itemd in ipairs(items) do
+        if distanceFrom(Player.x, Player.y, itemd.x, itemd.y) < 8 then
+            itemd.collected = true
+            if itemd.id == 1 then
+                playerHeal(1)
+            end
+        end
+    end
 end

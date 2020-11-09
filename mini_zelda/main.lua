@@ -7,7 +7,7 @@ function love.load()
     player:init()
     GUI:init()
     enemies = {}
-    for i=1, 5, 1 do
+    for i=1, 3, 1 do
         table.insert(enemies, Enemy())
     end
     
@@ -16,6 +16,7 @@ end
 
 function love.update(dt)
     map:update(dt)
+    items:update(dt)
     sword:update(dt)
     player:update(dt)
     GUI:update(dt)
@@ -34,6 +35,7 @@ function love.draw()
     push:start()
     
     map:draw()
+    items:draw()
     for i, enemie in pairs(enemies) do
         enemie:draw()
     end
