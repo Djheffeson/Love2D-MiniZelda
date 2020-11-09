@@ -13,7 +13,10 @@ function Enemy:init()
     self.health = 1
     self.damage = 0.5
 
+    self.alive = true
     self.projectileHit = true
+
+    self.collisionDestroyed = false
 
     -- Choose a direction for the enemy start
     local directions = {'up', 'down', 'left', 'right'}
@@ -149,17 +152,24 @@ function Enemy:update(dt)
             end
         end
     else
-        self.collider:destroy()
-        self.collider_front:destroy()
-        self.collider_projectile:destroy()
+        if self.collisionDestroyed == false then
+            self.collider:destroy()
+            self.collider_front:destroy()
+            self.collider_projectile:destroy()
+            self.collisionDestroyed = true
+        end
+        self.alive = enemyDrop(self.x, self.y)
+        
     end
 end
 
 function Enemy:draw()
-    if self.projectileHit == false then
-        love.graphics.draw(sprites.octorok_projectile, self.cX-4, self.cY-4)
+    if not (self.health <= 0) then
+        if self.projectileHit == false then
+            love.graphics.draw(sprites.octorok_projectile, self.cX-4, self.cY-4)
+        end
+        self.currentAnimation:draw(sprites.octorokSheet, self.x-8, self.y-8)
     end
-    self.currentAnimation:draw(sprites.octorokSheet, self.x-8, self.y-8)
 end
 
 function getDirection(vectX, vectY)
@@ -197,4 +207,14 @@ function checkDirection(x, y)
     end
 
     return directAvailable
+end
+
+grid = anim8.newGrid(16, 16, sprites.deathSheet:getWidth(), sprites.deathSheet:getHeight())
+small = anim8.newAnimation(grid(1, 1), 1)
+big = anim8.newAnimation(grid(2, 1), 1)
+currentAnimation = small
+
+function enemyDrop(x, y)
+    -- trying to make a enemy drop someting and make the death animation
+    return false
 end

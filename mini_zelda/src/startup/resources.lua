@@ -8,3 +8,5 @@ sprites.octorok_projectile = love.graphics.newImage('assets/graphics/octorok_pro
 sprites.heart_full = love.graphics.newImage('assets/graphics/heart_full.png')
 sprites.heart_half = love.graphics.newImage('assets/graphics/heart_half.png')
 sprites.heart_empty = love.graphics.newImage('assets/graphics/heart_empty.png')
+
+sprites.deathSheet = love.graphics.newImage('assets/graphics/death_sheet.png')

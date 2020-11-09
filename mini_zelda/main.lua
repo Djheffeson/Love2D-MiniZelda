@@ -1,5 +1,5 @@
 function love.load()
-    require 'src/gameStart'
+    require 'src/startup/gameStart'
     gameStart()
 
     map:init()
@@ -21,7 +21,7 @@ function love.update(dt)
     GUI:update(dt)
     world:update(dt)
     for i, enemie in pairs(enemies) do
-        if enemie.health <= 0 then
+        if enemie.alive == false then
             table.remove(enemies, i)
         end
         enemie:update(dt)
@@ -56,9 +56,6 @@ function love.keypressed(key)
         Player.hearts = Player.hearts + 0.5
     end
 
-    if key == 'k' then
-        enemies[math.random(#enemies)].health = 0
-    end
     love.keyboard.keysPressed[key] = true
 end
 

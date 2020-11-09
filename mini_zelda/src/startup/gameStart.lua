@@ -21,7 +21,7 @@ function gameStart()
         resizable = false
     })
 
-    require 'src/resources'
+    require 'src/startup/resources'
     require 'src/Util'
     require 'src/GUI'
     require 'src/Map'
