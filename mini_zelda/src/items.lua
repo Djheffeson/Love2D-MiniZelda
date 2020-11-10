@@ -14,6 +14,9 @@ function spawnItem(id, x, y)
         local itemGrid = anim8.newGrid(7, 8, 
             sprites.recoverHeart:getWidth(), sprites.recoverHeart:getHeight())
         item.spriteAnim = anim8.newAnimation(itemGrid('1-2', 1), 0.1)
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 3
+        item.y = item.y + item.sprite:getHeight() / 2
     end
 
     table.insert(items, item)

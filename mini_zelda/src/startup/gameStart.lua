@@ -29,6 +29,7 @@ function gameStart()
     require 'src/Sword'
     require 'src/Enemy'
     require 'src/items'
+    require 'src/deathAnimation'
 
     map = Map()
     sword = Sword()

@@ -192,11 +192,11 @@ end
 
 function Player:pickupItems()
     for i, itemd in ipairs(items) do
-        if distanceFrom(Player.x, Player.y, itemd.x, itemd.y) < 8 then
-            itemd.collected = true
-            if itemd.id == 1 then
-                playerHeal(1)
+        if distanceFrom(Player.x, Player.y, itemd.x, itemd.y) < 7 then
+            if itemd.id == 1 and itemd.collected == false then
+                playerHeal(0.5)
             end
+            itemd.collected = true
         end
     end
 end

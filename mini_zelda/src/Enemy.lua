@@ -160,7 +160,10 @@ function Enemy:update(dt)
             self.collider_projectile:destroy()
             self.collisionDestroyed = true
         end
-        self.alive = enemyDrop(self.x, self.y, self.drops)
+        
+        local item = enemyDrop(self.drops)
+        deathSpawn(self.x-8, self.y-8, item)
+        self.alive = false
     end
 end
 
@@ -210,18 +213,11 @@ function checkDirection(x, y)
     return directAvailable
 end
 
-grid = anim8.newGrid(16, 16, sprites.deathSheet:getWidth(), sprites.deathSheet:getHeight())
-small = anim8.newAnimation(grid(1, 1), 1)
-big = anim8.newAnimation(grid(2, 1), 1)
-currentAnimation = small
-
-function enemyDrop(x, y, drops)
-    -- trying to make a enemy drop someting and make the death animation
+function enemyDrop(drops)
     -- 10% chance of drop a item
     if math.random(10) == 1 then
         local item_drop = drops[math.random(#drops)]
-        spawnItem(1, x, y, item_drop)
+        return item_drop
     end
-    
-    return false
+    return 0
 end

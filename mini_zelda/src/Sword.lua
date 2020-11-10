@@ -27,6 +27,7 @@ function Sword:update(dt)
         Sword.timer = Sword.timer - dt
         if Sword.timer < 0 then
             if Sword.state == 'attack' then
+                Sword.collision:destroy()
                 Sword.state = 'pause'
                 Sword.timer = 0.077
             elseif Sword.state == 'pause' then
@@ -35,7 +36,6 @@ function Sword:update(dt)
                 Sword.state = 'back'
             else
                 Sword.state = 'invisible'
-                Sword.collision:destroy()
             end
         end
     end

@@ -7,7 +7,7 @@ function love.load()
     player:init()
     GUI:init()
     enemies = {}
-    for i=1, 3, 1 do
+    for i=1, 5, 1 do
         table.insert(enemies, Enemy())
     end
     
@@ -21,6 +21,7 @@ function love.update(dt)
     player:update(dt)
     GUI:update(dt)
     world:update(dt)
+    deaths:update(dt)
     for i, enemie in pairs(enemies) do
         if enemie.alive == false then
             table.remove(enemies, i)
@@ -36,6 +37,7 @@ function love.draw()
     
     map:draw()
     items:draw()
+    deaths:draw()
     for i, enemie in pairs(enemies) do
         enemie:draw()
     end
@@ -52,10 +54,10 @@ function love.keypressed(key)
         love.event.quit()
     end
     if key == 'v' then
-        Player.hearts = Player.hearts - 0.5
+        playerDamage(0.5)
     end
     if key == 'b' then
-        Player.hearts = Player.hearts + 0.5
+        playerHeal(0.5)
     end
 
     love.keyboard.keysPressed[key] = true
