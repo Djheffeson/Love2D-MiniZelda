@@ -110,6 +110,15 @@ function Enemy:update(dt)
             self.timer_actions = self.timer_actions + 1 * dt
             if self.timer_actions > 1 then
                 self.timer_actions = 0
+
+                if self.state ~= 'attacking' then
+                    if checkIfSeePlayer(self.x, self.y, self.direction) then
+                        self.state = 'attacking'
+                        self.timer_attack = 0
+                        self.shot = false
+                    end
+                end
+                
                 if math.random(3) == 1 then
                     directAvailable = checkDirection(self.x, self.y)
                     self.direction = directAvailable[math.random(#directAvailable)]
@@ -123,7 +132,7 @@ function Enemy:update(dt)
                     self.shot = false
                 end
             end
-
+            
             if self.direction == 'up' then
                 self.vectorY = -1
                 self.currentAnimation = self.animationUp
@@ -211,6 +220,25 @@ function checkDirection(x, y)
     end
 
     return directAvailable
+end
+
+function checkIfSeePlayer(x, y, facing)
+    print('checking')
+    local locationX, locationY = checkDistance(Player.x, player.y, x, y)
+    if facing == 'up' and (locationX <= 1 and locationX >= -1) and locationY <= 0 then
+        print('looking up')
+        return true
+    elseif facing == 'left' and (locationY <= 1 and locationY >= -1) and locationX <= 0 then
+        print('looking left')
+        return true
+    elseif facing == 'down' and (locationX <= 1 and locationX >= -1) and locationY >= 0 then
+        print('looking down')
+        return true
+    elseif facing == 'right' and (locationY <= 1 and locationY >= -1) and locationX >= 0 then
+        print('looking right')
+        return true
+    end
+    return false
 end
 
 function enemyDrop(drops)

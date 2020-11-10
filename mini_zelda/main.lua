@@ -7,7 +7,7 @@ function love.load()
     player:init()
     GUI:init()
     enemies = {}
-    for i=1, 5, 1 do
+    for i=1, 1, 1 do
         table.insert(enemies, Enemy())
     end
     
