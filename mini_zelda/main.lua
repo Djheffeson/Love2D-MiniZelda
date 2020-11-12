@@ -4,10 +4,9 @@ function love.load()
 
     map:init()
     sword:init()
-    player:init()
     GUI:init()
     enemies = {}
-    for i=1, 1, 1 do
+    for i=1, 4, 1 do
         table.insert(enemies, Enemy())
     end
     
@@ -34,7 +33,6 @@ end
 
 function love.draw()
     push:start()
-    
     map:draw()
     items:draw()
     deaths:draw()
@@ -44,7 +42,7 @@ function love.draw()
     sword:draw()
     player:draw()
     GUI:draw()
-    --world:draw() -- debug collisions
+    world:draw() -- debug collisions
 
     push:finish()
 end
@@ -58,6 +56,18 @@ function love.keypressed(key)
     end
     if key == 'b' then
         playerHeal(0.5)
+    end
+
+    if key == '1' then
+        changeRoom(room_1)
+    end
+
+    if key == '2' then
+        changeRoom(room_2)
+    end
+
+    if key == '3' then
+        changeRoom(room_3)
     end
 
     love.keyboard.keysPressed[key] = true

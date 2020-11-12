@@ -11,6 +11,7 @@ function gameStart()
     anim8 = require 'assets/libraries/anim8'
     sti = require 'assets/libraries/sti'
     vector = require 'assets/libraries/hump/vector'
+    windfield = require 'assets/libraries/windfield'
 
     love.window.setTitle('Mini Zelda')
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -21,6 +22,9 @@ function gameStart()
         resizable = false
     })
 
+    world = windfield.newWorld()
+
+    require 'src/startup/collisionClasses'
     require 'src/startup/resources'
     require 'src/Util'
     require 'src/GUI'

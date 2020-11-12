@@ -1,6 +1,5 @@
 Player = Class{}
 
-anim8 = require 'assets/libraries/anim8'
 PLAYER_WIDTH = 16
 PLAYER_HEIGHT = 16
 WALK_SPEED = 80
