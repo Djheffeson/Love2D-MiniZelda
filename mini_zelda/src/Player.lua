@@ -19,7 +19,7 @@ function Player:init()
     Player.invincible = false
     Player.recive_damage = false
 
-    Player.max_hearts = 8
+    Player.max_hearts = 3
     Player.hearts = Player.max_hearts
 
     Player.collider = world:newCircleCollider(Player.x, Player.y, 6)

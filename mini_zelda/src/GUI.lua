@@ -7,14 +7,13 @@ end
 function GUI:update(dt)
 
 end
--- 176
--- 28
+
 function GUI:draw()
     love.graphics.setColor(0, 0, 0, 1)
-    love.graphics.rectangle('fill', 0, 0, 256, 48)
+    love.graphics.rectangle('fill', 0, 0, 256, 56)
     
     love.graphics.setColor(248/255, 56/255, 0, 1)
-    love.graphics.print('-LIFE-', 184, 9)
+    love.graphics.print('-LIFE-', 184, 16)
     love.graphics.setColor(1, 1, 1, 1)
     for i = 1, Player.max_hearts - 0 do 
         
@@ -26,6 +25,6 @@ function GUI:draw()
             heart = sprites.heart_empty
         end
         local space = (i - 1) * 8
-        love.graphics.draw(heart, 176 + space, 32)
+        love.graphics.draw(heart, 176 + space, 40)
     end
 end

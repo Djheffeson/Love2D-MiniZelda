@@ -1,11 +1,10 @@
 function gameStart()
-    WINDOW_WIDTH = 256 * 3
-    WINDOW_HEIGHT = 224 * 3
+    WINDOW_WIDTH = 768
+    WINDOW_HEIGHT = 672
+    
+    VIRTUAL_WIDTH = 768 / 3
+    VIRTUAL_HEIGHT = 672 / 3
 
-    VIRTUAL_WIDTH = 256
-    VIRTUAL_HEIGHT = 224
-    
-    
     Class = require 'assets/libraries/hump/class'
     push = require 'assets/libraries/push'
     anim8 = require 'assets/libraries/anim8'
@@ -35,7 +34,7 @@ function gameStart()
     require 'src/items'
     require 'src/deathAnimation'
 
-    map = Map()
+    map1 = Map()
     sword = Sword()
     player = Player()
     GUI = GUI()

@@ -223,19 +223,14 @@ function checkDirection(x, y)
 end
 
 function checkIfSeePlayer(x, y, facing)
-    print('checking')
     local locationX, locationY = checkDistance(Player.x, player.y, x, y)
     if facing == 'up' and (locationX <= 1 and locationX >= -1) and locationY <= 0 then
-        print('looking up')
         return true
     elseif facing == 'left' and (locationY <= 1 and locationY >= -1) and locationX <= 0 then
-        print('looking left')
         return true
     elseif facing == 'down' and (locationX <= 1 and locationX >= -1) and locationY >= 0 then
-        print('looking down')
         return true
     elseif facing == 'right' and (locationY <= 1 and locationY >= -1) and locationX >= 0 then
-        print('looking right')
         return true
     end
     return false
