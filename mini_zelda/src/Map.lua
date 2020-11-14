@@ -6,13 +6,35 @@ room_3 = 'assets/tilemaps/room_3.lua'
 room_4 = 'assets/tilemaps/room_4.lua'
 room_5 = 'assets/tilemaps/room_5.lua'
 room_6 = 'assets/tilemaps/room_6.lua'
+room_7 = 'assets/tilemaps/room_7.lua'
+room_8 = 'assets/tilemaps/room_8.lua'
+room_9 = 'assets/tilemaps/room_9.lua'
+room_10 = 'assets/tilemaps/room_10.lua'
+room_11 = 'assets/tilemaps/room_11.lua'
+room_12 = 'assets/tilemaps/room_12.lua'
+room_13 = 'assets/tilemaps/room_13.lua'
+room_14 = 'assets/tilemaps/room_14.lua'
+room_15 = 'assets/tilemaps/room_15.lua'
+room_16 = 'assets/tilemaps/room_16.lua'
+room_17 = 'assets/tilemaps/room_17.lua'
+room_18 = 'assets/tilemaps/room_18.lua'
+room_19 = 'assets/tilemaps/room_19.lua'
+room_20 = 'assets/tilemaps/room_20.lua'
+room_21 = 'assets/tilemaps/room_21.lua'
+room_22 = 'assets/tilemaps/room_22.lua'
+room_23 = 'assets/tilemaps/room_23.lua'
+room_24 = 'assets/tilemaps/room_24.lua'
+room_25 = 'assets/tilemaps/room_25.lua'
 
 rooms = {
-    room_1, room_2, room_3,
-    room_4, room_5, room_6
+    room_1, room_2, room_3, room_4, room_5, 
+    room_6, room_7, room_8, room_9, room_10,
+    room_11, room_12, room_13, room_14, room_15,
+    room_16, room_17, room_18, room_19, room_20,
+    room_21, room_22, room_23, room_24, room_25
 }
 
-currentRoom = 5
+currentRoom = 23
 
 colliders = {}
 
@@ -35,22 +57,30 @@ function Map:init()
 end
 
 function Map:update(dt)
-    print(currentRoom)
-    if love.keyboard.isDown('w') then
+    --print(currentRoom)
+
+    if Player.y <= 62 and Player.direction == 'up' then
         direct = 'up'
         changing_room = true
-    elseif love.keyboard.isDown('s') then
+
+    elseif Player.y >= 226 and Player.direction == 'down' then
         direct = 'down'
         changing_room = true
-    elseif love.keyboard.isDown('a') then
+
+    elseif Player.x <= 6 and Player.direction == 'left' then
         direct = 'left'
         changing_room = true
-    elseif love.keyboard.isDown('d') then
+    elseif Player.x >= 250 and Player.direction == 'right'then
         direct = 'right'
         changing_room = true
     end
+
+    -- Prevents player to move when the room is changing
     if changing_room then
         nextRoom(direct)
+        gameState = 'changingRoom'
+    else
+        gameState = 'running'
     end
 end
 
@@ -60,12 +90,13 @@ function Map:draw()
 end
 
 function nextRoom(direction)
+
     local nxRoom
     if direction == 'up' then
-        nxRoom = currentRoom - 3
+        nxRoom = currentRoom - 5
 
     elseif direction == 'down' then
-        nxRoom = currentRoom + 3
+        nxRoom = currentRoom + 5
 
     elseif direction == 'left' then
         nxRoom = currentRoom - 1
@@ -87,7 +118,7 @@ function moveRoom(room, direction)
         mapY = mapY - 4
         tmpMapY = mapY + 168
 
-        if Player.y > 61 and Player.y < 255 then
+        if Player.y > 61 and Player.y < 227 then
             Player.y = Player.y - 4
             Player.collider:setPosition(Player.x, Player.y)
         end
@@ -100,7 +131,7 @@ function moveRoom(room, direction)
         mapY = mapY + 4
         tmpMapY = mapY - 168
 
-        if Player.y > 61 and Player.y < 255 then
+        if Player.y > 61 and Player.y < 226 then
             Player.y = Player.y + 4
             Player.collider:setPosition(Player.x, Player.y)
         end
@@ -113,7 +144,7 @@ function moveRoom(room, direction)
         mapX = mapX - 4
         tmpMapX = mapX + 256
 
-        if Player.x > 6 and Player.x < 250 then
+        if Player.x > 5 and Player.x < 251 then
             Player.x = Player.x - 4
             Player.collider:setPosition(Player.x, Player.y)
         end
@@ -126,7 +157,7 @@ function moveRoom(room, direction)
         mapX = mapX + 4
         tmpMapX = mapX - 256
 
-        if Player.x > 6 and Player.x < 250 then
+        if Player.x > 5 and Player.x < 251 then
             Player.x = Player.x + 4
             Player.collider:setPosition(Player.x, Player.y)
         end

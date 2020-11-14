@@ -5,6 +5,8 @@ function gameStart()
     VIRTUAL_WIDTH = 768 / 3
     VIRTUAL_HEIGHT = 672 / 3
 
+    gameState = 'running'
+
     Class = require 'assets/libraries/hump/class'
     push = require 'assets/libraries/push'
     anim8 = require 'assets/libraries/anim8'

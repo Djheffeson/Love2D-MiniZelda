@@ -6,7 +6,7 @@ WALK_SPEED = 80
 
 function Player:init()
 
-    Player.x = 100
+    Player.x = 130
     Player.y = 100
 
     -- Create a vector for collision
@@ -22,7 +22,7 @@ function Player:init()
     Player.max_hearts = 3
     Player.hearts = Player.max_hearts
 
-    Player.collider = world:newCircleCollider(Player.x, Player.y, 6)
+    Player.collider = world:newCircleCollider(Player.x, Player.y, 5)
     Player.collider:setCollisionClass('Player')
     Player.collider:setObject(Player)
     
@@ -46,91 +46,96 @@ end
 
 function Player:update(dt)
 
-    if Player.hearts <= 0 then
-        print("YOU DIE")
-        return
-    end
+    print(Player.collider:getPosition())
 
-    if Player.hearts > Player.max_hearts then
-        Player.hearts = Player.max_hearts
-    end
-    
-    if Player.recive_damage then
-        Player.invincible = true
-        Player.recive_damage = false
-        Player.state = 'pushed'
-        damage_timer = 0
-    end
-    if Player.invincible then
-        Player.timer = Player.timer + 1 * dt
-    end
-    
-    if Player.timer >= 0.750 then
-        Player.timer = 0
-        if Player.invincible then
-            Player.invincible = false
-        end
-    end
-    
-    if love.keyboard.wasPressed('f') and Sword.timer < 0 and Player.state == 'walking' then
-        Player:attack()
-    end
-
-    if Player.state == 'walking' then
-
-        if Player.isMoving then
-            Player.currentAnimation:update(dt)
-        end
-
-        Player.vectorX = 0
-        Player.vectorY = 0
-
-        Player.x, Player.y = Player.collider:getPosition()
-        if love.keyboard.isDown('up') then
-            Player.vectorY = -1
-            Player.currentAnimation = Player.walkUp
-            Player.direction = 'up'
-
-        elseif love.keyboard.isDown('down') then
-            Player.vectorY = 1
-            Player.currentAnimation = Player.walkDown
-            Player.direction = 'down'
-
-        elseif love.keyboard.isDown('left') then
-            Player.vectorX = -1
-            Player.currentAnimation = Player.walkLeft
-            Player.direction = 'left'
-
-        elseif love.keyboard.isDown('right') then
-            Player.vectorX = 1
-            Player.currentAnimation = Player.walkRight
-            Player.direction = 'right'
-        end
-
-        if Player.vectorX == 0 and Player.vectorY == 0 then
-            Player.isMoving = false
-        elseif not Player.isMoving then
-            Player.isMoving = true
-        end
-
-        Player.collider:setLinearVelocity(Player.vectorX * WALK_SPEED, Player.vectorY * WALK_SPEED)
-    
-    elseif Player.state == 'attacking' then
-        Player.currentAnimation:update(dt)
-
-    elseif Player.state == 'pushed' then
-        Player.x, Player.y = Player.collider:getPosition()
+    if gameState == 'running' then
         
-        -- link is pushed
-        local v1, v2 = ((getDirectionVector(Player.direction):rotateInplace(math.pi)) * dt * 300):unpack()
-        Player.collider:setLinearVelocity(v1 * WALK_SPEED, v2 * WALK_SPEED)
-        damage_timer = damage_timer + 1 * dt
-        if damage_timer >= 0.133 then
-            damage_timer = 0
-            Player.state = 'walking'
+        if Player.hearts <= 0 then
+            print("YOU DIE")
+            return
         end
+
+        if Player.hearts > Player.max_hearts then
+            Player.hearts = Player.max_hearts
+        end
+        
+        if Player.recive_damage then
+            Player.invincible = true
+            Player.recive_damage = false
+            Player.state = 'pushed'
+            damage_timer = 0
+        end
+        if Player.invincible then
+            Player.timer = Player.timer + 1 * dt
+        end
+        
+        if Player.timer >= 0.750 then
+            Player.timer = 0
+            if Player.invincible then
+                Player.invincible = false
+            end
+        end
+        
+        if love.keyboard.wasPressed('f') and Sword.timer < 0 and Player.state == 'walking' then
+            Player:attack()
+        end
+
+        if Player.state == 'walking' then
+
+            if Player.isMoving then
+                Player.currentAnimation:update(dt)
+            end
+
+            Player.vectorX = 0
+            Player.vectorY = 0
+
+            Player.x, Player.y = Player.collider:getPosition()
+            if love.keyboard.isDown('up') then
+                Player.vectorY = -1
+                Player.currentAnimation = Player.walkUp
+                Player.direction = 'up'
+
+            elseif love.keyboard.isDown('down') then
+                Player.vectorY = 1
+                Player.currentAnimation = Player.walkDown
+                Player.direction = 'down'
+
+            elseif love.keyboard.isDown('left') then
+                Player.vectorX = -1
+                Player.currentAnimation = Player.walkLeft
+                Player.direction = 'left'
+
+            elseif love.keyboard.isDown('right') then
+                Player.vectorX = 1
+                Player.currentAnimation = Player.walkRight
+                Player.direction = 'right'
+            end
+
+            if Player.vectorX == 0 and Player.vectorY == 0 then
+                Player.isMoving = false
+            elseif not Player.isMoving then
+                Player.isMoving = true
+            end
+
+            Player.collider:setLinearVelocity(Player.vectorX * WALK_SPEED, Player.vectorY * WALK_SPEED)
+        
+        elseif Player.state == 'attacking' then
+            Player.currentAnimation:update(dt)
+
+        elseif Player.state == 'pushed' then
+            Player.x, Player.y = Player.collider:getPosition()
+            
+            -- link is pushed
+            local v1, v2 = ((getDirectionVector(Player.direction):rotateInplace(math.pi)) * dt * 300):unpack()
+            Player.collider:setLinearVelocity(v1 * WALK_SPEED, v2 * WALK_SPEED)
+            damage_timer = damage_timer + 1 * dt
+            if damage_timer >= 0.133 then
+                damage_timer = 0
+                Player.state = 'walking'
+            end
+        end
+        Player:pickupItems()
     end
-    Player:pickupItems()
 end
 
 function Player:draw()
