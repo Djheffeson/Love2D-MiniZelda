@@ -46,3 +46,9 @@ function items:draw()
         itemd.spriteAnim:draw(itemd.sprite, itemd.x, itemd.y)
     end
 end
+
+function deleteItems()
+    for i = 1, #items, 1 do 
+        table.remove(items, i)
+    end
+end

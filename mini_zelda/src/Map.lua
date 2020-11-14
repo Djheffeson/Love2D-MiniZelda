@@ -34,6 +34,17 @@ rooms = {
     room_21, room_22, room_23, room_24, room_25
 }
 
+-- red octorok = 1
+-- blue octorok = 2
+
+enemies_room = {
+    {}, {}, {1, 0}, {3, 1}, {},
+    {}, {}, {}, {}, {10, 1},
+    {1, 0}, {4, 0}, {4, 0}, {4, 0}, {},
+    {4, 0}, {4, 0}, {4, 0}, {4, 0}, {4, 0},
+    {}, {}, {}, {4, 0}, {}
+}
+
 currentRoom = 23
 
 colliders = {}
@@ -54,6 +65,10 @@ function Map:init()
     local direct = 'up'
 
     createRoomCollisions()
+    enemiesPerRoom()
+
+    Map.timer = 0
+    Map.timer1 = 0
 end
 
 function Map:update(dt)
@@ -77,10 +92,18 @@ function Map:update(dt)
 
     -- Prevents player to move when the room is changing
     if changing_room then
-        nextRoom(direct)
         gameState = 'changingRoom'
+        Map.timer = Map.timer + 1 * dt
+        if Map.timer >= 0.5 then
+            nextRoom(direct)
+        end
+        Map.timer1 = 0
     else
-        gameState = 'running'
+        Map.timer1 = Map.timer1 + 1 * dt
+        if Map.timer1 >= 0.15 then
+            gameState = 'running'
+        end
+        Map.timer = 0
     end
 end
 
@@ -104,6 +127,8 @@ function nextRoom(direction)
     elseif direction == 'right' then
         nxRoom = currentRoom + 1
     end
+    deleteAllEntities()
+    deleteItems()
     moveRoom(nxRoom, direction)
 end
 
@@ -118,7 +143,7 @@ function moveRoom(room, direction)
         mapY = mapY - 4
         tmpMapY = mapY + 168
 
-        if Player.y > 61 and Player.y < 227 then
+        if Player.y > 60 and Player.y < 228 then
             Player.y = Player.y - 4
             Player.collider:setPosition(Player.x, Player.y)
         end
@@ -131,7 +156,7 @@ function moveRoom(room, direction)
         mapY = mapY + 4
         tmpMapY = mapY - 168
 
-        if Player.y > 61 and Player.y < 226 then
+        if Player.y > 60 and Player.y < 228 then
             Player.y = Player.y + 4
             Player.collider:setPosition(Player.x, Player.y)
         end
@@ -144,7 +169,7 @@ function moveRoom(room, direction)
         mapX = mapX - 4
         tmpMapX = mapX + 256
 
-        if Player.x > 5 and Player.x < 251 then
+        if Player.x > 4 and Player.x < 251 then
             Player.x = Player.x - 4
             Player.collider:setPosition(Player.x, Player.y)
         end
@@ -157,7 +182,7 @@ function moveRoom(room, direction)
         mapX = mapX + 4
         tmpMapX = mapX - 256
 
-        if Player.x > 5 and Player.x < 251 then
+        if Player.x > 4 and Player.x < 251 then
             Player.x = Player.x + 4
             Player.collider:setPosition(Player.x, Player.y)
         end
@@ -180,6 +205,8 @@ function changeRoom(room)
     
     deleteRoomCollisions()
     createRoomCollisions()
+
+    enemiesPerRoom()
 end
 
 function createRoomCollisions()

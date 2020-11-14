@@ -1,14 +1,7 @@
 function love.load()
+    
     require 'src/startup/gameStart'
     gameStart()
-
-    map1:init()
-    sword:init()
-    GUI:init()
-    enemies = {}
-    for i=1, 0, 1 do
-        table.insert(enemies, Enemy())
-    end
 
     love.keyboard.keysPressed = {}
 end
@@ -22,12 +15,7 @@ function love.update(dt)
     GUI:update(dt)
     world:update(dt)
     deaths:update(dt)
-    for i, enemie in pairs(enemies) do
-        if enemie.alive == false then
-            table.remove(enemies, i)
-        end
-        enemie:update(dt)
-    end
+    enemies:update(dt)
 
     love.keyboard.keysPressed = {}
 end
@@ -40,13 +28,11 @@ function love.draw()
     map1:draw()
     items:draw()
     deaths:draw()
-    for i, enemie in pairs(enemies) do
-        enemie:draw()
-    end
+    enemies:draw()
     sword:draw()
     player:draw()
     GUI:draw()
-    world:draw() -- debug collisions
+    --world:draw() -- debug collisions
 
     push:finish()
 end
@@ -73,4 +59,3 @@ function love.keyboard.wasPressed(key)
         return false
     end
 end
-

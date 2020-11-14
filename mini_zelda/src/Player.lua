@@ -7,7 +7,7 @@ WALK_SPEED = 80
 function Player:init()
 
     Player.x = 130
-    Player.y = 100
+    Player.y = 150
 
     -- Create a vector for collision
     Player.vectorX = 0
@@ -45,9 +45,7 @@ function Player:init()
 end
 
 function Player:update(dt)
-
-    print(Player.collider:getPosition())
-
+    
     if gameState == 'running' then
         
         if Player.hearts <= 0 then

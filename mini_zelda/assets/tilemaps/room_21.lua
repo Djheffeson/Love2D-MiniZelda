@@ -101,7 +101,7 @@ return {
       draworder = "topdown",
       id = 2,
       name = "Collide",
-      visible = true,
+      visible = false,
       opacity = 0.4,
       offsetx = 0,
       offsety = 0,
