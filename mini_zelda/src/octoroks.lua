@@ -4,8 +4,11 @@ function spawnOctorok(type)
 
     local octorok = {}
     octorok.type = type
-    octorok.x = love.math.random(100,150)
-    octorok.y = love.math.random(100,150)
+    repeat
+        octorok.x = love.math.random(0,256)
+        octorok.y = love.math.random(56,224)
+    until checkLayer(map:convertPixelToTile(octorok.x+12, octorok.y+12)) == 3
+    
     octorok.walk = love.math.random(40, 50)
     octorok.vectorX = 0
     octorok.vectorY = 0
@@ -283,7 +286,11 @@ function enemyDrop(drops)
 end
 
 function deleteOctoroks()
-    for i = 1, #octoroks, 1 do 
+    for i, octorok in ipairs(octoroks) do
+        octorok.collider:destroy()
+        octorok.collider_front:destroy()
+        octorok.collider_projectile:destroy()
+        octorok.collisionDestroyed = true
         table.remove(octoroks, i)
     end
 end

@@ -36,6 +36,7 @@ rooms = {
 
 -- red octorok = 1
 -- blue octorok = 2
+-- zora = 3
 
 enemies_room = {
     {}, {}, {1, 0}, {3, 1}, {},
@@ -58,8 +59,7 @@ function Map:init()
     tmpMapY = 0
 
     tmpmap = sti(rooms[currentRoom], { 'box2d' })
-    map = sti(rooms[currentRoom], { 'box2d' }, 0, 56)
-    
+    map = sti(rooms[currentRoom], { 'box2d' })
 
     changing_room = false
     local direct = 'up'
@@ -107,8 +107,8 @@ function Map:update(dt)
 end
 
 function Map:draw()
-    tmpmap:draw(tmpMapX, tmpMapY)
-    map:draw(mapX, mapY)
+    tmpmap:draw(tmpMapX, tmpMapY+56)
+    map:draw(mapX, mapY+56)
 end
 
 function nextRoom(direction)
@@ -133,7 +133,7 @@ end
 
 function moveRoom(room, direction)
     deleteRoomCollisions()
-    tmpmap = sti(rooms[room], { 'box2d' }, 0, 56)
+    tmpmap = sti(rooms[room], { 'box2d' })
 
     tmpMapX = 0
     tmpMapY = 0
@@ -207,7 +207,7 @@ function changeRoom(room)
     mapY = 0 
 
     currentRoom = room
-    map = sti(rooms[currentRoom], { 'box2d' }, 0, 56)
+    map = sti(rooms[currentRoom], { 'box2d' })
     
     deleteRoomCollisions()
     createRoomCollisions()
@@ -216,11 +216,11 @@ function changeRoom(room)
 end
 
 function createRoomCollisions()
-    collideLayer = map.layers[2].objects
+    collideLayer = map.layers[4].objects
     for i, j in pairs(collideLayer) do
         -- Get the X and Y of the object for collide
-        local collideObjectX = map.layers[2].objects[i].x
-        local collideObjectY = map.layers[2].objects[i].y
+        local collideObjectX = map.layers[4].objects[i].x
+        local collideObjectY = map.layers[4].objects[i].y
         -- Create a collide box in the position of the object "collide"
         collideBox = world:newRectangleCollider(
             collideObjectX,
@@ -241,4 +241,14 @@ function deleteRoomCollisions()
         v:destroy()
     end
     colliders = {}
+end
+
+function checkLayer(x, y)
+    local x = math.floor(x)
+    local y = math.floor(y)
+
+    if map.layers['Ground_layer'].data[y-3][x] ~= nil then
+        local tileId = map.layers['Ground_layer'].data[y-3][x].gid
+        return tileId
+    end
 end

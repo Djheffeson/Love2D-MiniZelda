@@ -48,9 +48,13 @@ function love.keypressed(key)
         playerHeal(0.5)
     end
 
+    if key == 'c' then
+        local x, y = map:convertPixelToTile(Player.x+12, Player.y+12)
+        print(checkLayer(x, y))
+    end
+
     love.keyboard.keysPressed[key] = true
 end
-
 
 function love.keyboard.wasPressed(key)
     if love.keyboard.keysPressed[key] then
