@@ -45,7 +45,7 @@ function Player:init()
 end
 
 function Player:update(dt)
-    
+    print(Player.collider:getPosition())
     if gameState == 'running' then
         
         if Player.hearts <= 0 then

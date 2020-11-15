@@ -3,7 +3,7 @@ octoroks = {}
 function spawnOctorok(type)
 
     local octorok = {}
-
+    octorok.type = type
     octorok.x = love.math.random(100,150)
     octorok.y = love.math.random(100,150)
     octorok.walk = love.math.random(40, 50)
@@ -12,10 +12,10 @@ function spawnOctorok(type)
 
     octorok.invincible = false
 
-    if type == 'red' then
+    if octorok.type == 'red' then
         octorok.sprite = sprites.redOctorokSheet
         octorok.health = 1
-    elseif type == 'blue' then
+    elseif octorok.type == 'blue' then
         octorok.sprite = sprites.blueOctorokSheet
         octorok.health = 2
     end
@@ -194,7 +194,11 @@ function octoroks:update(dt)
                 octorok.collider_projectile:destroy()
                 octorok.collisionDestroyed = true
             end
-            
+            if octorok.type == 'red' then
+                enemies_room[currentRoom][1] = enemies_room[currentRoom][1] - 1 
+            elseif octorok.type == 'blue' then
+                enemies_room[currentRoom][2] = enemies_room[currentRoom][2] - 1 
+            end
             local item = enemyDrop(octorok.drops)
             deathSpawn(octorok.x-8, octorok.y-8, item)
             table.remove(octoroks, i)

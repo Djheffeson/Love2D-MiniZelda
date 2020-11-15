@@ -39,7 +39,7 @@ rooms = {
 
 enemies_room = {
     {}, {}, {1, 0}, {3, 1}, {},
-    {}, {}, {}, {}, {10, 1},
+    {}, {}, {}, {}, {5, 1},
     {1, 0}, {4, 0}, {4, 0}, {4, 0}, {},
     {4, 0}, {4, 0}, {4, 0}, {4, 0}, {4, 0},
     {}, {}, {}, {4, 0}, {}
@@ -72,9 +72,8 @@ function Map:init()
 end
 
 function Map:update(dt)
-    --print(currentRoom)
 
-    if Player.y <= 62 and Player.direction == 'up' then
+    if Player.y <= 67 and Player.direction == 'up' then
         direct = 'up'
         changing_room = true
 
@@ -82,10 +81,10 @@ function Map:update(dt)
         direct = 'down'
         changing_room = true
 
-    elseif Player.x <= 6 and Player.direction == 'left' then
+    elseif Player.x <= 11 and Player.direction == 'left' then
         direct = 'left'
         changing_room = true
-    elseif Player.x >= 250 and Player.direction == 'right'then
+    elseif Player.x >= 247 and Player.direction == 'right'then
         direct = 'right'
         changing_room = true
     end
@@ -140,57 +139,64 @@ function moveRoom(room, direction)
     tmpMapY = 0
 
     if direction == 'down' then
-        mapY = mapY - 4
-        tmpMapY = mapY + 168
+        for i = 1, 4, 1 do
+            mapY = mapY - 1
+            tmpMapY = mapY + 168
 
-        if Player.y > 60 and Player.y < 228 then
-            Player.y = Player.y - 4
-            Player.collider:setPosition(Player.x, Player.y)
-        end
+            if Player.y >= 66 then
+                Player.y = Player.y - 1
+                Player.collider:setPosition(Player.x, Player.y)
+            end
 
-        if mapY <= -168 then
-            changeRoom(room)
+            if mapY <= -168 then
+                changeRoom(room)
+            end
         end
 
     elseif direction == 'up' then
-        mapY = mapY + 4
-        tmpMapY = mapY - 168
+        for i = 1, 4, 1 do
+            mapY = mapY + 1
+            tmpMapY = mapY - 168
 
-        if Player.y > 60 and Player.y < 228 then
-            Player.y = Player.y + 4
-            Player.collider:setPosition(Player.x, Player.y)
-        end
+            if Player.y <= 225 then
+                Player.y = Player.y + 1
+                Player.collider:setPosition(Player.x, Player.y)
+            end
 
-        if mapY >= 168 then
-            changeRoom(room)
+            if mapY >= 168 then
+                changeRoom(room)
+            end
         end
 
     elseif direction == 'right' then
-        mapX = mapX - 4
-        tmpMapX = mapX + 256
+        for i = 1, 4, 1 do
+            mapX = mapX - 1
+            tmpMapX = mapX + 256
 
-        if Player.x > 4 and Player.x < 251 then
-            Player.x = Player.x - 4
-            Player.collider:setPosition(Player.x, Player.y)
-        end
+            if Player.x >= 8 then
+                Player.x = Player.x - 1
+                Player.collider:setPosition(Player.x, Player.y)
+            end
 
-        if mapX <= -256 then
-            changeRoom(room)
+            if mapX <= -256 then
+                changeRoom(room)
+            end
         end
 
     elseif direction == 'left' then
-        mapX = mapX + 4
-        tmpMapX = mapX - 256
+        for i = 1, 4, 1 do
+            mapX = mapX + 1
+            tmpMapX = mapX - 256
 
-        if Player.x > 4 and Player.x < 251 then
-            Player.x = Player.x + 4
-            Player.collider:setPosition(Player.x, Player.y)
+            if player.x <= 249 then
+                Player.x = Player.x + 1
+                Player.collider:setPosition(Player.x, Player.y)
+            end
+            
+            if mapX >= 256 then
+                changeRoom(room)
+            end
         end
-
-        if mapX >= 256 then
-            changeRoom(room)
-        end
-
     end
 end
 
