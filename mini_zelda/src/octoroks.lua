@@ -4,10 +4,11 @@ function spawnOctorok(type)
 
     local octorok = {}
     octorok.type = type
+    
     repeat
         octorok.x = love.math.random(0,256)
         octorok.y = love.math.random(56,224)
-    until checkLayer(map:convertPixelToTile(octorok.x+12, octorok.y+12)) == 3
+    until checkLayer('Ground_layer', map:convertPixelToTile(octorok.x+12, octorok.y+12)) == 'sand'
     
     octorok.walk = love.math.random(40, 50)
     octorok.vectorX = 0

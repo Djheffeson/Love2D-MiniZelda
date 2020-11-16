@@ -75,7 +75,7 @@ return {
       width = 16,
       height = 11,
       id = 3,
-      name = "Watte__layer",
+      name = "Water_layer",
       visible = true,
       opacity = 1,
       offsetx = 0,

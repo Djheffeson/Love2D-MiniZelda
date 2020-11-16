@@ -17,7 +17,7 @@ function Player:init()
     Player.state = 'walking'
     Player.direction = 'up'
     Player.invincible = false
-    Player.recive_damage = false
+    Player.receive_damage = false
 
     Player.max_hearts = 3
     Player.hearts = Player.max_hearts
@@ -36,10 +36,10 @@ function Player:init()
     Player.walkUp = anim8.newAnimation(walkGrid('1-2', 3), 0.1)
     Player.currentAnimation = Player.walkUp
 
-    Player.atackDown = anim8.newAnimation(walkGrid(3,1, 3,1, 3,1), {0.07, 0.077, 0.07}, attackComplete)
-    Player.atackRight = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete)
-    Player.atackLeft = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete):flipH()
-    Player.atackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
+    Player.attackDown = anim8.newAnimation(walkGrid(3,1, 3,1, 3,1), {0.07, 0.077, 0.07}, attackComplete)
+    Player.attackRight = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete)
+    Player.attackLeft = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete):flipH()
+    Player.attackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
 
     Player.timer = 0
 end
@@ -57,9 +57,9 @@ function Player:update(dt)
             Player.hearts = Player.max_hearts
         end
         
-        if Player.recive_damage then
+        if Player.receive_damage then
             Player.invincible = true
-            Player.recive_damage = false
+            Player.receive_damage = false
             Player.state = 'pushed'
             damage_timer = 0
         end
@@ -154,13 +154,13 @@ function Player:attack()
         Player.state = 'attacking'
         Player.collider:setLinearVelocity(0, 0)
         if Player.direction == 'up' then
-            Player.currentAnimation = Player.atackUp
+            Player.currentAnimation = Player.attackUp
         elseif Player.direction == 'down' then
-            Player.currentAnimation = Player.atackDown
+            Player.currentAnimation = Player.attackDown
         elseif Player.direction == 'left' then
-            Player.currentAnimation = Player.atackLeft
+            Player.currentAnimation = Player.attackLeft
         elseif Player.direction == 'right' then
-            Player.currentAnimation = Player.atackRight
+            Player.currentAnimation = Player.attackRight
         end
         Sword.attack()
     end
@@ -184,7 +184,7 @@ end
 function playerDamage(value)
     if Player.invincible == false then
         Player.hearts = player.hearts - value
-        Player.recive_damage = true
+        Player.receive_damage = true
     end
 end
 
@@ -193,12 +193,12 @@ function playerHeal(value)
 end
 
 function Player:pickupItems()
-    for i, itemd in ipairs(items) do
-        if distanceFrom(Player.x, Player.y, itemd.x, itemd.y) < 7 then
-            if itemd.id == 1 and itemd.collected == false then
-                playerHeal(0.5)
+    for i, item in ipairs(items) do
+        if distanceFrom(Player.x-5, Player.y+1, item.x, item.y) < 7 then
+            if item.id == 1 and item.collected == false then
+                playerHeal(1)
             end
-            itemd.collected = true
+            item.collected = true
         end
     end
 end

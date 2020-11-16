@@ -27,7 +27,7 @@ function deaths:update(dt)
 end
 
 function deaths:draw()
-    for i, deathd in ipairs(deaths) do
-        deathd.Animation:draw(sprites.deathSheet, deathd.x, deathd.y)
+    for i, death in ipairs(deaths) do
+        death.Animation:draw(sprites.deathSheet, death.x, death.y)
     end
 end

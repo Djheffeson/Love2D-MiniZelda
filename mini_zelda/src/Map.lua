@@ -39,14 +39,14 @@ rooms = {
 -- zora = 3
 
 enemies_room = {
-    {}, {}, {1, 0}, {3, 1}, {},
-    {}, {}, {}, {}, {5, 1},
-    {1, 0}, {4, 0}, {4, 0}, {4, 0}, {},
-    {4, 0}, {4, 0}, {4, 0}, {4, 0}, {4, 0},
-    {}, {}, {}, {4, 0}, {}
+    {0, 0, 0}, {0, 0, 0}, {1, 0, 0}, {3, 1, 1}, {0, 0, 0},
+    {0, 0, 0}, {0, 0, 1}, {0, 0, 1}, {0, 0, 1}, {5, 1, 0},
+    {1, 0, 1}, {4, 0, 1}, {4, 0, 0}, {4, 0, 0}, {0, 0, 1},
+    {4, 0, 1}, {4, 0, 0}, {4, 0, 0}, {4, 0, 0}, {4, 0, 1},
+    {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {4, 0, 0}, {0, 0, 0}
 }
 
-currentRoom = 23
+currentRoom = 22
 
 colliders = {}
 
@@ -58,7 +58,7 @@ function Map:init()
     tmpMapX = 0
     tmpMapY = 0
 
-    tmpmap = sti(rooms[currentRoom], { 'box2d' })
+    tmpMap = sti(rooms[currentRoom], { 'box2d' })
     map = sti(rooms[currentRoom], { 'box2d' })
 
     changing_room = false
@@ -84,7 +84,7 @@ function Map:update(dt)
     elseif Player.x <= 11 and Player.direction == 'left' then
         direct = 'left'
         changing_room = true
-    elseif Player.x >= 247 and Player.direction == 'right'then
+    elseif Player.x >= 247 and Player.direction == 'right' then
         direct = 'right'
         changing_room = true
     end
@@ -107,7 +107,7 @@ function Map:update(dt)
 end
 
 function Map:draw()
-    tmpmap:draw(tmpMapX, tmpMapY+56)
+    tmpMap:draw(tmpMapX, tmpMapY+56)
     map:draw(mapX, mapY+56)
 end
 
@@ -133,7 +133,7 @@ end
 
 function moveRoom(room, direction)
     deleteRoomCollisions()
-    tmpmap = sti(rooms[room], { 'box2d' })
+    tmpMap = sti(rooms[room], { 'box2d' })
 
     tmpMapX = 0
     tmpMapY = 0
@@ -243,12 +243,29 @@ function deleteRoomCollisions()
     colliders = {}
 end
 
-function checkLayer(x, y)
+function checkLayer(layer, x, y)
     local x = math.floor(x)
     local y = math.floor(y)
 
-    if map.layers['Ground_layer'].data[y-3][x] ~= nil then
-        local tileId = map.layers['Ground_layer'].data[y-3][x].gid
-        return tileId
+    if map.layers[layer].data[y-3][x] ~= nil then
+        local tileID = map.layers[layer].data[y-3][x].gid
+
+        if layer == 'Ground_layer' then
+            if tileID == 3 then
+                return 'sand'
+            end
+
+        elseif layer == 'Water_layer' then
+            watersID = {
+                73, 74, 75, 78, 79, 80,
+                91, 92, 93, 97, 98, 99,
+                109, 110, 111, 115, 116, 117
+            }
+            for i = 1, #watersID, 1 do
+                if watersID[i] == tileID then
+                    return 'water'
+                end
+            end
+        end
     end
 end

@@ -1,0 +1,13 @@
+{
+    "cSpell.allowCompoundWords": true,
+    "cSpell.ignoreWords": [
+        "inplace",
+        "rotate",
+        "rotate inplace",
+        "vect",
+        "vect y",
+        "vsync",
+        "y",
+        "zoras"
+    ]
+}

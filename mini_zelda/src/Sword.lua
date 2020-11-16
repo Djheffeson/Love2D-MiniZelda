@@ -11,7 +11,7 @@ function Sword:init()
 
     Sword.damage = 1
 
-    Sword.grid = anim8.newGrid(16, 16, sprites.wodeenSword:getWidth(), sprites.wodeenSword:getHeight())
+    Sword.grid = anim8.newGrid(16, 16, sprites.woodenSword:getWidth(), sprites.woodenSword:getHeight())
     Sword.down = anim8.newAnimation(Sword.grid(1, 1), 1)
     Sword.left = anim8.newAnimation(Sword.grid(2, 1), 1)
     Sword.up = anim8.newAnimation(Sword.grid(3, 1), 1)
@@ -55,7 +55,7 @@ function Sword:draw()
 
     if Sword.state ~= 'invisible' then
         love.graphics.setColor(1, 1, 1, 1)
-        Sword.currentAnimation:draw(sprites.wodeenSword, Sword.x, Sword.y)
+        Sword.currentAnimation:draw(sprites.woodenSword, Sword.x, Sword.y)
     end
 end
 
@@ -66,7 +66,7 @@ function Sword:attack()
 
     Sword.sound:stop()
     Sword.sound:play()
-    -- Sword.x recive the same position of the player
+    -- Sword.x receive the same position of the player
     Sword.x = Player.x - 10
     Sword.y = Player.y - 10
     Sword.direction = Player.direction
@@ -77,6 +77,8 @@ function Sword:attack()
 
         Sword.x = Sword.x + 1
         Sword.y = Sword.y + 12
+
+        Sword.pickupItems(Sword.x+1, Sword.y+5)
 
         Sword.collision = world:newRectangleCollider(Sword.x+1, Sword.y+5, 16, 8)
         Sword.collision:setAngle(math.pi / 2)
@@ -89,6 +91,8 @@ function Sword:attack()
         Sword.x = Sword.x - 11
         Sword.y = Sword.y + 1
 
+        Sword.pickupItems(Sword.x, Sword.y+4)
+
         Sword.collision = world:newRectangleCollider(Sword.x, Sword.y+4, 16, 8)
         Sword.collision:setFixedRotation(true)
         Sword.collision:setCollisionClass('Weapon')
@@ -98,6 +102,8 @@ function Sword:attack()
 
         Sword.x = Sword.x - 1
         Sword.y = Sword.y - 12
+
+        Sword.pickupItems(Sword.x+1, Sword.y+4)
 
         Sword.collision = world:newRectangleCollider(Sword.x+1, Sword.y+4, 16, 8)
         Sword.collision:setAngle(math.pi / 2)
@@ -109,6 +115,8 @@ function Sword:attack()
         Sword.x = Sword.x + 13
         Sword.y = Sword.y + 1
 
+        Sword.pickupItems(Sword.x, Sword.y+4)
+
         Sword.collision = world:newRectangleCollider(Sword.x, Sword.y+4, 16, 8)
         Sword.collision:setFixedRotation(true)
         Sword.collision:setCollisionClass('Weapon')
@@ -116,4 +124,15 @@ function Sword:attack()
 
     Sword.state = 'attack'
     Sword.timer = 0.07
+end
+
+function Sword.pickupItems(x, y)
+    for i, item in ipairs(items) do
+        if distanceFrom(x, y, item.x, item.y) < 10 then
+            if item.id == 1 and item.collected == false then
+                playerHeal(0.5)
+            end
+            item.collected = true
+        end
+    end
 end

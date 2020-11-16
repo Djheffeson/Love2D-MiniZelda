@@ -42,8 +42,8 @@ end
 
 function items:draw()
     love.graphics.setColor(1, 1, 1, 1)
-    for i, itemd in ipairs(items) do
-        itemd.spriteAnim:draw(itemd.sprite, itemd.x, itemd.y)
+    for i, item in ipairs(items) do
+        item.spriteAnim:draw(item.sprite, item.x, item.y)
     end
 end
 

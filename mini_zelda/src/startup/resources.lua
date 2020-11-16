@@ -1,7 +1,7 @@
 sprites = {}
 
 sprites.linkSheet = love.graphics.newImage('assets/graphics/player_sheet.png')
-sprites.wodeenSword = love.graphics.newImage('assets/graphics/wooden_sword_sheet.png')
+sprites.woodenSword = love.graphics.newImage('assets/graphics/wooden_sword_sheet.png')
 
 sprites.redOctorokSheet = love.graphics.newImage('assets/graphics/red_octorok_sprite.png')
 sprites.blueOctorokSheet = love.graphics.newImage('assets/graphics/blue_octorok_sprite.png')

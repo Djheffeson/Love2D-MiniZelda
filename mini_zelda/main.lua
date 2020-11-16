@@ -38,24 +38,27 @@ function love.draw()
 end
 
 function love.keypressed(key)
+
     if key == 'escape' then
         love.event.quit()
     end
+
+    love.keyboard.keysPressed[key] = true
+
+    -- keys for debug:
     if key == 'v' then
         playerDamage(0.5)
     end
     if key == 'b' then
         playerHeal(0.5)
     end
-
     if key == 'c' then
         local x, y = map:convertPixelToTile(Player.x+12, Player.y+12)
-        print(checkLayer(x, y))
+        print(checkLayer('Water_layer' ,x, y))
     end
 
-    love.keyboard.keysPressed[key] = true
 end
-
+ 
 function love.keyboard.wasPressed(key)
     if love.keyboard.keysPressed[key] then
         return true
