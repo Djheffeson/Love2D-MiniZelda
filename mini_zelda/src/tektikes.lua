@@ -53,6 +53,7 @@ function tektikes:update(dt)
 
         if tektike.health > 0 then 
             tektikeCheckDamage(i)
+            tektikeCheckDamagePlayer(i)
 
             tektike.collider:setPosition(tektike.x, tektike.y)
             if tektike.state == 'floor' then
@@ -118,6 +119,12 @@ end
 function tektikeCheckDamage(index)
     if tektikes[index].collider:enter('Weapon') then
         tektikes[index].health = tektikes[index].health - Sword.damage
+    end
+end
+
+function tektikeCheckDamagePlayer(index)
+    if tektikes[index].collider:enter('Player') then
+        playerDamage(0.5)
     end
 end
 
