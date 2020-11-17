@@ -99,7 +99,13 @@ function zoras:draw()
 end
 
 function zoraEmerge(index)
-    zoras[index].currentAnimation = zoras[index].animationFront
+    
+    local directionX, directionY = checkDistance(Player.x, Player.y, zoras[index].y, zoras[index].y)
+    if directionY >= 0 then
+        zoras[index].currentAnimation = zoras[index].animationFront
+    else
+        zoras[index].currentAnimation = zoras[index].animationBack
+    end
 end
 
 function zoraNewPosition(index)

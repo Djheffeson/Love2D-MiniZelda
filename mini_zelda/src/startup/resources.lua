@@ -10,6 +10,8 @@ sprites.octorok_projectile = love.graphics.newImage('assets/graphics/octorok_pro
 sprites.zoraSheet = love.graphics.newImage('assets/graphics/zora_sheet.png')
 sprites.zoraProjectileSheet = love.graphics.newImage('assets/graphics/zora_projectile_sheet.png')
 
+sprites.TektikeSheet = love.graphics.newImage('assets/graphics/tektike_sheet.png')
+
 sprites.heart_full = love.graphics.newImage('assets/graphics/heart_full.png')
 sprites.heart_half = love.graphics.newImage('assets/graphics/heart_half.png')
 sprites.heart_empty = love.graphics.newImage('assets/graphics/heart_empty.png')

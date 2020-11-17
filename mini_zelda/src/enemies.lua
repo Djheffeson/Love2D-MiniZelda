@@ -2,6 +2,7 @@ enemies = {}
 
 require 'src/octoroks'
 require 'src/zoras'
+require 'src/tektikes'
 
 function enemies:update(dt)
     if octoroks ~= nil then
@@ -10,6 +11,10 @@ function enemies:update(dt)
 
     if zoras ~= nil then
         zoras:update(dt)
+    end
+
+    if tektikes ~= nil then
+        tektikes:update(dt)
     end
 end
 
@@ -20,6 +25,10 @@ function enemies:draw()
 
     if zoras ~= nil then
         zoras:draw()
+    end
+
+    if tektikes ~= nil then
+        tektikes:draw()
     end
 end
 
@@ -37,10 +46,19 @@ function enemiesPerRoom()
         spawnEnemy(enemies_room[currentRoom][3], 'zora')
     end
 
+    if enemies_room[currentRoom][4] ~= nil then
+        spawnEnemy(enemies_room[currentRoom][4], 'red_tektike')
+    end
+
+    if enemies_room[currentRoom][5] ~= nil then
+        spawnEnemy(enemies_room[currentRoom][5], 'blue_tektike')
+    end
+
 end
 
 function spawnEnemy(quantity, enemy)
     for i = 1, quantity, 1 do
+
         if enemy == 'red_octorok' then
             spawnOctorok('red')
         elseif enemy == 'blue_octorok' then
@@ -50,10 +68,17 @@ function spawnEnemy(quantity, enemy)
         if enemy == 'zora' then
             spawnZora()
         end
+
+        if enemy == 'red_tektike' then
+            spawnTektike('red')
+        elseif enemy == 'blue_tektike' then
+            spawnTektike('blue')
+        end
     end
 end
 
 function deleteAllEntities()
     deleteOctoroks()
     deleteZoras()
+    deleteTektikes()
 end
