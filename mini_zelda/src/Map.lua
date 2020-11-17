@@ -46,7 +46,7 @@ enemies_room = {
     {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {4, 0, 0}, {0, 0, 0}
 }
 
-currentRoom = 22
+currentRoom = 23
 
 colliders = {}
 
@@ -267,5 +267,6 @@ function checkLayer(layer, x, y)
                 end
             end
         end
+
     end
 end

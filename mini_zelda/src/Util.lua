@@ -33,3 +33,14 @@ function checkDistance(x1, y1, x2, y2)
     locationY = distY/distance*10
     return locationX, locationY
 end
+
+-- round down a number for a 16 multiple
+function multiple16(n)
+    if n % 16 ~= 0 then
+        local subtract = n % 16
+        n = n - subtract
+        return n
+    else
+        return n
+    end
+end
