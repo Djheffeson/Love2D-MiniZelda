@@ -80,7 +80,7 @@ function tektikes:update(dt)
 
                 tektike.x = tektike.x + tektike.dx * dt * 10
                 if tektike.jump == true then
-                    tektike.y = tektike.y + tektike.dy * dt * 10
+                    tektike.y = tektike.y + tektike.dy * dt * 16
                 end
 
                 if distanceFrom(tektike.targetX, tektike.targetY, tektike.x, tektike.y) <= 5 then
@@ -104,6 +104,11 @@ function tektikes:update(dt)
                 tektikeTmpY = tektike.y - 16
             end
         else
+            if tektike.type == 'red' then
+                enemies_room[currentRoom][4] = enemies_room[currentRoom][4] - 1 
+            elseif tektike.type == 'blue' then
+                enemies_room[currentRoom][5] = enemies_room[currentRoom][5] - 1 
+            end
             deathSpawn(tektike.x-8, tektike.y-8, tektikeDrop(tektike.drops))
             tektikeDeath(i)
         end
@@ -159,8 +164,8 @@ function tektikeJumpTarget(index)
     local y
 
     repeat
-        x = tektikes[index].x + love.math.random(-48, 48)
-        y = tektikes[index].y + love.math.random(-48, 48)
+        x = tektikes[index].x + love.math.random(-32, 32)
+        y = tektikes[index].y + love.math.random(-32, 32)
     until (x >= 16 and x <= 256) and (y >= 72 and y <= 224)
 
     return x, y
