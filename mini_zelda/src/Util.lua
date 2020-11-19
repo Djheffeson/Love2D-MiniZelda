@@ -44,3 +44,13 @@ function multiple16(n)
         return n
     end
 end
+
+function invertNumber(num)
+    if num > 0 then
+        num = -num
+    elseif num < 0 then
+        num = math.abs(num)
+    end
+
+    return num
+end

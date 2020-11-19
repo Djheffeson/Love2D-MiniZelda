@@ -24,7 +24,7 @@ function spawnTektike(type)
 
     tektike.drops = {1}
 
-    tektike.sprite = sprites.TektikeSheet
+    tektike.sprite = sprites.tektikeSheet
     tektike.grid = anim8.newGrid(16, 16, tektike.sprite:getWidth(), tektike.sprite:getHeight())
 
     if tektike.type == 'red' then
