@@ -239,30 +239,6 @@ function getDirection(vectX, vectY)
     return direction
 end
 
-function checkArea(x, y)
-
-    cLeft = world:queryCircleArea(x-9, y, 4, {'Wall'})
-    cRight = world:queryCircleArea(x+9, y, 4, {'Wall'})
-    cBack = world:queryCircleArea(x, y+9, 4, {'Wall'})
-    cFront = world:queryCircleArea(x, y-9, 4, {'Wall'})
-
-    directAvailable = {}
-    if #cLeft <= 0 then
-        table.insert(directAvailable, 'left')
-    end
-    if #cRight <= 0 then
-        table.insert(directAvailable, 'right')
-    end
-    if #cBack <= 0 then
-        table.insert(directAvailable, 'down')
-    end
-    if #cFront <= 0 then
-        table.insert(directAvailable, 'up')
-    end
-
-    return directAvailable
-end
-
 function checkIfSeePlayer(x, y, facing)
     local locationX, locationY = checkDistance(Player.x, player.y, x, y)
     if facing == 'up' and (locationX <= 1 and locationX >= -1) and locationY <= 0 then

@@ -32,7 +32,7 @@ function love.draw()
     sword:draw()
     player:draw()
     GUI:draw()
-    --world:draw() -- debug collisions
+    world:draw() -- debug collisions
 
     push:finish()
 end
