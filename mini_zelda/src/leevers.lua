@@ -23,6 +23,7 @@ function spawnLeever(type)
     leever.attackingDirection = 'none'
     leever.directions = {'up', 'down', 'left', 'right'}
     leever.direction = leever.directions[math.random(#leever.directions)]
+    leever.check = false
      
     leever.drops = {1}
 
@@ -68,8 +69,6 @@ function leevers:update(dt)
 
                 if leever.type == 'red' then
 
-                    print(leever.state)
-
                     if leever.emergeTimer <= 0.433 then
                         leever.state = 'emerge'
                     end
@@ -110,7 +109,7 @@ function leevers:update(dt)
                         leeverDipping(i, dt)
                     end
 
-                    if leever.colliderExists == true and leever.colliderFrontExists == true then
+                    if leever.colliderExists == true then
                         leever.x, leever.y = leever.collider:getPosition()
                         checkIfReceiveDamage(i)
                         checkIfHitPlayer(i)
@@ -121,12 +120,24 @@ function leevers:update(dt)
 
                     if leever.direction == 'up' then
                         leever.vectorY = -1
+                        if leever.colliderFrontExists then
+                            leever.colliderFront:setPosition(leever.x, leever.y-6)
+                        end
                     elseif leever.direction == 'left' then
                         leever.vectorX = -1
+                        if leever.colliderFrontExists then
+                            leever.colliderFront:setPosition(leever.x-6, leever.y)
+                        end
                     elseif leever.direction == 'down' then
                         leever.vectorY = 1
+                        if leever.colliderFrontExists then
+                            leever.colliderFront:setPosition(leever.x, leever.y+6)
+                        end
                     elseif leever.direction == 'right' then
                         leever.vectorX = 1
+                        if leever.colliderFrontExists then
+                            leever.colliderFront:setPosition(leever.x+6, leever.y)
+                        end
                     end
 
                     leever.emergeTimer = leever.emergeTimer + 1 * dt
@@ -208,7 +219,8 @@ function leeverNewPosition(index)
         leever.x = x
         leever.y = y
 
-        leever.direction = leever.directions[math.random(#leever.directions)]
+        local directions = checkArea(leever.x+8, leever.y)
+        leever.direction = directions[math.random(#directions)]
 
         leever.hasPosition = true
     end
@@ -242,33 +254,31 @@ function leeverEmerge(index, dt)
 
     elseif leever.type == 'blue' then
 
-        if leever.emergeTimer <= 0.533 then
+        if leever.emergeTimer < 0.533 then
+            leever.currentAnimation = leever.groundAnimation
+            leever.currentAnimation:update(dt)
+            
+        elseif leever.emergeTimer >= 0.533 and leever.emergeTimer < 0.800 then
             leever.currentAnimation = leever.emergingAnimation
 
-        elseif leever.emergeTimer <= 0.800 then
+        elseif leever.emergeTimer >= 0.800 then
             leever.currentAnimation = leever.walkingAnimation
             leever.state = 'walking'
+        end
+
+        if leever.colliderFrontExists == false then
+            leever.colliderFront = world:newRectangleCollider(leever.x, leever.y, 4, 4)
+            leever.colliderFront:setCollisionClass('IgnoreAll')
+            leever.colliderFront:setFixedRotation(true)
+            leever.colliderFrontExists = true
         end
     end
 
     if leever.colliderExists == false then
-        leever.collider = world:newRectangleCollider(leever.x, leever.y-7, 14, 14)
+        leever.collider = world:newRectangleCollider(leever.x+1, leever.y-7, 14, 14)
         leever.collider:setCollisionClass('Enemy')
         leever.collider:setFixedRotation(true)
         leever.colliderExists = true
-
-        if leever.direction == 'up' then
-            leever.colliderFront = world:newRectangleCollider(leever.x, leever.y-14, 7, 7)
-        elseif leever.direction == 'left' then
-            leever.colliderFront = world:newRectangleCollider(leever.x-7, leever.y-7, 7, 7)
-        elseif leever.direction == 'down' then
-            leever.colliderFront = world:newRectangleCollider(leever.x, leever.y+7, 7, 7)
-        elseif leever.direction == 'right' then
-            leever.colliderFront = world:newRectangleCollider(leever.x+7, leever.y-7, 7, 7)
-        end
-        leever.colliderFront:setCollisionClass('IgnoreAll')
-        leever.colliderFront:setFixedRotation(true)
-        leever.colliderFrontExists = true
     end
     
 end
@@ -291,13 +301,8 @@ function leeverWalking(index, dt)
     end
 
     leever.walkingTimer = leever.walkingTimer + 1 * dt
-    if leever.walkingTimer >= 2.150 then
 
-        --local directions = checkArea(leever.x, leever.y)
-        --leever.direction = directions[math.random(#directions)]
-    end
-
-    if leever.collider:enter('Wall') then
+    if leever.colliderFront:enter('Wall') then
         local directions = checkArea(leever.x, leever.y)
         leever.direction = directions[math.random(#directions)]
     end
@@ -326,7 +331,7 @@ function leeverAttacking(index, dt)
         leever.collider:setLinearVelocity(leever.vectorX * leever.speed, leever.vectorY * leever.speed)
     end
     
-    if leever.collider:enter('Wall') then
+    if leever.collider:enter('Wall') or leever.collider:enter('stay') then
         leever.state = 'dipping'
     end
 
@@ -356,6 +361,7 @@ function leeverDipping(index, dt)
 
     if leever.dippingTimer >= 0.400 then
         leever.hasPosition = false
+        leever.check = false
         leever.state = 'emerge'
         leever.dippingTimer = 0
         leever.walkingTimer = 0
@@ -443,7 +449,10 @@ function deleteLeevers()
     for i, leever in ipairs(leevers) do
         if leever.colliderExists == true then
             leever.collider:destroy()
-            leever.colliderFront:destroy()
+            if leever.colliderFrontExists then
+                leever.colliderFront:destroy()
+                leever.colliderFrontExists = false
+            end
             leever.colliderExists = false
         end
         table.remove(leevers, i)
