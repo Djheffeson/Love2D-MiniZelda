@@ -61,6 +61,7 @@ function spawnOctorok(type)
     octorok.timer_actions = 0
     octorok.timer_attack = 0
     octorok.timer_invincible = 0
+    octorok.timer_push = 0
     octorok.shot = false
 
     table.insert(octoroks, octorok)
@@ -77,6 +78,8 @@ function octoroks:update(dt)
                 octorok.health = octorok.health - Sword.damage
                 octorok.invincible = true
                 octorok.timer_invincible = 0
+                octorok.timer_push = 0
+                octorok.state = 'pushed'
             end
             
             if octorok.invincible == true then
@@ -88,6 +91,31 @@ function octoroks:update(dt)
             
             if octorok.collider_front:enter('Wall') then octorok.state = 'colliding' end
             if octorok.collider_front:exit('Wall') then octorok.state = 'walking' end
+
+            if octorok.collider_projectile:enter('Wall') or octorok.collider_projectile:enter('Player') then
+                octorok.projectileHit = true
+                octorok.collider_projectile:setLinearVelocity(0, 0)
+            end
+
+            octorok.currentAnimation:update(dt)
+            octorok.cX, octorok.cY = octorok.collider_projectile:getPosition()
+
+            -- Check if enemy or projectile collide with player
+            if octorok.collider:enter('Player') or octorok.collider_projectile:enter('Player') then
+                playerDamage(octorok.damage)
+            end
+
+            if octorok.state == 'pushed' then
+                octorok.timer_push = octorok.timer_push + 1 * dt
+                octorok.x, octorok.y = octorok.collider:getPosition()
+
+                local x, y = (getDirectionVector(Player.direction)  * dt * 600):unpack()
+                octorok.collider:setLinearVelocity(x * octorok.walk, y * octorok.walk)
+
+                if octorok.timer_push >= 0.133 then
+                    octorok.state = 'walking'
+                end
+            end
 
             octorok.timer_attack = octorok.timer_attack + 1 * dt
             if octorok.state == 'attacking' then 
@@ -112,20 +140,7 @@ function octoroks:update(dt)
                 end
             end
 
-            if octorok.collider_projectile:enter('Wall') or octorok.collider_projectile:enter('Player') then
-                octorok.projectileHit = true
-                octorok.collider_projectile:setLinearVelocity(0, 0)
-            end
-
-            octorok.currentAnimation:update(dt)
-            octorok.cX, octorok.cY = octorok.collider_projectile:getPosition()
-
-            -- Check if enemy or projectile collide with player
-            if octorok.collider:enter('Player') or octorok.collider_projectile:enter('Player') then
-                playerDamage(octorok.damage)
-            end
-
-            if octorok.state ~= 'attacking' then
+            if octorok.state ~= 'attacking' and octorok.state ~= 'pushed' then
                 octorok.x, octorok.y = octorok.collider:getPosition()
 
                 if octorok.state == 'colliding' then

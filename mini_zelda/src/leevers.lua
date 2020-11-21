@@ -23,6 +23,7 @@ function spawnLeever(type)
     leever.attackingDirection = 'none'
     leever.directions = {'up', 'down', 'left', 'right'}
     leever.direction = leever.directions[math.random(#leever.directions)]
+    leever.invincible = false
     leever.check = false
      
     leever.drops = {1}
@@ -37,13 +38,13 @@ function spawnLeever(type)
         leever.emergingAnimation = anim8.newAnimation(leever.grid(1, 2), 2)
         leever.walkingAnimation = anim8.newAnimation(leever.grid('2-3', 2), 0.1)
         leever.damage = 0.5
-        leever.health = 1
+        leever.health = 2
     elseif leever.type == 'blue' then
         leever.emergingAnimation = anim8.newAnimation(leever.grid(1, 3), 2)
         leever.walkingAnimation = anim8.newAnimation(leever.grid('2-3', 3), 0.1)
 
         leever.damage = 1
-        leever.health = 2
+        leever.health = 4
     end
 
     leever.colliderExists = false
@@ -52,6 +53,8 @@ function spawnLeever(type)
     leever.emergeTimer = 0
     leever.walkingTimer = 0
     leever.dippingTimer = 0
+    leever.invincibleTimer = 0
+    leever.pushedTimer = 0
 
     local spawnTime = 1
     for i, lv in ipairs(leevers) do
@@ -66,6 +69,27 @@ function leevers:update(dt)
     for i, leever in ipairs(leevers) do
         if leever.health > 0 then
             if leever.initializeTimer <= 0 then
+
+                if leever.invincible == true then
+                    leever.invincibleTimer = leever.invincibleTimer + 1 * dt
+                    if leever.invincibleTimer >= 0.750 then
+                        leever.invincibleTimer = 0
+                        leever.invincible = false
+                    end
+                end
+
+                if leever.state == 'pushed' then
+
+                    leever.x, leever.y = leever.collider:getPosition()
+
+                    local x, y = (getDirectionVector(Player.direction) * 600 * dt):unpack()
+                    leever.collider:setLinearVelocity(x * leever.speed, y * leever.speed)
+
+                    leever.pushedTimer = leever.pushedTimer + 1 * dt
+                    if leever.pushedTimer >= 0.133 then
+                        leever.state = leever.stateTmp
+                    end
+                end
 
                 if leever.type == 'red' then
 
@@ -162,6 +186,11 @@ end
 
 function leevers:draw()
     for i, leever in ipairs(leevers) do
+        if leever.invincible == true then
+            love.graphics.setColor(1, 0, 0, 1)
+        else
+            love.graphics.setColor(1, 1, 1, 1)
+        end
         if leever.state ~= 'none' then
             leever.currentAnimation:draw(sprites.leeverSheet, leever.x-8, leever.y-8)
         end
@@ -385,8 +414,12 @@ end
 function checkIfReceiveDamage(index)
     local leever = leevers[index]
 
-    if leever.collider:enter('Weapon') then
+    if leever.collider:enter('Weapon') and leever.invincible == false then
         leever.health = leever.health - Sword.damage
+        leever.invincible = true
+        leever.stateTmp = leever.state
+        leever.state = 'pushed'
+        leever.pushedTimer = 0
     end
 end
 
@@ -397,7 +430,6 @@ function leeverDrop(drops)
     end
     return 0
 end
-
 
 function leeverAttackBack(index, x, y)
     local leever = leevers[index]
