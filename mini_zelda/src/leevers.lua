@@ -178,6 +178,13 @@ function leevers:update(dt)
                 leever.colliderExists = false
                 leever.colliderFrontExists = false
             end
+            
+            if leever.type == 'red' then
+                enemies_room[currentRoom][6] = enemies_room[currentRoom][6] - 1 
+            elseif leever.type == 'blue' then
+                enemies_room[currentRoom][7] = enemies_room[currentRoom][7] - 1 
+            end
+
             deathSpawn(leever.x-8, leever.y-8, leeverDrop(leever.drops))
             table.remove(leevers, i)
         end
@@ -222,7 +229,7 @@ function leeverNewPosition(index)
 
         end
         
-        if (x > 16 and x < 256) and (y > 72 and y < 224) then
+        if (x > 32 and x < 240) and (y > 72 and y < 208) then
 
             if checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'sand' then
                 leever.x = x
@@ -364,6 +371,10 @@ function leeverAttacking(index, dt)
         leever.state = 'dipping'
     end
 
+    if leever.x < 32 or leever.x > 240 or leever.y < 72 or leever.y > 208 then
+        leever.state = 'dipping'
+    end
+
 end
 
 function leeverDipping(index, dt)
@@ -451,7 +462,7 @@ function leeverAttackBack(index, x, y)
         leever.direction = Player.direction
     end
     
-    if (x > 16 and x < 256) and (y > 72 and y < 224) then
+    if (x > 32 and x < 240) and (y > 72 and y < 208) then
         if checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'sand' then
             leever.x = x
             leever.y = y
