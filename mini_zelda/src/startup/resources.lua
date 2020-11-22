@@ -18,5 +18,7 @@ sprites.tektikeSheet = love.graphics.newImage('assets/graphics/tektike_sheet.png
 
 sprites.leeverSheet = love.graphics.newImage('assets/graphics/leever_sheet.png')
 
+sprites.peahatSheet = love.graphics.newImage('assets/graphics/peahat_sheet.png')
+
 sprites.deathSheet = love.graphics.newImage('assets/graphics/death_sheet.png')
 sprites.recoverHeart = love.graphics.newImage('assets/graphics/recovery_heart_sheet.png')

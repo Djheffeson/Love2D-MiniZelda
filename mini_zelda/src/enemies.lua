@@ -4,6 +4,7 @@ require 'src/octoroks'
 require 'src/zoras'
 require 'src/tektikes'
 require 'src/leevers'
+require 'src/peahat'
 
 function enemies:update(dt)
     if octoroks ~= nil then
@@ -20,6 +21,10 @@ function enemies:update(dt)
 
     if leevers ~= nil then
         leevers:update(dt)
+    end
+
+    if peahats ~= nil then
+        peahats:update(dt)
     end
 end
 
@@ -39,6 +44,11 @@ function enemies:draw()
     if leevers ~= nil then
         leevers:draw()
     end
+
+    if peahats ~= nil then
+        peahats:draw()
+    end
+
 end
 
 function enemiesPerRoom()
@@ -71,6 +81,10 @@ function enemiesPerRoom()
         spawnEnemy(enemies_room[currentRoom][7], 'blue_leever')
     end
 
+    if enemies_room[currentRoom][8] ~= nil then
+        spawnEnemy(enemies_room[currentRoom][8], 'peahat')
+    end
+
 end
 
 function spawnEnemy(quantity, enemy)
@@ -97,6 +111,11 @@ function spawnEnemy(quantity, enemy)
         elseif enemy == 'blue_leever' then
             spawnLeever('blue')
         end
+
+        if enemy == 'peahat' then
+            spawnPeahat()
+        end
+
     end
 end
 
@@ -105,4 +124,5 @@ function deleteAllEntities()
     deleteZoras()
     deleteTektikes()
     deleteLeevers()
+    deletePeahats()
 end
