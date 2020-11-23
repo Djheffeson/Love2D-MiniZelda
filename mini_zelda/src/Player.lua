@@ -115,6 +115,8 @@ function Player:update(dt)
                 Player.isMoving = true
             end
 
+            checkPlayerEnterInDoor()
+
             Player.collider:setLinearVelocity(Player.vectorX * WALK_SPEED, Player.vectorY * WALK_SPEED)
         
         elseif Player.state == 'attacking' then
@@ -199,6 +201,18 @@ function Player:pickupItems()
                 playerHeal(1)
             end
             item.collected = true
+        end
+    end
+end
+
+function checkPlayerEnterInDoor()
+    if Map.type == 'overworld' then
+        if currentOverworldRoom == 3 and (Player.x >= 117.1 and Player.x <= 122.8) and (Player.y <= 129.5 and Player.y >= 125.1) then
+            changeMap('dungeon_1')
+        end
+    elseif Map.type == 'dungeon_1' then
+        if currentDungeonRoom == 27 and Player.y >= 210.6 then
+            changeMap('overworld')
         end
     end
 end

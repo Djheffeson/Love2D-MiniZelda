@@ -1,10 +1,10 @@
 enemies = {}
 
-require 'src/octoroks'
-require 'src/zoras'
-require 'src/tektikes'
-require 'src/leevers'
-require 'src/peahat'
+require 'src/enemies/overworld/octoroks'
+require 'src/enemies/overworld/zoras'
+require 'src/enemies/overworld/tektikes'
+require 'src/enemies/overworld/leevers'
+require 'src/enemies/overworld/peahat'
 
 function enemies:update(dt)
     if octoroks ~= nil then
@@ -52,37 +52,40 @@ function enemies:draw()
 end
 
 function enemiesPerRoom()
+    if Map.type == 'overworld' then
+        if enemies_room[currentOverworldRoom][1] ~= nil then
+            spawnEnemy(enemies_room[currentOverworldRoom][1], 'red_octorok')
+        end
 
-    if enemies_room[currentRoom][1] ~= nil then
-        spawnEnemy(enemies_room[currentRoom][1], 'red_octorok')
-    end
+        if enemies_room[currentOverworldRoom][2] ~= nil then
+            spawnEnemy(enemies_room[currentOverworldRoom][2], 'blue_octorok')
+        end
 
-    if enemies_room[currentRoom][2] ~= nil then
-        spawnEnemy(enemies_room[currentRoom][2], 'blue_octorok')
-    end
+        if enemies_room[currentOverworldRoom][3] ~= nil then
+            spawnEnemy(enemies_room[currentOverworldRoom][3], 'zora')
+        end
 
-    if enemies_room[currentRoom][3] ~= nil then
-        spawnEnemy(enemies_room[currentRoom][3], 'zora')
-    end
+        if enemies_room[currentOverworldRoom][4] ~= nil then
+            spawnEnemy(enemies_room[currentOverworldRoom][4], 'red_tektike')
+        end
 
-    if enemies_room[currentRoom][4] ~= nil then
-        spawnEnemy(enemies_room[currentRoom][4], 'red_tektike')
-    end
+        if enemies_room[currentOverworldRoom][5] ~= nil then
+            spawnEnemy(enemies_room[currentOverworldRoom][5], 'blue_tektike')
+        end
 
-    if enemies_room[currentRoom][5] ~= nil then
-        spawnEnemy(enemies_room[currentRoom][5], 'blue_tektike')
-    end
+        if enemies_room[currentOverworldRoom][6] ~= nil then
+            spawnEnemy(enemies_room[currentOverworldRoom][6], 'red_leever')
+        end
 
-    if enemies_room[currentRoom][6] ~= nil then
-        spawnEnemy(enemies_room[currentRoom][6], 'red_leever')
-    end
+        if enemies_room[currentOverworldRoom][7] ~= nil then
+            spawnEnemy(enemies_room[currentOverworldRoom][7], 'blue_leever')
+        end
 
-    if enemies_room[currentRoom][7] ~= nil then
-        spawnEnemy(enemies_room[currentRoom][7], 'blue_leever')
-    end
-
-    if enemies_room[currentRoom][8] ~= nil then
-        spawnEnemy(enemies_room[currentRoom][8], 'peahat')
+        if enemies_room[currentOverworldRoom][8] ~= nil then
+            spawnEnemy(enemies_room[currentOverworldRoom][8], 'peahat')
+        end
+    elseif Map.type == 'dungeon_1' then
+        -- TODO
     end
 
 end

@@ -1,38 +1,79 @@
 Map = Class{}
 
-room_1 = 'assets/tilemaps/room_1.lua'
-room_2 = 'assets/tilemaps/room_2.lua'
-room_3 = 'assets/tilemaps/room_3.lua'
-room_4 = 'assets/tilemaps/room_4.lua'
-room_5 = 'assets/tilemaps/room_5.lua'
-room_6 = 'assets/tilemaps/room_6.lua'
-room_7 = 'assets/tilemaps/room_7.lua'
-room_8 = 'assets/tilemaps/room_8.lua'
-room_9 = 'assets/tilemaps/room_9.lua'
-room_10 = 'assets/tilemaps/room_10.lua'
-room_11 = 'assets/tilemaps/room_11.lua'
-room_12 = 'assets/tilemaps/room_12.lua'
-room_13 = 'assets/tilemaps/room_13.lua'
-room_14 = 'assets/tilemaps/room_14.lua'
-room_15 = 'assets/tilemaps/room_15.lua'
-room_16 = 'assets/tilemaps/room_16.lua'
-room_17 = 'assets/tilemaps/room_17.lua'
-room_18 = 'assets/tilemaps/room_18.lua'
-room_19 = 'assets/tilemaps/room_19.lua'
-room_20 = 'assets/tilemaps/room_20.lua'
-room_21 = 'assets/tilemaps/room_21.lua'
-room_22 = 'assets/tilemaps/room_22.lua'
-room_23 = 'assets/tilemaps/room_23.lua'
-room_24 = 'assets/tilemaps/room_24.lua'
-room_25 = 'assets/tilemaps/room_25.lua'
+room_1 = 'assets/tilemaps/overworld/room_1.lua'
+room_2 = 'assets/tilemaps/overworld/room_2.lua'
+room_3 = 'assets/tilemaps/overworld/room_3.lua'
+room_4 = 'assets/tilemaps/overworld/room_4.lua'
+room_5 = 'assets/tilemaps/overworld/room_5.lua'
+room_6 = 'assets/tilemaps/overworld/room_6.lua'
+room_7 = 'assets/tilemaps/overworld/room_7.lua'
+room_8 = 'assets/tilemaps/overworld/room_8.lua'
+room_9 = 'assets/tilemaps/overworld/room_9.lua'
+room_10 = 'assets/tilemaps/overworld/room_10.lua'
+room_11 = 'assets/tilemaps/overworld/room_11.lua'
+room_12 = 'assets/tilemaps/overworld/room_12.lua'
+room_13 = 'assets/tilemaps/overworld/room_13.lua'
+room_14 = 'assets/tilemaps/overworld/room_14.lua'
+room_15 = 'assets/tilemaps/overworld/room_15.lua'
+room_16 = 'assets/tilemaps/overworld/room_16.lua'
+room_17 = 'assets/tilemaps/overworld/room_17.lua'
+room_18 = 'assets/tilemaps/overworld/room_18.lua'
+room_19 = 'assets/tilemaps/overworld/room_19.lua'
+room_20 = 'assets/tilemaps/overworld/room_20.lua'
+room_21 = 'assets/tilemaps/overworld/room_21.lua'
+room_22 = 'assets/tilemaps/overworld/room_22.lua'
+room_23 = 'assets/tilemaps/overworld/room_23.lua'
+room_24 = 'assets/tilemaps/overworld/room_24.lua'
+room_25 = 'assets/tilemaps/overworld/room_25.lua'
 
-rooms = {
+overworldRooms = {
     room_1, room_2, room_3, room_4, room_5, 
     room_6, room_7, room_8, room_9, room_10,
     room_11, room_12, room_13, room_14, room_15,
     room_16, room_17, room_18, room_19, room_20,
     room_21, room_22, room_23, room_24, room_25
 }
+
+dRoom_1 = nil
+dRoom_2 = nil
+dRoom_3 = nil
+dRoom_4 = nil
+dRoom_5 = 'assets/tilemaps/dungeon_1/room_5.lua'
+dRoom_6 = 'assets/tilemaps/dungeon_1/room_6.lua'
+dRoom_7 = 'assets/tilemaps/dungeon_1/room_7.lua'
+dRoom_8 = 'assets/tilemaps/dungeon_1/room_8.lua'
+dRoom_9 = 'assets/tilemaps/dungeon_1/room_9.lua'
+dRoom_10 = 'assets/tilemaps/dungeon_1/room_10.lua'
+dRoom_11 = 'assets/tilemaps/dungeon_1/room_11.lua'
+dRoom_12 = nil
+dRoom_13 = nil
+dRoom_14 = 'assets/tilemaps/dungeon_1/room_14.lua'
+dRoom_15 = 'assets/tilemaps/dungeon_1/room_15.lua'
+dRoom_16 = 'assets/tilemaps/dungeon_1/room_16.lua'
+dRoom_17 = nil
+dRoom_18 = nil
+dRoom_19 = nil
+dRoom_20 = nil
+dRoom_21 = 'assets/tilemaps/dungeon_1/room_21.lua'
+dRoom_22 = nil
+dRoom_23 = nil
+dRoom_24 = nil
+dRoom_25 = nil
+dRoom_26 = 'assets/tilemaps/dungeon_1/room_26.lua'
+dRoom_27 = 'assets/tilemaps/dungeon_1/room_27.lua'
+dRoom_28 = 'assets/tilemaps/dungeon_1/room_28.lua'
+dRoom_29 = nil
+dRoom_30 = nil
+
+dungeon1Rooms = {
+    dRoom_1, dRoom_2, dRoom_3, dRoom_4, dRoom_5, dRoom_6,
+    dRoom_7, dRoom_8, dRoom_9, dRoom_10, dRoom_11, dRoom_12,
+    dRoom_13, dRoom_14, dRoom_15, dRoom_16, dRoom_17, dRoom_18,
+    dRoom_19, dRoom_20, dRoom_21, dRoom_22, dRoom_23, dRoom_24,
+    dRoom_25, dRoom_26, dRoom_27, dRoom_28, dRoom_29, dRoom_30,
+}
+
+currentDungeonRoom = 27
 
 -- red octorok = 1
 -- blue octorok = 2
@@ -48,10 +89,10 @@ enemies_room = {
     {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 2, 0, 0}, {5, 1, 0, 0, 0, 0, 0, 0},
     {1, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 4},
     {4, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 1, 0, 0, 0, 0, 0},
-    {0, 0, 1, 0, 0, 0, 2, 0}, {0, 0, 0, 4, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 5, 0, 0, 0}
+    {0, 0, 1, 0, 0, 0, 2, 1}, {0, 0, 0, 4, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 5, 0, 0, 0}
 }
 
-currentRoom = 23
+currentOverworldRoom = 23
 
 colliders = {}
 
@@ -63,8 +104,10 @@ function Map:init()
     tmpMapX = 0
     tmpMapY = 0
 
-    tmpMap = sti(rooms[currentRoom], { 'box2d' })
-    map = sti(rooms[currentRoom], { 'box2d' })
+    Map.type = 'overworld'
+
+    tmpMap = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
+    map = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
 
     changing_room = false
     local direct = 'up'
@@ -77,7 +120,6 @@ function Map:init()
 end
 
 function Map:update(dt)
-
     if Player.y <= 67 and Player.direction == 'up' then
         direct = 'up'
         changing_room = true
@@ -112,24 +154,62 @@ function Map:update(dt)
 end
 
 function Map:draw()
-    tmpMap:draw(tmpMapX, tmpMapY+56)
+    if gameState == 'changingRoom' then
+        tmpMap:draw(tmpMapX, tmpMapY+56)
+    end
     map:draw(mapX, mapY+56)
+end
+
+function changeMap(type_map)
+    Map.type = type_map
+    if type_map == 'overworld' then
+        map = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
+        deleteRoomCollisions()
+        createRoomCollisions()
+        deleteAllEntities()
+        enemiesPerRoom()
+        Player.collider:setPosition(123, 128)
+    end
+
+    if type_map == 'dungeon_1' then
+        map = sti(dungeon1Rooms[currentDungeonRoom], { 'box2d' })
+        deleteRoomCollisions()
+        createRoomCollisions()
+        deleteAllEntities()
+        Player.collider:setPosition(128, 202)
+    end
 end
 
 function nextRoom(direction)
 
     local nxRoom
-    if direction == 'up' then
-        nxRoom = currentRoom - 5
+    if Map.type == 'overworld' then
+        if direction == 'up' then
+            nxRoom = currentOverworldRoom - 5
 
-    elseif direction == 'down' then
-        nxRoom = currentRoom + 5
+        elseif direction == 'down' then
+            nxRoom = currentOverworldRoom + 5
 
-    elseif direction == 'left' then
-        nxRoom = currentRoom - 1
+        elseif direction == 'left' then
+            nxRoom = currentOverworldRoom - 1
 
-    elseif direction == 'right' then
-        nxRoom = currentRoom + 1
+        elseif direction == 'right' then
+            nxRoom = currentOverworldRoom + 1
+        end
+
+    elseif Map.type == 'dungeon_1' then
+        if direction == 'up' then
+            nxRoom = currentDungeonRoom - 6
+
+        elseif direction == 'down' then
+            nxRoom = currentDungeonRoom + 6
+
+        elseif direction == 'left' then
+            nxRoom = currentDungeonRoom - 1
+
+        elseif direction == 'right' then
+            nxRoom = currentDungeonRoom + 1
+        end
     end
     deleteAllEntities()
     deleteItems()
@@ -138,7 +218,11 @@ end
 
 function moveRoom(room, direction)
     deleteRoomCollisions()
-    tmpMap = sti(rooms[room], { 'box2d' })
+    if Map.type == 'overworld' then
+        tmpMap = sti(overworldRooms[room], { 'box2d' })
+    elseif Map.type == 'dungeon_1' then
+        tmpMap = sti(dungeon1Rooms[room], { 'box2d' })
+    end
 
     tmpMapX = 0
     tmpMapY = 0
@@ -210,13 +294,16 @@ function changeRoom(room)
     changing_room = false
     mapX = 0
     mapY = 0 
-
-    currentRoom = room
-    map = sti(rooms[currentRoom], { 'box2d' })
+    if Map.type == 'overworld' then
+        currentOverworldRoom = room
+        map = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
+    elseif Map.type == 'dungeon_1' then
+        currentDungeonRoom = room
+        map = sti(dungeon1Rooms[currentDungeonRoom], { 'box2d' })
+    end
     
     deleteRoomCollisions()
     createRoomCollisions()
-
     enemiesPerRoom()
 end
 
