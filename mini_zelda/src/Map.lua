@@ -92,7 +92,7 @@ enemies_room = {
     {0, 0, 1, 0, 0, 0, 2, 1}, {0, 0, 0, 4, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 5, 0, 0, 0}
 }
 
-currentOverworldRoom = 23
+currentOverworldRoom = 3
 
 colliders = {}
 
@@ -120,18 +120,18 @@ function Map:init()
 end
 
 function Map:update(dt)
-    if Player.y <= 67 and Player.direction == 'up' then
+    if Player.y <= 67 and love.keyboard.isDown('up') and Player.direction == 'up' then
         direct = 'up'
         changing_room = true
 
-    elseif Player.y >= 226 and Player.direction == 'down' then
+    elseif Player.y >= 226 and love.keyboard.isDown('down') and Player.direction == 'down' then
         direct = 'down'
         changing_room = true
 
-    elseif Player.x <= 11 and Player.direction == 'left' then
+    elseif Player.x <= 11 and love.keyboard.isDown('left') and Player.direction == 'left' then
         direct = 'left'
         changing_room = true
-    elseif Player.x >= 247 and Player.direction == 'right' then
+    elseif Player.x >= 247 and love.keyboard.isDown('right') and Player.direction == 'right' then
         direct = 'right'
         changing_room = true
     end
@@ -176,6 +176,7 @@ function changeMap(type_map)
         deleteRoomCollisions()
         createRoomCollisions()
         deleteAllEntities()
+        doorsSpawn()
         Player.collider:setPosition(128, 202)
     end
 end
@@ -218,17 +219,21 @@ end
 
 function moveRoom(room, direction)
     deleteRoomCollisions()
+    local speed
     if Map.type == 'overworld' then
         tmpMap = sti(overworldRooms[room], { 'box2d' })
+        speed = 4
     elseif Map.type == 'dungeon_1' then
         tmpMap = sti(dungeon1Rooms[room], { 'box2d' })
+        speed = 2
+        createTmpDoors()
     end
 
     tmpMapX = 0
     tmpMapY = 0
 
     if direction == 'down' then
-        for i = 1, 4, 1 do
+        for i = 1, speed, 1 do
             mapY = mapY - 1
             tmpMapY = mapY + 168
 
@@ -237,13 +242,23 @@ function moveRoom(room, direction)
                 Player.collider:setPosition(Player.x, Player.y)
             end
 
+            if Map.type == 'dungeon_1' then
+                for i, door in ipairs(currentDoors) do
+                    door.y = door.y - 1
+                end
+
+                for i, door in ipairs(tmpDoors) do
+                    door.y = door.y - 1
+                end
+            end
+
             if mapY <= -168 then
                 changeRoom(room)
             end
         end
 
     elseif direction == 'up' then
-        for i = 1, 4, 1 do
+        for i = 1, speed, 1 do
             mapY = mapY + 1
             tmpMapY = mapY - 168
 
@@ -252,13 +267,23 @@ function moveRoom(room, direction)
                 Player.collider:setPosition(Player.x, Player.y)
             end
 
+            if Map.type == 'dungeon_1' then
+                for i, door in ipairs(currentDoors) do
+                    door.y = door.y + 1
+                end
+
+                for i, door in ipairs(tmpDoors) do
+                    door.y = door.y + 1
+                end
+            end
+
             if mapY >= 168 then
                 changeRoom(room)
             end
         end
 
     elseif direction == 'right' then
-        for i = 1, 4, 1 do
+        for i = 1, speed, 1 do
             mapX = mapX - 1
             tmpMapX = mapX + 256
 
@@ -267,19 +292,39 @@ function moveRoom(room, direction)
                 Player.collider:setPosition(Player.x, Player.y)
             end
 
+            if Map.type == 'dungeon_1' then
+                for i, door in ipairs(currentDoors) do
+                    door.x = door.x - 1
+                end
+
+                for i, door in ipairs(tmpDoors) do
+                    door.x = door.x - 1
+                end
+            end
+
             if mapX <= -256 then
                 changeRoom(room)
             end
         end
 
     elseif direction == 'left' then
-        for i = 1, 4, 1 do
+        for i = 1, speed, 1 do
             mapX = mapX + 1
             tmpMapX = mapX - 256
 
             if player.x <= 249 then
                 Player.x = Player.x + 1
                 Player.collider:setPosition(Player.x, Player.y)
+            end
+
+            if Map.type == 'dungeon_1' then
+                for i, door in ipairs(currentDoors) do
+                    door.x = door.x + 1
+                end
+
+                for i, door in ipairs(tmpDoors) do
+                    door.x = door.x + 1
+                end
             end
             
             if mapX >= 256 then
@@ -289,11 +334,11 @@ function moveRoom(room, direction)
     end
 end
 
-
 function changeRoom(room)
     changing_room = false
     mapX = 0
     mapY = 0 
+    
     if Map.type == 'overworld' then
         currentOverworldRoom = room
         map = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
@@ -305,6 +350,11 @@ function changeRoom(room)
     deleteRoomCollisions()
     createRoomCollisions()
     enemiesPerRoom()
+
+    if Map.type == 'dungeon_1' then
+        clearDoors()
+        doorsSpawn()
+    end
 end
 
 function createRoomCollisions()

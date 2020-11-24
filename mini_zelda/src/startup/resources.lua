@@ -20,5 +20,7 @@ sprites.leeverSheet = love.graphics.newImage('assets/graphics/leever_sheet.png')
 
 sprites.peahatSheet = love.graphics.newImage('assets/graphics/peahat_sheet.png')
 
+sprites.dungeonDoors = love.graphics.newImage('assets/graphics/dungeon_doors.png')
+
 sprites.deathSheet = love.graphics.newImage('assets/graphics/death_sheet.png')
 sprites.recoverHeart = love.graphics.newImage('assets/graphics/recovery_heart_sheet.png')

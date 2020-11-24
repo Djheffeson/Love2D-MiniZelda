@@ -31,6 +31,7 @@ function love.draw()
     enemies:draw()
     sword:draw()
     player:draw()
+    doors:draw()
     GUI:draw()
     --world:draw() -- debug collisions
 
