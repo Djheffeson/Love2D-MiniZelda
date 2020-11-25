@@ -6,6 +6,8 @@ require 'src/enemies/overworld/tektikes'
 require 'src/enemies/overworld/leevers'
 require 'src/enemies/overworld/peahat'
 
+require 'src/enemies/dungeons/keeses'
+
 function enemies:update(dt)
     if octoroks ~= nil then
         octoroks:update(dt)
@@ -25,6 +27,10 @@ function enemies:update(dt)
 
     if peahats ~= nil then
         peahats:update(dt)
+    end
+
+    if keeses ~= nil then
+        keeses:update(dt)
     end
 end
 
@@ -47,6 +53,10 @@ function enemies:draw()
 
     if peahats ~= nil then
         peahats:draw()
+    end
+
+    if keeses ~= nil then
+        keeses:draw()
     end
 
 end
@@ -85,7 +95,9 @@ function enemiesPerRoom()
             spawnEnemy(enemies_room[currentOverworldRoom][8], 'peahat')
         end
     elseif Map.type == 'dungeon_1' then
-        -- TODO
+        if enemiesDungeon1_rooms[currentDungeonRoom][1] ~= nil then
+            spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][1], 'keese')
+        end
     end
 
 end
@@ -119,6 +131,10 @@ function spawnEnemy(quantity, enemy)
             spawnPeahat()
         end
 
+        if enemy == 'keese' then
+            spawnKeese()
+        end
+
     end
 end
 
@@ -128,4 +144,5 @@ function deleteAllEntities()
     deleteTektikes()
     deleteLeevers()
     deletePeahats()
+    deleteKeeses()
 end

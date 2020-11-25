@@ -92,12 +92,13 @@ dungeon1Rooms = {
     dRoom_25, dRoom_26, dRoom_27, dRoom_28, dRoom_29, dRoom_30
 }
 
-dungeon1Enemies_rooms = {
+-- keese = 1
+enemiesDungeon1_rooms = {
     {0}, {0}, {0}, {0}, {0}, {0},
     {0}, {0}, {0}, {0}, {0}, {0},
+    {0}, {0}, {0}, {8}, {0}, {0},
     {0}, {0}, {0}, {0}, {0}, {0},
-    {0}, {0}, {0}, {0}, {0}, {0},
-    {0}, {0}, {0}, {0}, {0}, {0}
+    {0}, {3}, {0}, {0}, {0}, {0}
 }
 
 currentDungeonRoom = 27
@@ -403,6 +404,10 @@ function checkLayer(layer, x, y)
         if layer == 'Ground_layer' then
             if tileID == 3 then
                 return 'sand'
+            end
+
+            if tileID == 9 and Map.type == 'dungeon_1' then
+                return 'dungeon_brick'
             end
 
         elseif layer == 'Water_layer' then

@@ -124,7 +124,6 @@ function createDoors(type, nxRoom)
             elseif doorL.name == 'right' then
                 door.x = doorL.x - 16
                 door.y = doorL.y + 32
-                print(doorsState[currentDungeonRoom][4])
                 if doorsState[currentDungeonRoom][4] == 1 then
                     door.currentDoor = door.closedRight
                     createCollisionDoors(doorL.name)
@@ -238,7 +237,6 @@ function checkIfPlayerTryToOpen()
             doorsState[currentDungeonRoom][1] = 0
             for i, door in ipairs(currentDoors) do
                 if door.name == 'up' then
-                    print(doorsState[currentDungeonRoom][i])
                     door.currentDoor = door.openUp
                 end
             end

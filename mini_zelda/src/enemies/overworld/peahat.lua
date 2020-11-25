@@ -53,7 +53,6 @@ function peahats:update(dt)
         checkIfDamagePlayer(i)
         peahat.x, peahat.y = peahat.collider:getPosition()
         
-
         -- Check if the peahat is on the limit of the screen
         if peahat.x < 16 then
             peahat.vectorX = 1
@@ -95,9 +94,6 @@ function peahats:update(dt)
 
             end
 
-            
-
-            
             if peahat.timer >= 5 then
                 if math.random(2) == 1 then
                     peahat.state = 'landing'
