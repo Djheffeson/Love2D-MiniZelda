@@ -70,7 +70,7 @@ dungeon1Rooms = {
     dRoom_7, dRoom_8, dRoom_9, dRoom_10, dRoom_11, dRoom_12,
     dRoom_13, dRoom_14, dRoom_15, dRoom_16, dRoom_17, dRoom_18,
     dRoom_19, dRoom_20, dRoom_21, dRoom_22, dRoom_23, dRoom_24,
-    dRoom_25, dRoom_26, dRoom_27, dRoom_28, dRoom_29, dRoom_30,
+    dRoom_25, dRoom_26, dRoom_27, dRoom_28, dRoom_29, dRoom_30
 }
 
 currentDungeonRoom = 27
@@ -226,7 +226,7 @@ function moveRoom(room, direction)
     elseif Map.type == 'dungeon_1' then
         tmpMap = sti(dungeon1Rooms[room], { 'box2d' })
         speed = 2
-        createTmpDoors()
+        createTmpDoors(room)
     end
 
     tmpMapX = 0

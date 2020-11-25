@@ -16,6 +16,7 @@ function love.update(dt)
     world:update(dt)
     deaths:update(dt)
     enemies:update(dt)
+    doors:update(dt)
 
     love.keyboard.keysPressed = {}
 end
@@ -53,9 +54,11 @@ function love.keypressed(key)
     if key == 'b' then
         playerHeal(0.5)
     end
-    if key == 'c' then
-        local x, y = map:convertPixelToTile(Player.x+12, Player.y+12)
-        print(checkLayer('Water_layer' ,x, y))
+    if key == '1' then
+        spawnItem(1, 100, 100)
+    end
+    if key == '2' then
+        spawnItem(2, 132, 120)
     end
 
 end

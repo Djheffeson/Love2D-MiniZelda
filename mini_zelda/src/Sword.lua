@@ -128,11 +128,17 @@ end
 
 function Sword.pickupItems(x, y)
     for i, item in ipairs(items) do
-        if distanceFrom(x, y, item.x, item.y) < 10 then
-            if item.id == 1 and item.collected == false then
-                playerHeal(0.5)
+        
+        if item.id == 1 and item.collected == false then
+            if distanceFrom(x, y, item.x, item.y) < 7 then
+                playerHeal(1)
+                item.collected = true
             end
-            item.collected = true
+        elseif item.id == 2 and item.collected == false then
+            if distanceFrom(x, y-3, item.x-3, item.y) < 14 then
+                Player.keys = Player.keys + 1
+                item.collected = true
+            end
         end
     end
 end

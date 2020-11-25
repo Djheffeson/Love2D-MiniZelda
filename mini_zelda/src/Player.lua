@@ -19,6 +19,12 @@ function Player:init()
     Player.invincible = false
     Player.receive_damage = false
 
+    Player.slot1 = 'wooden_sword'
+    Player.slot2 = nil
+
+    Player.money = 0
+    Player.keys = 0
+    Player.bombs = 0
     Player.max_hearts = 3
     Player.hearts = Player.max_hearts
 
@@ -196,11 +202,17 @@ end
 
 function Player:pickupItems()
     for i, item in ipairs(items) do
-        if distanceFrom(Player.x-5, Player.y+1, item.x, item.y) < 7 then
-            if item.id == 1 and item.collected == false then
+        
+        if item.id == 1 and item.collected == false then
+            if distanceFrom(Player.x-5, Player.y+1, item.x, item.y) < 7 then
                 playerHeal(1)
+                item.collected = true
             end
-            item.collected = true
+        elseif item.id == 2 and item.collected == false then
+            if distanceFrom(Player.x-5, Player.y-8, item.x, item.y) < 10 then
+                Player.keys = Player.keys + 1
+                item.collected = true
+            end
         end
     end
 end

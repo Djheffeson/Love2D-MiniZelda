@@ -870,7 +870,7 @@ return {
       draworder = "topdown",
       id = 6,
       name = "Door",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
