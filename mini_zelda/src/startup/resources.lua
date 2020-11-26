@@ -29,5 +29,7 @@ sprites.dungeonDoors = love.graphics.newImage('assets/graphics/dungeon_doors.png
 
 sprites.keese = love.graphics.newImage('assets/graphics/keese_sprites.png')
 
+sprites.gel = love.graphics.newImage('assets/graphics/gel_sprite.png')
+
 sprites.deathSheet = love.graphics.newImage('assets/graphics/death_sheet.png')
 sprites.recoverHeart = love.graphics.newImage('assets/graphics/recovery_heart_sheet.png')

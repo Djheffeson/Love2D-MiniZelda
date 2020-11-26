@@ -142,7 +142,7 @@ function createDoors(type, nxRoom)
             if doorL.name == 'up' then
                 door.x = doorL.x + tmpMapX
                 door.y = doorL.y + 40 + tmpMapY
-                if doorsState[currentDungeonRoom][1] == 1 then
+                if doorsState[nxRoom][1] == 1 then
                     door.currentDoor = door.closedUp
                 elseif doorsState[nxRoom][1] == 2 then
                     door.currentDoor = door.lockedUp
@@ -154,7 +154,7 @@ function createDoors(type, nxRoom)
                 door.x = doorL.x + tmpMapX
                 door.y = doorL.y + 32 + tmpMapY
 
-                if doorsState[currentDungeonRoom][3] == 1 then
+                if doorsState[nxRoom][3] == 1 then
                     door.currentDoor = door.closedLeft
                 elseif doorsState[nxRoom][3] == 2 then
                     door.currentDoor = door.lockedLeft
@@ -166,7 +166,7 @@ function createDoors(type, nxRoom)
                 door.x = doorL.x + tmpMapX
                 door.y = doorL.y + 24 + tmpMapY
 
-                if doorsState[currentDungeonRoom][2] == 1 then
+                if doorsState[nxRoom][2] == 1 then
                     door.currentDoor = door.closedDown
                 elseif doorsState[nxRoom][2] == 2 then
                     door.currentDoor = door.lockedDown
@@ -178,7 +178,7 @@ function createDoors(type, nxRoom)
                 door.x = doorL.x - 16 + tmpMapX
                 door.y = doorL.y + 32 + tmpMapY
 
-                if doorsState[currentDungeonRoom][4] == 1 then
+                if doorsState[nxRoom][4] == 1 then
                     door.currentDoor = door.closedRight
                 elseif doorsState[nxRoom][4] == 2 then
                     door.currentDoor = door.lockedRight

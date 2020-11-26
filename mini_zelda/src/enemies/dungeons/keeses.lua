@@ -14,7 +14,7 @@ function spawnKeese()
     until keese.vectorX ~= 0 or keese.vectorY ~= 0
 
     keese.state = 'taking off'
-    keese.speed = 40
+    keese.speed = 0
     keese.health = 1
     keese.damage = 0.5
 
@@ -39,7 +39,7 @@ end
 
 function keeses:update(dt)
     for i, keese in ipairs(keeses) do
-        
+
         if keese.health <= 0 then
             deathSpawn(keese.x-8, keese.y-8, keeseDrop(keese.drops))
             removeKeese(i)
@@ -190,6 +190,7 @@ function removeKeese(index)
         keese.collider:destroy()
         keese.colliderExists = false
     end
+    enemiesDungeon1_rooms[currentDungeonRoom][1] = enemiesDungeon1_rooms[currentDungeonRoom][1] - 1
     table.remove(keeses, index)
 end
 

@@ -7,6 +7,7 @@ require 'src/enemies/overworld/leevers'
 require 'src/enemies/overworld/peahat'
 
 require 'src/enemies/dungeons/keeses'
+require 'src/enemies/dungeons/gels'
 
 function enemies:update(dt)
     if octoroks ~= nil then
@@ -31,6 +32,10 @@ function enemies:update(dt)
 
     if keeses ~= nil then
         keeses:update(dt)
+    end
+
+    if gels ~= nil then
+        gels:update(dt)
     end
 end
 
@@ -59,6 +64,9 @@ function enemies:draw()
         keeses:draw()
     end
 
+    if gels ~= nil then
+        gels:draw()
+    end
 end
 
 function enemiesPerRoom()
@@ -98,6 +106,10 @@ function enemiesPerRoom()
         if enemiesDungeon1_rooms[currentDungeonRoom][1] ~= nil then
             spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][1], 'keese')
         end
+
+        if enemiesDungeon1_rooms[currentDungeonRoom][2] ~= nil then
+            spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][2], 'gels')
+        end
     end
 
 end
@@ -135,6 +147,10 @@ function spawnEnemy(quantity, enemy)
             spawnKeese()
         end
 
+        if enemy == 'gels' then
+            spawnGel()
+        end
+
     end
 end
 
@@ -145,4 +161,5 @@ function deleteAllEntities()
     deleteLeevers()
     deletePeahats()
     deleteKeeses()
+    deleteGels()
 end
