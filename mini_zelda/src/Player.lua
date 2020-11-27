@@ -141,6 +141,12 @@ function Player:update(dt)
             end
         end
         Player:pickupItems()
+    elseif gameState == 'changingRoom' then
+        Player.currentAnimation:update(dt)
+        if Map.type == 'dungeon_1' then
+            Player.collider:setLinearVelocity(Player.vectorX * 100, Player.vectorY * 100)
+            Player.x, Player.y = Player.collider:getPosition()
+        end
     end
 end
 

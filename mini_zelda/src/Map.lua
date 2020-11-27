@@ -34,23 +34,6 @@ overworldRooms = {
     room_21, room_22, room_23, room_24, room_25
 }
 
--- red octorok = 1
--- blue octorok = 2
--- zora = 3
--- red tektikes = 4
--- blue tektikes = 5
--- red leever = 6
--- blue leever = 7 blue leever have some bugs
--- peahat = 8
-
-enemies_room = {
-    {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 0, 0, 0, 0, 0, 0}, {3, 1, 1, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 2, 0, 0}, {5, 1, 0, 0, 0, 0, 0, 0},
-    {1, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 4},
-    {4, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 1, 0, 0, 0, 0, 0},
-    {0, 0, 1, 0, 0, 0, 2, 1}, {0, 0, 0, 4, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 5, 0, 0, 0}
-}
-
 currentOverworldRoom = 3
 
 dRoom_1 = nil
@@ -90,16 +73,6 @@ dungeon1Rooms = {
     dRoom_13, dRoom_14, dRoom_15, dRoom_16, dRoom_17, dRoom_18,
     dRoom_19, dRoom_20, dRoom_21, dRoom_22, dRoom_23, dRoom_24,
     dRoom_25, dRoom_26, dRoom_27, dRoom_28, dRoom_29, dRoom_30
-}
-
--- keese = 1
--- gel = 2
-enemiesDungeon1_rooms = {
-    {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0},
-    {0,0}, {0,3}, {0,5}, {0,0}, {0,0}, {0,0},
-    {0,0}, {0,0}, {0,0}, {8,0}, {0,0}, {0,0},
-    {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0},
-    {0,0}, {3,0}, {0,0}, {0,2}, {0,0}, {0,0}
 }
 
 currentDungeonRoom = 27
@@ -156,7 +129,7 @@ function Map:update(dt)
         Map.timer1 = 0
     else
         Map.timer1 = Map.timer1 + 1 * dt
-        if Map.timer1 >= 0.15 then
+        if Map.timer1 >= 0.25 then
             gameState = 'running'
         end
         Map.timer = 0
@@ -246,7 +219,7 @@ function moveRoom(room, direction)
         for i = 1, speed, 1 do
             mapY = mapY - 1
             tmpMapY = mapY + 168
-
+            
             if Player.y >= 66 then
                 Player.y = Player.y - 1
                 Player.collider:setPosition(Player.x, Player.y)

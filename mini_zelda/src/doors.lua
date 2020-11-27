@@ -11,18 +11,35 @@ doorsCreated = false
 doorsState = {
     {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
     {0,0,0,0}, {0,0,1,0}, {0,0,0,2}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
-    {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
+    {0,0,0,0}, {2,0,0,1}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
     {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
     {0,0,0,0}, {0,0,0,0}, {2,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}
 }
 
 function doorsSpawn()
+    closedDoors = {}
+    closedDoorsCreated = false
     createDoors('current')
 end
 
 function doors:update(dt)
     for i, door in ipairs(currentDoors) do
         checkIfPlayerTryToOpen()
+        if gameState == 'running' and closedDoorsCreated == false then
+            for j, closedDoor in ipairs(closedDoors) do
+                if door.name == closedDoor then
+
+                    if door.name == 'up' then door.currentDoor = door.closedUp end
+                    if door.name == 'down' then door.currentDoor = door.closedDown end
+                    if door.name == 'left' then door.currentDoor = door.closedLeft end
+                    if door.name == 'right' then door.currentDoor = door.closedRight end
+
+                    createCollisionDoors(door.name)
+                    closedDoorsCreated = true
+                end
+            end
+        end
+        closedDoorsLogic(i)
     end
 end
 
@@ -76,64 +93,59 @@ function createDoors(type, nxRoom)
             door.name = doorL.name
 
             if doorL.name == 'up' then
+                door.currentDoor = door.openUp
+
                 door.x = doorL.x
                 door.y = doorL.y + 40
 
                 if doorsState[currentDungeonRoom][1] == 1 then
-                    door.currentDoor = door.closedUp
-                    createCollisionDoors(doorL.name)
+                    table.insert(closedDoors, doorL.name)
 
                 elseif doorsState[currentDungeonRoom][1] == 2 then
                     door.currentDoor = door.lockedUp
-                    createCollisionDoors(doorL.name)
-
-                else
-                    door.currentDoor = door.openUp
+                    createCollisionDoors(doorL.name, 2)
                 end
                 
             elseif doorL.name == 'left' then
+                door.currentDoor = door.openLeft
+
                 door.x = doorL.x
                 door.y = doorL.y + 32
+
                 if doorsState[currentDungeonRoom][3] == 1 then
-                    door.currentDoor = door.closedLeft
-                    createCollisionDoors(doorL.name)
+                    table.insert(closedDoors, doorL.name)
 
                 elseif doorsState[currentDungeonRoom][3] == 2 then
                     door.currentDoor = door.lockedLeft
-                    createCollisionDoors(doorL.name)
-
-                else
-                    door.currentDoor = door.openLeft
+                    createCollisionDoors(doorL.name, 2)
                 end
 
             elseif doorL.name == 'down' then
+                door.currentDoor = door.openDown
+
                 door.x = doorL.x
                 door.y = doorL.y + 24
+
                 if doorsState[currentDungeonRoom][2] == 1 then
-                    door.doorsState = door.closedDown
-                    createCollisionDoors(doorL.name)
+                    table.insert(closedDoors, doorL.name)
 
                 elseif doorsState[currentDungeonRoom][2] == 2 then
                     door.currentDoor = door.lockedDown
-                    createCollisionDoors(doorL.name)
-
-                else
-                    door.currentDoor = door.openDown
+                    createCollisionDoors(doorL.name, 2)
                 end
                 
             elseif doorL.name == 'right' then
+                door.currentDoor = door.openRight
+
                 door.x = doorL.x - 16
                 door.y = doorL.y + 32
+
                 if doorsState[currentDungeonRoom][4] == 1 then
-                    door.currentDoor = door.closedRight
-                    createCollisionDoors(doorL.name)
+                    table.insert(closedDoors, doorL.name)
 
                 elseif doorsState[currentDungeonRoom][4] == 2 then
                     door.currentDoor = door.lockedRight
-                    createCollisionDoors(doorL.name)
-
-                else
-                    door.currentDoor = door.openRight
+                    createCollisionDoors(doorL.name, 2)
                 end
             end
 
@@ -142,9 +154,7 @@ function createDoors(type, nxRoom)
             if doorL.name == 'up' then
                 door.x = doorL.x + tmpMapX
                 door.y = doorL.y + 40 + tmpMapY
-                if doorsState[nxRoom][1] == 1 then
-                    door.currentDoor = door.closedUp
-                elseif doorsState[nxRoom][1] == 2 then
+                if doorsState[nxRoom][1] == 2 then
                     door.currentDoor = door.lockedUp
                 else
                     door.currentDoor = door.openUp
@@ -154,9 +164,7 @@ function createDoors(type, nxRoom)
                 door.x = doorL.x + tmpMapX
                 door.y = doorL.y + 32 + tmpMapY
 
-                if doorsState[nxRoom][3] == 1 then
-                    door.currentDoor = door.closedLeft
-                elseif doorsState[nxRoom][3] == 2 then
+                if doorsState[nxRoom][3] == 2 then
                     door.currentDoor = door.lockedLeft
                 else
                     door.currentDoor = door.openLeft
@@ -166,9 +174,7 @@ function createDoors(type, nxRoom)
                 door.x = doorL.x + tmpMapX
                 door.y = doorL.y + 24 + tmpMapY
 
-                if doorsState[nxRoom][2] == 1 then
-                    door.currentDoor = door.closedDown
-                elseif doorsState[nxRoom][2] == 2 then
+                if doorsState[nxRoom][2] == 2 then
                     door.currentDoor = door.lockedDown
                 else
                     door.currentDoor = door.openDown
@@ -178,9 +184,7 @@ function createDoors(type, nxRoom)
                 door.x = doorL.x - 16 + tmpMapX
                 door.y = doorL.y + 32 + tmpMapY
 
-                if doorsState[nxRoom][4] == 1 then
-                    door.currentDoor = door.closedRight
-                elseif doorsState[nxRoom][4] == 2 then
+                if doorsState[nxRoom][4] == 2 then
                     door.currentDoor = door.lockedRight
                 else
                     door.currentDoor = door.openRight
@@ -198,34 +202,50 @@ function createTmpDoors(room)
     doorsCreated = false
 end
 
-function createCollisionDoors(direction)
+function createCollisionDoors(direction, type)
     if direction == 'up' then
         upDoorCollider = world:newRectangleCollider(112, 72, 32, 16)
         upDoorCollider:setCollisionClass('Wall')
         upDoorCollider:setType('static')
         upDoorColliderExists = true
-        upDoorColliderIsLocked = true
+        if type == 2 then
+            upDoorColliderIsLocked = true
+        else
+            upDoorColliderIsLocked = false
+        end
 
     elseif direction == 'down' then
         downDoorCollider = world:newRectangleCollider(112, 200, 32, 16)
         downDoorCollider:setCollisionClass('Wall')
         downDoorCollider:setType('static')
         downDoorColliderExists = true
-        downDoorColliderIsLocked = true
+        if type == 2 then
+            downDoorColliderIsLocked = true
+        else
+            downDoorColliderIsLocked = false
+        end
 
     elseif direction == 'left' then
-        leftDoorCollider = world:newRectangleCollider(16, 136, 32, 16)
+        leftDoorCollider = world:newRectangleCollider(16, 136, 16, 16)
         leftDoorCollider:setCollisionClass('Wall')
         leftDoorCollider:setType('static')
         leftDoorColliderExists = true
-        leftDoorColliderIsLocked = true
+        if type == 2 then
+            leftDoorColliderIsLocked = true
+        else
+            leftDoorColliderIsLocked = false
+        end
 
     elseif direction == 'right' then
-        rightDoorCollider = world:newRectangleCollider(224, 136, 32, 16)
+        rightDoorCollider = world:newRectangleCollider(224, 136, 16, 16)
         rightDoorCollider:setCollisionClass('Wall')
         rightDoorCollider:setType('static')
         rightDoorColliderExists = true
-        rightDoorColliderIsLocked = true
+        if type == 2 then
+            rightDoorColliderIsLocked = true
+        else
+            rightDoorColliderIsLocked = false
+        end
     end
 end
 
@@ -284,6 +304,17 @@ function checkIfPlayerTryToOpen()
             end
             rightDoorColliderIsLocked = false
         end
+    end
+end
+
+function closedDoorsLogic(index)
+    local door = currentDoors[index]
+    local enemiesNumber = enemiesDungeon1_rooms[currentDungeonRoom]
+    if currentDungeonRoom == 14 and enemiesNumber[1] <= 0 then
+        if door.name == 'right' then
+            door.currentDoor = door.openRight
+        end
+        deleteDoorCollision('right')
     end
 end
 
