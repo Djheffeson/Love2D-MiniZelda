@@ -55,10 +55,13 @@ function love.keypressed(key)
         playerHeal(0.5)
     end
     if key == '1' then
-        spawnItem(1, 100, 100)
+        spawnItem(1, 132, 100)
     end
     if key == '2' then
-        spawnItem(2, 132, 120)
+        spawnItem(2, 128, 116)
+    end
+    if key == '3' then
+        spawnItem(3, 148, 104)
     end
 
 end

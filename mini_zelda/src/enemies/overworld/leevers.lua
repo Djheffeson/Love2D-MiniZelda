@@ -26,7 +26,7 @@ function spawnLeever(type)
     leever.invincible = false
     leever.check = false
      
-    leever.drops = {1}
+    leever.drops = {1,3}
 
     leever.speed = 40
 

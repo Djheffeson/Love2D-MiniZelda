@@ -21,7 +21,7 @@ function spawnPeahat()
     peahat.damage = 0.5
     peahat.health = 1
 
-    peahat.drops = {1}
+    peahat.drops = {1,3}
 
     peahat.sprite = sprites.peahatSheet
     peahat.grid = anim8.newGrid(16, 16, peahat.sprite:getWidth(), peahat.sprite:getHeight())

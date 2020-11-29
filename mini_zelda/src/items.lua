@@ -2,6 +2,7 @@ items = {}
 -- id = item
 -- 1 = recovery heart
 -- 2 = key
+-- 3 = orange rupee
 
 function spawnItem(id, x, y)
     local item = {}
@@ -22,7 +23,18 @@ function spawnItem(id, x, y)
         item.sprite = sprites.key
         local itemGrid = anim8.newGrid(8, 16, item.sprite:getWidth(), item.sprite:getHeight())
         item.spriteAnim = anim8.newAnimation(itemGrid(1, 1), 1)
+
+        item.x = item.x + item.sprite:getWidth() / 2 
+        item.y = item.y + item.sprite:getHeight() / 2 - 4
         
+    elseif id == 3 then
+        item.sprite = sprites.rupee
+        local itemGrid = anim8.newGrid(16, 16, item.sprite:getWidth(), item.sprite:getHeight())
+        item.spriteAnim = anim8.newAnimation(itemGrid('1-2', 1), 0.1)
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 16
+        item.y = item.y + item.sprite:getHeight() / 2 - 8
+
     end
 
     table.insert(items, item)

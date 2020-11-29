@@ -22,7 +22,7 @@ function spawnTektike(type)
     tektike.targetX = 0
     tektike.targetY = 0
 
-    tektike.drops = {1}
+    tektike.drops = {1,3}
 
     tektike.sprite = sprites.tektikeSheet
     tektike.grid = anim8.newGrid(16, 16, tektike.sprite:getWidth(), tektike.sprite:getHeight())

@@ -12,6 +12,8 @@ sprites.guiItems = love.graphics.newImage('assets/graphics/gui_items.png')
 
 sprites.key = love.graphics.newImage('assets/graphics/key.png')
 
+sprites.rupee = love.graphics.newImage('assets/graphics/rupee_sheet.png')
+
 sprites.redOctorokSheet = love.graphics.newImage('assets/graphics/red_octorok_sprite.png')
 sprites.blueOctorokSheet = love.graphics.newImage('assets/graphics/blue_octorok_sprite.png')
 sprites.octorok_projectile = love.graphics.newImage('assets/graphics/octorok_projectile.png')

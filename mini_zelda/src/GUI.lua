@@ -42,7 +42,12 @@ function GUI:draw()
     end
 
     love.graphics.draw(sprites.guiItems, 88 , 16)
-    local money = string.format('X%d', Player.money)
+    local money
+    if Player.money < 100 then
+        money = string.format('X%d', Player.money)
+    else
+        money = string.format('%d', Player.money)
+    end
     love.graphics.print(money, 96, 16)
     local keys = string.format('X%d', Player.keys)
     love.graphics.print(keys, 96, 32)

@@ -30,7 +30,7 @@ function spawnOctorok(type)
 
     octorok.collisionDestroyed = false
 
-    octorok.drops = {1}
+    octorok.drops = {1,3}
 
     -- Choose a direction for the enemy start
     local directions = {'up', 'down', 'left', 'right'}

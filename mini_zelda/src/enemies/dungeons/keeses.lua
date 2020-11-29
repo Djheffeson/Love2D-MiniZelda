@@ -18,8 +18,6 @@ function spawnKeese()
     keese.health = 1
     keese.damage = 0.5
 
-    keese.drops = {1}
-
     keese.grid = anim8.newGrid(16, 16, sprites.keese:getWidth(), sprites.keese:getHeight())
     keese.animation = anim8.newAnimation(keese.grid('1-2', 1), 0.1)
 
@@ -41,7 +39,7 @@ function keeses:update(dt)
     for i, keese in ipairs(keeses) do
 
         if keese.health <= 0 then
-            deathSpawn(keese.x-8, keese.y-8, keeseDrop(keese.drops))
+            deathSpawn(keese.x-8, keese.y-8, 0)
             removeKeese(i)
             return
         end
@@ -167,14 +165,6 @@ function checkIfPlayerDamageKeese(index)
     if keese.collider:enter('Weapon') then
         keese.health = keese.health - Sword.damage
     end
-end
-
-function keeseDrop(drops)
-    if math.random(10) == 1 then
-        local item_drop = drops[math.random(#drops)]
-        return item_drop
-    end
-    return 0
 end
 
 function checkIfKeeseDamagePlayer(index)

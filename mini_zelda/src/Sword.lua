@@ -139,6 +139,11 @@ function Sword.pickupItems(x, y)
                 Player.keys = Player.keys + 1
                 item.collected = true
             end
+        elseif item.id == 3 and item.collected == false then
+            if distanceFrom(x, y-4, item.x+1, item.y) < 14 then
+                Player.money = Player.money + 1
+                item.collected = true
+            end
         end
     end
 end

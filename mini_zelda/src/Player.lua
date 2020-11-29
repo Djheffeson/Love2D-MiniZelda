@@ -219,6 +219,12 @@ function Player:pickupItems()
                 Player.keys = Player.keys + 1
                 item.collected = true
             end
+
+        elseif item.id == 3 and item.collected == false then
+            if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
+                Player.money = Player.money + 1
+                item.collected = true
+            end
         end
     end
 end

@@ -16,7 +16,7 @@ function spawnStalfo()
     stalfo.damage = 0.5
     stalfo.invincible = false
     stalfo.state = 'idle'
-    stalfo.drops = {1}
+    stalfo.drops = {1,3}
 
     stalfo.directions = {'up', 'down', 'left', 'right'}
     stalfo.direction = stalfo.directions[math.random(#stalfo.directions)]
