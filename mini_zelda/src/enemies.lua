@@ -8,6 +8,7 @@ require 'src/enemies/overworld/peahat'
 
 require 'src/enemies/dungeons/keeses'
 require 'src/enemies/dungeons/gels'
+require 'src/enemies/dungeons/stalfos'
 
 -- red octorok = 1
 -- blue octorok = 2
@@ -27,12 +28,13 @@ enemies_room = {
 
 -- keese = 1
 -- gel = 2
+-- stalfo = 3
 enemiesDungeon1_rooms = {
-    {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0},
-    {0,0}, {0,3}, {0,5}, {0,0}, {0,0}, {0,0},
-    {0,0}, {6,0}, {0,0}, {8,0}, {0,0}, {0,0},
-    {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0},
-    {0,0}, {3,0}, {0,0}, {0,0}, {0,0}, {0,0}
+    {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0},
+    {0,0,0}, {0,3,0}, {0,5,0}, {0,0,0}, {0,0,0}, {0,0,0},
+    {0,0,0}, {6,0,0}, {0,0,5}, {8,0,0}, {0,0,0}, {0,0,0},
+    {0,0,0}, {0,0,0}, {0,0,3}, {0,0,0}, {0,0,0}, {0,0,0},
+    {0,0,0}, {3,0,0}, {0,0,0}, {0,0,5}, {0,0,0}, {0,0,0}
 }
 
 function enemies:update(dt)
@@ -63,6 +65,10 @@ function enemies:update(dt)
     if gels ~= nil then
         gels:update(dt)
     end
+
+    if stalfos ~= nil then
+        stalfos:update(dt)
+    end
 end
 
 function enemies:draw()
@@ -92,6 +98,10 @@ function enemies:draw()
 
     if gels ~= nil then
         gels:draw()
+    end
+
+    if stalfos ~= nil then
+        stalfos:draw()
     end
 end
 
@@ -136,6 +146,11 @@ function enemiesPerRoom()
         if enemiesDungeon1_rooms[currentDungeonRoom][2] ~= nil then
             spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][2], 'gels')
         end
+
+        if enemiesDungeon1_rooms[currentDungeonRoom][3] ~= nil then
+            spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][3], 'stalfos')
+        end
+
     end
 
 end
@@ -177,6 +192,10 @@ function spawnEnemy(quantity, enemy)
             spawnGel()
         end
 
+        if enemy == 'stalfos' then
+            spawnStalfo()
+        end
+
     end
 end
 
@@ -188,4 +207,5 @@ function deleteAllEntities()
     deletePeahats()
     deleteKeeses()
     deleteGels()
+    deleteStalfos()
 end
