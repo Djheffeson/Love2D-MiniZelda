@@ -24,7 +24,7 @@ function spawnZora()
 
     zora.collider = world:newRectangleCollider(zora.x-16, zora.y-8, 16, 16)
     zora.collider:setFixedRotation(true)
-    zora.collider:setCollisionClass('WaterEnemy')
+    zora.collider:setCollisionClass('IgnoreWallEnemy')
     zora.colliderExists = true
 
     zora.emergeTimer = 0
@@ -83,7 +83,7 @@ function zoras:update(dt)
             if zora.state == 'emerge' and zora.colliderExists == false then
                 zora.collider = world:newRectangleCollider(zora.x-16, zora.y-8, 16, 16)
                 zora.collider:setFixedRotation(true)
-                zora.collider:setCollisionClass('WaterEnemy')
+                zora.collider:setCollisionClass('IgnoreWallEnemy')
                 zora.colliderExists = true
 
             elseif zora.state == 'sink' and zora.colliderExists == true then
@@ -145,6 +145,10 @@ function zoraCheckDamage(index)
         zoras[index].health = zoras[index].health - Sword.damage
         zoras[index].invincibleTimer = 0
         zoras[index].invincible = true
+        if zoras[index].health >= 1 then
+            sounds.enemyHit:stop()
+            sounds.enemyHit:play()
+        end
     end
 end
 

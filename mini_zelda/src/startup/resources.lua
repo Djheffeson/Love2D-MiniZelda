@@ -34,6 +34,15 @@ sprites.recoverHeart = love.graphics.newImage('assets/graphics/recovery_heart_sh
 sprites.key = love.graphics.newImage('assets/graphics/key.png')
 sprites.rupee = love.graphics.newImage('assets/graphics/rupee_sheet.png')
 
-sounds.useSword = love.audio.newSource('assets/sounds/sword_sound.wav', 'stream')
-sounds.swordParticles = love.audio.newSource('assets/sounds/sword_particles.wav', 'stream')
-sounds.enemyDie = love.audio.newSource('assets/sounds/enemy_die.wav', 'stream')
+sounds.useSword = love.audio.newSource('assets/sounds/sword_slash.wav', 'stream')
+sounds.swordShoot = love.audio.newSource('assets/sounds/sword_shoot.wav', 'stream')
+
+sounds.enemyDie = love.audio.newSource('assets/sounds/enemy_die.wav', 'stream') 
+sounds.enemyHit = love.audio.newSource('assets/sounds/enemy_hit.wav', 'stream')
+
+sounds.lowHealth = love.audio.newSource('assets/sounds/low_health.wav', 'stream')
+sounds.linkHurt = love.audio.newSource('assets/sounds/link_hurt.wav', 'stream')
+sounds.pickupItem = love.audio.newSource('assets/sounds/pickup_item.wav', 'stream')
+sounds.pickupRupee = love.audio.newSource('assets/sounds/pickup_rupee.wav', 'stream')
+
+sounds.openDoor = love.audio.newSource('assets/sounds/door_unlock.wav', 'stream')

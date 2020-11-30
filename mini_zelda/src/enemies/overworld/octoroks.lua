@@ -80,6 +80,10 @@ function octoroks:update(dt)
                 octorok.timer_invincible = 0
                 octorok.timer_push = 0
                 octorok.state = 'pushed'
+                if octorok.health >= 1 then
+                    sounds.enemyHit:stop()
+                    sounds.enemyHit:play()
+                end
             end
             
             if octorok.invincible == true then

@@ -124,6 +124,10 @@ end
 function tektikeCheckDamage(index)
     if tektikes[index].collider:enter('Weapon') then
         tektikes[index].health = tektikes[index].health - Sword.damage
+        if tektikes[index].health >= 1 then
+            sounds.enemyHit:stop()
+            sounds.enemyHit:play()
+        end
     end
 end
 

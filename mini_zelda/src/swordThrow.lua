@@ -11,8 +11,6 @@ function swordSpawn(x, y, direction)
     sword.tmpNum = 0
     sword.collide = false
 
-    sounds.swordParticles:setVolume(0.5)
-
     sword.particleGrid = anim8.newGrid(8, 10, sprites.swordParticles:getWidth(), sprites.swordParticles:getHeight())
     sword.particleUpLeft = anim8.newAnimation(sword.particleGrid('1-4', 1), 0.02)
     sword.particleDownLeft = anim8.newAnimation(sword.particleGrid('1-4', 1), 0.02):flipV()
@@ -52,8 +50,8 @@ function swordThrow:update(dt)
     for i, sword in ipairs(swordThrow) do
         
         if sword.playSound == true then
-            sounds.swordParticles:stop()
-            sounds.swordParticles:play()
+            sounds.swordShoot:stop()
+            sounds.swordShoot:play()
             sword.playSound = false
         end
 
@@ -78,7 +76,7 @@ function swordThrow:update(dt)
 
         if (sword.x < 0 or sword.x > 256) or (sword.y < 56 or sword.y > 224) then
             sword.collide = true
-        elseif sword.collider:enter('Enemy') then
+        elseif sword.collider:enter('Enemy') or sword.collider:enter('IgnoreWallEnemy') then
             sword.collide = true
         end
 
@@ -102,7 +100,7 @@ function swordThrow:draw()
                 sword.x, sword.y = sword.collider:getPosition()
                 sword.animation:draw(Sword.sprite, sword.x-9, sword.y-8)
             end
-            
+
         end
     end
 end

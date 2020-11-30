@@ -22,7 +22,7 @@ function spawnKeese()
     keese.animation = anim8.newAnimation(keese.grid('1-2', 1), 0.1)
 
     keese.collider = world:newRectangleCollider(keese.x-16, keese.y-8, 14, 10)
-    keese.collider:setCollisionClass('IgnoreAll')
+    keese.collider:setCollisionClass('IgnoreWallEnemy')
     keese.collider:setFixedRotation(true)
     keese.colliderExists = true
 

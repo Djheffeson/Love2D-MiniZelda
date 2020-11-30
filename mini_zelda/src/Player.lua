@@ -22,6 +22,7 @@ function Player:init()
     Player.slot1 = 'wooden_sword'
     Player.slot2 = nil
 
+    Player.maxMoney = 255
     Player.money = 0
     Player.keys = 0
     Player.bombs = 0
@@ -62,7 +63,15 @@ function Player:update(dt)
         if Player.hearts > Player.max_hearts then
             Player.hearts = Player.max_hearts
         end
+
+        if Player.money > Player.maxMoney then
+            Player.money = Player.maxMoney
+        end
         
+        if Player.hearts <= 1 then
+            sounds.lowHealth:play()
+        end
+
         if Player.receive_damage then
             Player.invincible = true
             Player.receive_damage = false
@@ -199,6 +208,8 @@ function playerDamage(value)
     if Player.invincible == false then
         Player.hearts = player.hearts - value
         Player.receive_damage = true
+        sounds.linkHurt:stop()
+        sounds.linkHurt:play()
     end
 end
 
@@ -213,18 +224,28 @@ function Player:pickupItems()
             if distanceFrom(Player.x-5, Player.y+1, item.x, item.y) < 7 then
                 playerHeal(1)
                 item.collected = true
+                sounds.pickupItem:stop()
+                sounds.pickupItem:play()
             end
         elseif item.id == 2 and item.collected == false then
             if distanceFrom(Player.x-5, Player.y-8, item.x, item.y) < 10 then
                 Player.keys = Player.keys + 1
                 item.collected = true
+                sounds.pickupItem:stop()
+                sounds.pickupItem:play()
             end
 
         elseif item.id == 3 and item.collected == false then
             if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
                 Player.money = Player.money + 1
                 item.collected = true
+                sounds.pickupRupee:stop()
+                sounds.pickupRupee:play()
             end
+        end
+
+        if item.collected == true then
+            
         end
     end
 end

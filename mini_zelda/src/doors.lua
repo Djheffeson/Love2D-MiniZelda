@@ -258,6 +258,8 @@ function checkIfPlayerTryToOpen()
             for i, door in ipairs(currentDoors) do
                 if door.name == 'up' then
                     door.currentDoor = door.openUp
+                    sounds.openDoor:stop()
+                    sounds.openDoor:play()
                 end
             end
             upDoorColliderIsLocked = false
@@ -272,6 +274,8 @@ function checkIfPlayerTryToOpen()
             for i, door in ipairs(currentDoors) do
                 if door.name == 'down' then
                     door.currentDoor = door.openDown
+                    sounds.openDoor:stop()
+                    sounds.openDoor:play()
                 end
             end
             downDoorColliderIsLocked = false
@@ -286,6 +290,8 @@ function checkIfPlayerTryToOpen()
             for i, door in ipairs(currentDoors) do
                 if door.name == 'left' then
                     door.currentDoor = door.openLeft
+                    sounds.openDoor:stop()
+                    sounds.openDoor:play()
                 end
             end
             leftDoorColliderIsLocked = false
@@ -300,6 +306,8 @@ function checkIfPlayerTryToOpen()
             for i, door in ipairs(currentDoors) do
                 if door.name == 'right' then
                     door.currentDoor = door.openRight
+                    sounds.openDoor:stop()
+                    sounds.openDoor:play()
                 end
             end
             rightDoorColliderIsLocked = false
@@ -313,6 +321,8 @@ function closedDoorsLogic(index)
     if currentDungeonRoom == 14 and enemiesNumber[1] <= 0 then
         if door.name == 'right' then
             door.currentDoor = door.openRight
+            sounds.openDoor:stop()
+            sounds.openDoor:play()
         end
         deleteDoorCollision('right')
     end

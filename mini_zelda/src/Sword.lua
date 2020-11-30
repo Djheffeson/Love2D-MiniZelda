@@ -10,8 +10,6 @@ function Sword:init()
 
     Sword.damage = 1
 
-    sounds.useSword:setVolume(0.5)
-
     Sword.sprite = sprites.woodenSword
     Sword.grid = anim8.newGrid(16, 16, Sword.sprite:getWidth(), Sword.sprite:getHeight())
 
@@ -146,16 +144,22 @@ function Sword.pickupItems(x, y)
             if distanceFrom(x, y, item.x, item.y) < 7 then
                 playerHeal(1)
                 item.collected = true
+                sounds.pickupItem:stop()
+                sounds.pickupItem:play()
             end
         elseif item.id == 2 and item.collected == false then
             if distanceFrom(x, y-3, item.x-3, item.y) < 14 then
                 Player.keys = Player.keys + 1
                 item.collected = true
+                sounds.pickupItem:stop()
+                sounds.pickupItem:play()
             end
         elseif item.id == 3 and item.collected == false then
             if distanceFrom(x, y-4, item.x+1, item.y) < 14 then
                 Player.money = Player.money + 1
                 item.collected = true
+                sounds.pickupRupee:stop()
+                sounds.pickupRupee:play()
             end
         end
     end

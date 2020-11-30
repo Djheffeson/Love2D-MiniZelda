@@ -144,6 +144,10 @@ function checkStalfoDamage(index)
         stalfo.invincible = true
         stalfo.invincibleTimer = 0
         stalfo.state = 'pushed'
+        if stalfo.health >= 1 then
+            sounds.enemyHit:stop()
+            sounds.enemyHit:play()
+        end
     end
 end
 
