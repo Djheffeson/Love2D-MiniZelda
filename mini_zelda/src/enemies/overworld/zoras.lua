@@ -10,10 +10,11 @@ function spawnZora()
         zora.y = multiple16(love.math.random(72,224))
     until checkLayer('Water_layer', map:convertPixelToTile(zora.x + 12, zora.y + 12)) == 'water'
 
-    zora.health = 1
+    zora.health = 2
     zora.state = 'sink'
     zora.shooting = false
     zora.charging = false
+    zora.invincible = false
 
     zora.grid = anim8.newGrid(16, 16, sprites.zoraSheet:getWidth(), sprites.zoraSheet:getHeight())
     zora.animationEmerging = anim8.newAnimation(zora.grid('1-2', 1), 0.18)
@@ -27,6 +28,7 @@ function spawnZora()
     zora.colliderExists = true
 
     zora.emergeTimer = 0
+    zora.invincibleTimer = 0
 
     table.insert(zoras, zora)
 end
@@ -35,7 +37,15 @@ function zoras:update(dt)
     for i, zora in ipairs(zoras) do
         if zora.health > 0 then
 
-            zoraCheckDamage(i)
+            if zora.invincible == true then
+                zora.invincibleTimer = zora.invincibleTimer + 1 * dt
+                if zora.invincibleTimer >= 0.133 then
+                    zora.invincible = false
+                end
+            else
+                zoraCheckDamage(i)
+            end
+
             zora.emergeTimer = zora.emergeTimer + 1 * dt
             if zora.emergeTimer >= 0.533 and zora.emergeTimer < 0.850 then
                 if zora.state == 'sink' then
@@ -79,6 +89,7 @@ function zoras:update(dt)
             elseif zora.state == 'sink' and zora.colliderExists == true then
                 zora.collider:destroy()
                 zora.colliderExists = false
+                zora.health = 2
             end
 
             zoraProjectile:update(dt)
@@ -93,7 +104,13 @@ end
 
 function zoras:draw()
     for i, zora in ipairs(zoras) do
+        if zora.invincible == true then
+            love.graphics.setColor(1, 0, 0, 1)
+        else
+            love.graphics.setColor(1, 1, 1, 1)
+        end
         zora.currentAnimation:draw(sprites.zoraSheet, zora.x-16, zora.y-8)
+        love.graphics.setColor(1, 1, 1, 1)
         zoraProjectile:draw()
     end
 end
@@ -126,6 +143,8 @@ end
 function zoraCheckDamage(index)
     if zoras[index].collider:enter('Weapon') then
         zoras[index].health = zoras[index].health - Sword.damage
+        zoras[index].invincibleTimer = 0
+        zoras[index].invincible = true
     end
 end
 

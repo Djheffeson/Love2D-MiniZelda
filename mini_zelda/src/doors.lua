@@ -345,6 +345,10 @@ end
 function clearDoors()
     currentDoors = {}
     tmpDoors = {}
+    clearDoorsCollisions()
+end
+
+function clearDoorsCollisions()
     if upDoorColliderExists then
         upDoorCollider:destroy()
         upDoorColliderExists = false

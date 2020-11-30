@@ -366,6 +366,7 @@ function deleteRoomCollisions()
         v:destroy()
     end
     colliders = {}
+    clearDoorsCollisions()
 end
 
 function checkLayer(layer, x, y)
