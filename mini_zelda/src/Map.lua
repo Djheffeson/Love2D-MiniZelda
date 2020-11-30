@@ -34,7 +34,7 @@ overworldRooms = {
     room_21, room_22, room_23, room_24, room_25
 }
 
-currentOverworldRoom = 3
+currentOverworldRoom = 23
 
 dRoom_1 = nil
 dRoom_2 = nil

@@ -30,7 +30,7 @@ function spawnStalfo()
     stalfo.colliderExists = true
 
     stalfo.colliderFront = world:newRectangleCollider(stalfo.x, stalfo.y, 4, 4)
-    stalfo.colliderFront:setCollisionClass('IgnoreAll')
+    stalfo.colliderFront:setCollisionClass('EnemyCollider')
     stalfo.colliderFront:setFixedRotation(true)
     stalfo.colliderFrontExists = true
 

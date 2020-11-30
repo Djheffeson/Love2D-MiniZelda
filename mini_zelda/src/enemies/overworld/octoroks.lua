@@ -44,11 +44,11 @@ function spawnOctorok(type)
 
     -- Create a collider in front of the enemy for check if they collide with anything 
     octorok.collider_front = world:newCircleCollider(octorok.x, octorok.y, 4)
-    octorok.collider_front:setCollisionClass('Enemy')
+    octorok.collider_front:setCollisionClass('EnemyCollider')
 
     -- Create a collider for the projectile
     octorok.collider_projectile = world:newCircleCollider(octorok.x, octorok.y, 5)
-    octorok.collider_projectile:setCollisionClass('Enemy')
+    octorok.collider_projectile:setCollisionClass('EnemyWeapon')
     
     octorok.grid = anim8.newGrid(16, 16,  octorok.sprite:getWidth(), sprites.redOctorokSheet:getHeight())
     octorok.animationDown = anim8.newAnimation(octorok.grid('1-2', 1), 0.1)

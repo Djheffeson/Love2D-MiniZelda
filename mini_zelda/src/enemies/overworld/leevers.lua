@@ -304,7 +304,7 @@ function leeverEmerge(index, dt)
 
         if leever.colliderFrontExists == false then
             leever.colliderFront = world:newRectangleCollider(leever.x, leever.y, 4, 4)
-            leever.colliderFront:setCollisionClass('IgnoreAll')
+            leever.colliderFront:setCollisionClass('EnemyCollider')
             leever.colliderFront:setFixedRotation(true)
             leever.colliderFrontExists = true
         end

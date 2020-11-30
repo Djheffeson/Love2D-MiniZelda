@@ -1,7 +1,6 @@
 Sword = Class{}
 
 function Sword:init()
-    Sword.sound = love.audio.newSource('assets/sounds/sword_sound.wav', 'stream')
     Sword.x = 0
     Sword.y = 0
     Sword.direction = "down"
@@ -11,18 +10,26 @@ function Sword:init()
 
     Sword.damage = 1
 
-    Sword.grid = anim8.newGrid(16, 16, sprites.woodenSword:getWidth(), sprites.woodenSword:getHeight())
-    Sword.down = anim8.newAnimation(Sword.grid(1, 1), 1)
-    Sword.left = anim8.newAnimation(Sword.grid(2, 1), 1)
-    Sword.up = anim8.newAnimation(Sword.grid(3, 1), 1)
-    Sword.right = anim8.newAnimation(Sword.grid(4, 1), 1)
+    sounds.useSword:setVolume(0.5)
+
+    Sword.sprite = sprites.woodenSword
+    Sword.grid = anim8.newGrid(16, 16, Sword.sprite:getWidth(), Sword.sprite:getHeight())
+
+    Sword.up = anim8.newAnimation(Sword.grid(1, 1), 1)
+    Sword.down = anim8.newAnimation(Sword.grid(1, 1), 1):flipV()
+    Sword.left = anim8.newAnimation(Sword.grid(2, 1), 1):flipH()
+    Sword.right = anim8.newAnimation(Sword.grid(2, 1), 1)
 
     Sword.currentAnimation = Sword.up
+
+    swordThrowExists = false
 
 end
 
 function Sword:update(dt)
     
+    swordThrow:update(dt)
+
     if Sword.timer > 0 then
         Sword.timer = Sword.timer - dt
         if Sword.timer < 0 then
@@ -34,6 +41,10 @@ function Sword:update(dt)
                 Sword.timer = 0.07
                 Sword.directionVector:rotateInplace(math.pi)
                 Sword.state = 'back'
+                if swordThrowExists == false and Player.hearts >= Player.max_hearts then
+                    swordSpawn(Sword.x, Sword.y, Sword.direction)
+                    swordThrowExists = true
+                end
             else
                 Sword.state = 'invisible'
             end
@@ -53,6 +64,8 @@ end
 
 function Sword:draw()
 
+    swordThrow:draw()
+
     if Sword.state ~= 'invisible' then
         love.graphics.setColor(1, 1, 1, 1)
         Sword.currentAnimation:draw(sprites.woodenSword, Sword.x, Sword.y)
@@ -64,8 +77,8 @@ function Sword:attack()
         return
     end
 
-    Sword.sound:stop()
-    Sword.sound:play()
+    sounds.useSword:stop()
+    sounds.useSword:play()
     -- Sword.x receive the same position of the player
     Sword.x = Player.x - 10
     Sword.y = Player.y - 10
@@ -80,7 +93,7 @@ function Sword:attack()
 
         Sword.pickupItems(Sword.x+1, Sword.y+5)
 
-        Sword.collision = world:newRectangleCollider(Sword.x+1, Sword.y+5, 16, 8)
+        Sword.collision = world:newRectangleCollider(Sword.x+1, Sword.y+5, 16, 4)
         Sword.collision:setAngle(math.pi / 2)
         Sword.collision:setFixedRotation(true)
         Sword.collision:setCollisionClass('Weapon')
@@ -93,7 +106,7 @@ function Sword:attack()
 
         Sword.pickupItems(Sword.x, Sword.y+4)
 
-        Sword.collision = world:newRectangleCollider(Sword.x, Sword.y+4, 16, 8)
+        Sword.collision = world:newRectangleCollider(Sword.x, Sword.y+7, 16, 4)
         Sword.collision:setFixedRotation(true)
         Sword.collision:setCollisionClass('Weapon')
 
@@ -105,7 +118,7 @@ function Sword:attack()
 
         Sword.pickupItems(Sword.x+1, Sword.y+4)
 
-        Sword.collision = world:newRectangleCollider(Sword.x+1, Sword.y+4, 16, 8)
+        Sword.collision = world:newRectangleCollider(Sword.x+1, Sword.y+5, 16, 4)
         Sword.collision:setAngle(math.pi / 2)
         Sword.collision:setFixedRotation(true)
         Sword.collision:setCollisionClass('Weapon')
@@ -117,7 +130,7 @@ function Sword:attack()
 
         Sword.pickupItems(Sword.x, Sword.y+4)
 
-        Sword.collision = world:newRectangleCollider(Sword.x, Sword.y+4, 16, 8)
+        Sword.collision = world:newRectangleCollider(Sword.x, Sword.y+7, 16, 4)
         Sword.collision:setFixedRotation(true)
         Sword.collision:setCollisionClass('Weapon')
     end

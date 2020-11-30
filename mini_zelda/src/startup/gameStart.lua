@@ -32,6 +32,7 @@ function gameStart()
     require 'src/Map'
     require 'src/Player'
     require 'src/Sword'
+    require 'src/swordThrow'
     require 'src/enemies'
     require 'src/items'
     require 'src/deathAnimation'

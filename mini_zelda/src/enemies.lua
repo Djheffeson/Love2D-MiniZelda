@@ -10,6 +10,8 @@ require 'src/enemies/dungeons/keeses'
 require 'src/enemies/dungeons/gels'
 require 'src/enemies/dungeons/stalfos'
 
+sounds.enemyDie:setVolume(0.5)
+
 -- red octorok = 1
 -- blue octorok = 2
 -- zora = 3

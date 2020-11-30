@@ -11,6 +11,8 @@ function deathSpawn(x, y, itemDrop)
     death.Animation = anim8.newAnimation(grid(1,1, 2,1, 1,1), 0.1)
     death.timer = 0
     table.insert(deaths, death)
+    sounds.enemyDie:stop()
+    sounds.enemyDie:play()
 end
 
 function deaths:update(dt)
