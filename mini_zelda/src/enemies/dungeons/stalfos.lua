@@ -29,11 +29,6 @@ function spawnStalfo()
     stalfo.collider:setFixedRotation(true)
     stalfo.colliderExists = true
 
-    stalfo.colliderFront = world:newRectangleCollider(stalfo.x, stalfo.y, 4, 4)
-    stalfo.colliderFront:setCollisionClass('EnemyCollider')
-    stalfo.colliderFront:setFixedRotation(true)
-    stalfo.colliderFrontExists = true
-
     stalfo.turnTimer = 0
     stalfo.pushedTimer = 0
     stalfo.invincibleTimer = 0
@@ -65,7 +60,7 @@ function stalfos:update(dt)
         stalfo.vectorX = 0
         stalfo.vectorY = 0
 
-        if stalfo.colliderFront:enter('Wall') then
+        if stalfo.collider:enter('Wall') then
             local directions = checkArea(stalfo.x, stalfo.y)
             stalfo.direction = directions[math.random(#directions)]
             stalfo.collider:setPosition(multiple16(stalfo.x+2)+8, multiple16(stalfo.y+2))
@@ -93,23 +88,18 @@ function stalfos:update(dt)
 
             if stalfo.direction == 'up' then
                 stalfo.vectorY = -1
-                stalfo.colliderFront:setPosition(stalfo.x, stalfo.y-6)
 
             elseif stalfo.direction == 'down' then
                 stalfo.vectorY = 1
-                stalfo.colliderFront:setPosition(stalfo.x, stalfo.y+6)
 
             elseif stalfo.direction == 'left' then
                 stalfo.vectorX = -1
-                stalfo.colliderFront:setPosition(stalfo.x-6, stalfo.y)
                 
             elseif stalfo.direction == 'right' then
                 stalfo.vectorX = 1
-                stalfo.colliderFront:setPosition(stalfo.x+6, stalfo.y)
             end
 
             stalfo.collider:setLinearVelocity(stalfo.vectorX * stalfo.speed, stalfo.vectorY * stalfo.speed)
-            stalfo.colliderFront:setLinearVelocity(stalfo.vectorX * stalfo.speed, stalfo.vectorY * stalfo.speed)
 
         elseif stalfo.state == 'pushed' then
             stalfo.pushedTimer = stalfo.pushedTimer + 1 * dt
@@ -169,10 +159,6 @@ function stalfoDeath(index)
         stalfo.collider:destroy()
         stalfo.colliderExists = false
     end
-    if stalfo.colliderFrontExists then
-        stalfo.colliderFront:destroy()
-        stalfo.colliderFrontExists = false
-    end
 
     table.remove(stalfos, index)
 end
@@ -191,10 +177,6 @@ function deleteStalfos()
         if stalfo.colliderExists then
             stalfo.collider:destroy()
             stalfo.colliderExists = false
-        end
-        if stalfo.colliderFrontExists then
-            stalfo.colliderFront:destroy()
-            stalfo.colliderFrontExists = false
         end
 
         table.remove(stalfos, i)

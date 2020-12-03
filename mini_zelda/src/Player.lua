@@ -57,6 +57,7 @@ function Player:update(dt)
         
         if Player.hearts <= 0 then
             print("YOU DIE")
+            if Player.hearts < 0 then Player.hearts = 0 end
             return
         end
 

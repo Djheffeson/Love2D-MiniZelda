@@ -74,7 +74,7 @@ function swordThrow:update(dt)
             sword.particleDownRight:update(dt)
         end
 
-        if (sword.x < 0 or sword.x > 256) or (sword.y < 56 or sword.y > 224) then
+        if (sword.x < 0 or sword.x > 256) or (sword.y < 64 or sword.y > 224) then
             sword.collide = true
         elseif sword.collider:enter('Enemy') or sword.collider:enter('IgnoreWallEnemy') then
             sword.collide = true

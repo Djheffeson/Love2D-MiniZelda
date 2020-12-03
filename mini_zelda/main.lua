@@ -34,8 +34,9 @@ function love.draw()
     player:draw()
     doors:draw()
     GUI:draw()
+    swordThrow:draw()
     --world:draw() -- debug collisions
-
+    
     push:finish()
 end
 

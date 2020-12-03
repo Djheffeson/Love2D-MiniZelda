@@ -62,8 +62,6 @@ end
 
 function Sword:draw()
 
-    swordThrow:draw()
-
     if Sword.state ~= 'invisible' then
         love.graphics.setColor(1, 1, 1, 1)
         Sword.currentAnimation:draw(sprites.woodenSword, Sword.x, Sword.y)
