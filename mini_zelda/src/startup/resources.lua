@@ -28,11 +28,14 @@ sprites.dungeonDoors = love.graphics.newImage('assets/graphics/dungeon_doors.png
 sprites.keese = love.graphics.newImage('assets/graphics/keese_sprites.png')
 sprites.gel = love.graphics.newImage('assets/graphics/gel_sprite.png')
 sprites.stalfo = love.graphics.newImage('assets/graphics/stalfos_sprite.png')
+sprites.goriya = love.graphics.newImage('assets/graphics/goriya_sheet.png')
 
 sprites.deathSheet = love.graphics.newImage('assets/graphics/death_sheet.png')
 sprites.recoverHeart = love.graphics.newImage('assets/graphics/recovery_heart_sheet.png')
 sprites.key = love.graphics.newImage('assets/graphics/key.png')
 sprites.rupee = love.graphics.newImage('assets/graphics/rupee_sheet.png')
+sprites.boomerang = love.graphics.newImage('assets/graphics/boomerang_sprite.png')
+sprites.splash = love.graphics.newImage('assets/graphics/splash_sprite.png')
 
 sounds.useSword = love.audio.newSource('assets/sounds/sword_slash.wav', 'stream')
 sounds.swordShoot = love.audio.newSource('assets/sounds/sword_shoot.wav', 'stream')

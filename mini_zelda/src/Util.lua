@@ -78,3 +78,17 @@ function checkArea(x, y)
 
     return directAvailable
 end
+
+function checkIfSeePlayer(x, y, facing)
+    local locationX, locationY = checkDistance(Player.x, player.y, x, y)
+    if facing == 'up' and (locationX <= 1 and locationX >= -1) and locationY <= 0 then
+        return true
+    elseif facing == 'left' and (locationY <= 1 and locationY >= -1) and locationX <= 0 then
+        return true
+    elseif facing == 'down' and (locationX <= 1 and locationX >= -1) and locationY >= 0 then
+        return true
+    elseif facing == 'right' and (locationY <= 1 and locationY >= -1) and locationX >= 0 then
+        return true
+    end
+    return false
+end

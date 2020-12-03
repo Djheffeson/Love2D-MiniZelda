@@ -9,6 +9,7 @@ require 'src/enemies/overworld/peahat'
 require 'src/enemies/dungeons/keeses'
 require 'src/enemies/dungeons/gels'
 require 'src/enemies/dungeons/stalfos'
+require 'src/enemies/dungeons/goriyas'
 
 sounds.enemyHit:setVolume(0.5)
 
@@ -31,12 +32,13 @@ enemies_room = {
 -- keese = 1
 -- gel = 2
 -- stalfo = 3
+-- goriya = 4
 enemiesDungeon1_rooms = {
-    {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0},
-    {0,0,0}, {0,3,0}, {0,5,0}, {0,0,0}, {0,0,0}, {0,0,0},
-    {0,0,0}, {6,0,0}, {0,0,5}, {8,0,0}, {0,0,0}, {0,0,0},
-    {0,0,0}, {0,0,0}, {0,0,3}, {0,0,0}, {0,0,0}, {0,0,0},
-    {0,0,0}, {3,0,0}, {0,0,0}, {0,0,5}, {0,0,0}, {0,0,0}
+    {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
+    {0,0,0,0}, {0,3,0,0}, {0,5,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
+    {0,0,0,0}, {6,0,0,0}, {0,0,5,0}, {8,0,0,0}, {0,0,0,0}, {0,0,0,0},
+    {0,0,0,0}, {0,0,0,0}, {0,0,3,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
+    {0,0,0,0}, {3,0,0,0}, {0,0,0,0}, {0,0,0,1}, {0,0,0,0}, {0,0,0,0}
 }
 
 function enemies:update(dt)
@@ -71,6 +73,10 @@ function enemies:update(dt)
     if stalfos ~= nil then
         stalfos:update(dt)
     end
+
+    if goriyas ~= nil then
+        goriyas:update(dt)
+    end
 end
 
 function enemies:draw()
@@ -104,6 +110,10 @@ function enemies:draw()
 
     if stalfos ~= nil then
         stalfos:draw()
+    end
+
+    if goriyas ~= nil then
+        goriyas:draw()
     end
 end
 
@@ -153,6 +163,10 @@ function enemiesPerRoom()
             spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][3], 'stalfos')
         end
 
+        if enemiesDungeon1_rooms[currentDungeonRoom][4] ~= nil then
+            spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][4], 'goriyas')
+        end
+
     end
 
 end
@@ -198,6 +212,10 @@ function spawnEnemy(quantity, enemy)
             spawnStalfo()
         end
 
+        if enemy == 'goriyas' then
+            spawnGoriya()
+        end
+
     end
 end
 
@@ -210,4 +228,5 @@ function deleteAllEntities()
     deleteKeeses()
     deleteGels()
     deleteStalfos()
+    deleteGoriyas()
 end

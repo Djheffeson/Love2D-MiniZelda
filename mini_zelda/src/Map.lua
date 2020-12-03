@@ -34,7 +34,7 @@ overworldRooms = {
     room_21, room_22, room_23, room_24, room_25
 }
 
-currentOverworldRoom = 23
+currentOverworldRoom = 3
 
 dRoom_1 = nil
 dRoom_2 = nil
@@ -162,6 +162,8 @@ function changeMap(type_map)
         doorsSpawn()
         Player.collider:setPosition(128, 202)
     end
+    
+    doorsCreated = false
 end
 
 function nextRoom(direction)

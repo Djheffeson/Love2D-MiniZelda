@@ -105,6 +105,16 @@ function createDoors(type, nxRoom)
                     door.currentDoor = door.lockedUp
                     createCollisionDoors(doorL.name, 2)
                 end
+
+                local colliderDoors1 = world:newRectangleCollider(112, 56, 10, 32)
+                colliderDoors1:setCollisionClass('Wall')
+                colliderDoors1:setType('static')
+                table.insert(colliders, colliderDoors1)
+
+                local colliderDoors2 = world:newRectangleCollider(136, 56, 10, 32)
+                colliderDoors2:setCollisionClass('Wall')
+                colliderDoors2:setType('static')
+                table.insert(colliders, colliderDoors2)
                 
             elseif doorL.name == 'left' then
                 door.currentDoor = door.openLeft
@@ -120,6 +130,11 @@ function createDoors(type, nxRoom)
                     createCollisionDoors(doorL.name, 2)
                 end
 
+                local colliderDoors1 = world:newRectangleCollider(0, 136, 32, 5)
+                colliderDoors1:setCollisionClass('Wall')
+                colliderDoors1:setType('static')
+                table.insert(colliders, colliderDoors1)
+
             elseif doorL.name == 'down' then
                 door.currentDoor = door.openDown
 
@@ -133,6 +148,16 @@ function createDoors(type, nxRoom)
                     door.currentDoor = door.lockedDown
                     createCollisionDoors(doorL.name, 2)
                 end
+
+                local colliderDoors1 = world:newRectangleCollider(112, 200, 10, 32)
+                colliderDoors1:setCollisionClass('Wall')
+                colliderDoors1:setType('static')
+                table.insert(colliders, colliderDoors1)
+
+                local colliderDoors2 = world:newRectangleCollider(136, 200, 10, 32)
+                colliderDoors2:setCollisionClass('Wall')
+                colliderDoors2:setType('static')
+                table.insert(colliders, colliderDoors2)
                 
             elseif doorL.name == 'right' then
                 door.currentDoor = door.openRight
@@ -147,6 +172,11 @@ function createDoors(type, nxRoom)
                     door.currentDoor = door.lockedRight
                     createCollisionDoors(doorL.name, 2)
                 end
+
+                local colliderDoors1 = world:newRectangleCollider(224, 136, 32, 5)
+                colliderDoors1:setCollisionClass('Wall')
+                colliderDoors1:setType('static')
+                table.insert(colliders, colliderDoors1)
             end
 
             table.insert(currentDoors, door)
@@ -204,7 +234,7 @@ end
 
 function createCollisionDoors(direction, type)
     if direction == 'up' then
-        upDoorCollider = world:newRectangleCollider(112, 72, 32, 16)
+        upDoorCollider = world:newRectangleCollider(112, 72, 32, 15)
         upDoorCollider:setCollisionClass('Wall')
         upDoorCollider:setType('static')
         upDoorColliderExists = true
@@ -215,7 +245,7 @@ function createCollisionDoors(direction, type)
         end
 
     elseif direction == 'down' then
-        downDoorCollider = world:newRectangleCollider(112, 200, 32, 16)
+        downDoorCollider = world:newRectangleCollider(112, 201, 32, 16)
         downDoorCollider:setCollisionClass('Wall')
         downDoorCollider:setType('static')
         downDoorColliderExists = true
@@ -226,7 +256,7 @@ function createCollisionDoors(direction, type)
         end
 
     elseif direction == 'left' then
-        leftDoorCollider = world:newRectangleCollider(16, 136, 16, 16)
+        leftDoorCollider = world:newRectangleCollider(16, 136, 15, 16)
         leftDoorCollider:setCollisionClass('Wall')
         leftDoorCollider:setType('static')
         leftDoorColliderExists = true
@@ -237,7 +267,7 @@ function createCollisionDoors(direction, type)
         end
 
     elseif direction == 'right' then
-        rightDoorCollider = world:newRectangleCollider(224, 136, 16, 16)
+        rightDoorCollider = world:newRectangleCollider(225, 136, 16, 16)
         rightDoorCollider:setCollisionClass('Wall')
         rightDoorCollider:setType('static')
         rightDoorColliderExists = true
