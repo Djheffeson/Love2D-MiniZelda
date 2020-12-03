@@ -50,6 +50,8 @@ function spawnLeever(type)
     leever.colliderExists = false
     leever.colliderFrontExists = false
 
+    leever.pushedDirection = 'none'
+
     leever.emergeTimer = 0
     leever.walkingTimer = 0
     leever.dippingTimer = 0
@@ -82,7 +84,7 @@ function leevers:update(dt)
 
                     leever.x, leever.y = leever.collider:getPosition()
 
-                    local x, y = (getDirectionVector(Player.direction) * 600 * dt):unpack()
+                    local x, y = (getDirectionVector(leever.pushedDirection) * 600 * dt):unpack()
                     leever.collider:setLinearVelocity(x * leever.speed, y * leever.speed)
 
                     leever.pushedTimer = leever.pushedTimer + 1 * dt
@@ -426,10 +428,22 @@ function checkIfReceiveDamage(index)
     local leever = leevers[index]
 
     if leever.collider:enter('Weapon') and leever.invincible == false then
+
+        local sword
+        for i, swordT in ipairs(swordThrow) do
+            sword = swordT
+        end
+
         leever.health = leever.health - Sword.damage
         leever.invincible = true
         leever.stateTmp = leever.state
         leever.state = 'pushed'
+        if sword == nil then
+            leever.pushedDirection = Sword.direction
+        else
+            leever.pushedDirection = sword.direction
+        end
+        
         leever.pushedTimer = 0
     end
 end

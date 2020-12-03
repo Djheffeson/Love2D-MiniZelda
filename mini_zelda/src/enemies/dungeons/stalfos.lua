@@ -29,6 +29,7 @@ function spawnStalfo()
     stalfo.collider:setFixedRotation(true)
     stalfo.colliderExists = true
 
+    stalfo.pushedDirection = 'none'
     stalfo.turnTimer = 0
     stalfo.pushedTimer = 0
     stalfo.invincibleTimer = 0
@@ -103,9 +104,8 @@ function stalfos:update(dt)
 
         elseif stalfo.state == 'pushed' then
             stalfo.pushedTimer = stalfo.pushedTimer + 1 * dt
-
             stalfo.x, stalfo.y = stalfo.collider:getPosition()
-            local x, y = (getDirectionVector(Player.direction) * dt * 600):unpack()
+            local x, y = (getDirectionVector(stalfo.pushedDirection) * dt * 600):unpack()
             stalfo.collider:setLinearVelocity(x * stalfo.speed, y * stalfo.speed)
 
             if stalfo.pushedTimer >= 0.133 then
@@ -130,10 +130,21 @@ function checkStalfoDamage(index)
     local stalfo = stalfos[index]
 
     if stalfo.collider:enter('Weapon') and stalfo.invincible == false then
+
+        local sword
+        for i, swordT in ipairs(swordThrow) do
+            sword = swordT
+        end
+
         stalfo.health = stalfo.health - Sword.damage
         stalfo.invincible = true
         stalfo.invincibleTimer = 0
         stalfo.state = 'pushed'
+        if sword == nil then
+            stalfo.pushedDirection = Sword.direction
+        else
+            stalfo.pushedDirection = sword.direction
+        end
         if stalfo.health >= 1 then
             sounds.enemyHit:stop()
             sounds.enemyHit:play()

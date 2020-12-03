@@ -43,7 +43,8 @@ function spawnGoriya()
     goriya.turn = false
     goriya.projectileReturn = false
     goriya.tmpState = 'idle'
-    
+    goriya.pushedDirection = 'none'
+
     goriya.turnTimer = 0
     goriya.pushedTimer = 0
     goriya.invincibleTimer = 0
@@ -144,7 +145,7 @@ function goriyas:update(dt)
         elseif goriya.state == 'pushed' then
 
             goriya.x, goriya.y = goriya.collider:getPosition()
-            local x, y = (getDirectionVector(Sword.direction) * dt * 600):unpack()
+            local x, y = (getDirectionVector(goriya.pushedDirection) * dt * 600):unpack()
             goriya.collider:setLinearVelocity(x * goriya.speed, y * goriya.speed)
 
             goriya.pushedTimer = goriya.pushedTimer + 1 * dt
@@ -208,11 +209,22 @@ end
 function checkGoriyaDamage(index)
     local goriya = goriyas[index]
     if goriya.collider:enter('Weapon') and goriya.invincible == false then
+
+        local sword
+        for i, swordT in ipairs(swordThrow) do
+            sword = swordT
+        end
+
         goriya.pushedTimer = 0
         goriya.invincibleTimer = 0
         goriya.invincible = true
         goriya.tmpState = goriya.state
         goriya.state = 'pushed'
+        if sword == nil then
+            goriya.pushedDirection = Sword.direction
+        else
+            goriya.pushedDirection = sword.direction
+        end
         goriya.health = goriya.health - Sword.damage
 
         if goriya.health > 0 then

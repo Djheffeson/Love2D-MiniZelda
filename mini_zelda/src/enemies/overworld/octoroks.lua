@@ -58,6 +58,8 @@ function spawnOctorok(type)
 
     octorok.currentAnimation = octorok.animationDown
     
+    octorok.pushedDirection = 'none'
+
     octorok.timer_actions = 0
     octorok.timer_attack = 0
     octorok.timer_invincible = 0
@@ -75,11 +77,22 @@ function octoroks:update(dt)
         if not (octorok.health <= 0) then
 
             if octorok.collider:enter('Weapon') and octorok.invincible == false then
+
+                local sword
+                for i, swordT in ipairs(swordThrow) do
+                    sword = swordT
+                end
+
                 octorok.health = octorok.health - Sword.damage
                 octorok.invincible = true
                 octorok.timer_invincible = 0
                 octorok.timer_push = 0
                 octorok.state = 'pushed'
+                if sword == nil then
+                    octorok.pushedDirection = Sword.direction
+                else
+                    octorok.pushedDirection = sword.direction
+                end
                 if octorok.health >= 1 then
                     sounds.enemyHit:stop()
                     sounds.enemyHit:play()
@@ -113,7 +126,7 @@ function octoroks:update(dt)
                 octorok.timer_push = octorok.timer_push + 1 * dt
                 octorok.x, octorok.y = octorok.collider:getPosition()
 
-                local x, y = (getDirectionVector(Player.direction)  * dt * 600):unpack()
+                local x, y = (getDirectionVector(octorok.pushedDirection)  * dt * 600):unpack()
                 octorok.collider:setLinearVelocity(x * octorok.walk, y * octorok.walk)
 
                 if octorok.timer_push >= 0.133 then
