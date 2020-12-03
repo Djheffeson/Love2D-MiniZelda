@@ -82,6 +82,7 @@ function goriyas:update(dt)
 
         if goriya.state == 'idle' then
 
+            -- set a timer for goriya actions
             goriya.turnTimer = goriya.turnTimer + 1 * dt
             if goriya.turnTimer >= 1 then
                 if math.random(3) == 1 then
@@ -135,12 +136,12 @@ function goriyas:update(dt)
             end
 
         elseif goriya.state == 'pushed' then
-            goriya.pushedTimer = goriya.pushedTimer + 1 * dt
 
             goriya.x, goriya.y = goriya.collider:getPosition()
             local x, y = (getDirectionVector(Player.direction) * dt * 600):unpack()
             goriya.collider:setLinearVelocity(x * goriya.speed, y * goriya.speed)
 
+            goriya.pushedTimer = goriya.pushedTimer + 1 * dt
             if goriya.pushedTimer >= 0.133 then
                 goriya.state = goriya.tmpState
             end
@@ -157,7 +158,7 @@ function goriyas:draw()
         else
             love.graphics.setColor(1,1,1,1)
         end
-        
+        love.graphics.print(i, goriya.x-4, goriya.y-16)
         goriya.currentAnim:draw(sprites.goriya, goriya.x-8, goriya.y-8)
         love.graphics.setColor(1,1,1,1)
     end
@@ -215,8 +216,8 @@ end
 function goriyaDeath(index)
     local goriya = goriyas[index]
 
-    -- check if
     for i, projectile in ipairs(goriyasProjectile) do
+        -- check if goriya has a projectile and delete it
         if projectile.id == index and projectile.exists == true then
             goriyasProjectileRemove(i)
         end
@@ -226,6 +227,10 @@ function goriyaDeath(index)
         goriya.collider:destroy()
         goriya.colliderExists = false
     end
+
+    -- subtracts a goriya from the goriyas list in the current room
+    enemiesDungeon1_rooms[currentDungeonRoom][4] = enemiesDungeon1_rooms[currentDungeonRoom][4] - 1
+
     table.remove(goriyas, index)
 end
 
