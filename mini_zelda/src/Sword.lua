@@ -8,7 +8,7 @@ function Sword:init()
     Sword.state = 'invisible'
     Sword.timer = -1
 
-    Sword.damage = 10
+    Sword.damage = 1
 
     Sword.sprite = sprites.woodenSword
     Sword.grid = anim8.newGrid(16, 16, Sword.sprite:getWidth(), Sword.sprite:getHeight())

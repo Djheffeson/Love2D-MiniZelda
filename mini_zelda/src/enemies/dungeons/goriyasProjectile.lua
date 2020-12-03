@@ -11,7 +11,6 @@ function goriyasProjectileSpawn(x, y, direction, id)
     projectile.speed = projectile.initialSpeed
 
     projectile.hit = false
-    projectile.exists = true
     projectile.owner = goriyas[projectile.id]
 
     projectile.dx = 0
@@ -28,13 +27,10 @@ end
 function goriyasProjectile:update(dt)
     for i, projectile in ipairs(goriyasProjectile) do
 
-        if projectile.exists == false then
-            return
-        end
-
         checkIfGoriyaProjectileHitPlayer(i)
         
         projectile.speed = projectile.initialSpeed
+        projectile.owner = goriyas[projectile.id]
 
         -- check if the projectile hit the wall
         if (projectile.x <= 26 or projectile.x >= 232) or (projectile.y <= 80 or projectile.y >= 206) then
@@ -48,7 +44,7 @@ function goriyasProjectile:update(dt)
         -- create a delay for the projectile stay on the wall for a few milliseconds
         projectile.waitTimer = projectile.waitTimer + 1 * dt
         if projectile.waitTimer < 0 then
-            return
+            goto continue
         end
 
         -- check if the projectile reach the maximum range
@@ -62,7 +58,7 @@ function goriyasProjectile:update(dt)
             if distanceFrom(projectile.x, projectile.y, projectile.owner.x, projectile.owner.y) < 12 then
                 projectile.owner.projectileReturn = true
                 goriyasProjectileRemove(i)
-                return
+                goto continue
             end
             projectileBackToGoriya(i)
         end
@@ -92,6 +88,8 @@ function goriyasProjectile:update(dt)
         projectile.x = projectile.x + projectile.dx * dt
         projectile.y = projectile.y + projectile.dy * dt
 
+        ::continue::
+        
         -- change the angle of the rotation of the projectile
         projectile.angle = projectile.angle + 1
         if projectile.angle >= 359 then
@@ -107,36 +105,26 @@ function goriyasProjectile:draw()
         else
             love.graphics.draw(projectile.sprite, projectile.x, projectile.y, math.deg(projectile.angle), 1, 1, 2.5, 4)
         end
-        love.graphics.setColor(0, 1, 0, 1)
-        love.graphics.print(projectile.id, projectile.x-2, projectile.y-12)
-        love.graphics.setColor(1, 1, 1, 1)
     end
 end
 
 function projectileBackToGoriya(index)
     local projectile = goriyasProjectile[index]
-    local goriyaOwner = goriyas[projectile.id]
-    --print('backking', index, projectile.angle)
-    if goriyaOwner == nil then
-        print('nilll', index)
-        goriyasProjectileRemove(index)
-        return
-    end
     
     -- make the projectile follow the goriya
-    if projectile.x < goriyaOwner.x then
+    if projectile.x < projectile.owner.x then
         projectile.dx = projectile.speed
     end
 
-    if projectile.x > goriyaOwner.x then
+    if projectile.x > projectile.owner.x then
         projectile.dx = -projectile.speed
     end
 
-    if projectile.y < goriyaOwner.y then
+    if projectile.y < projectile.owner.y then
         projectile.dy = projectile.speed
     end
 
-    if projectile.y > goriyaOwner.y then
+    if projectile.y > projectile.owner.y then
         projectile.dy = -projectile.speed
     end
 end
@@ -153,14 +141,11 @@ end
 
 function goriyasProjectileRemove(index)
     local projectile = goriyasProjectile[index]
-    print('deleted:', index)
-    projectile.exists = false
     table.remove(goriyasProjectile, index)
 end
 
 function deleteAllGoriyasProjectile()
     for i, projectile in ipairs(goriyasProjectile) do
-        projectile.exists = false
         table.remove(goriyasProjectile, i)
     end
 end

@@ -19,6 +19,8 @@ function spawnGoriya()
     goriya.damage = 1
     goriya.health = 3
     goriya.invincible = false
+    goriya.dead = false
+    goriya.drops = {1,3}
 
     goriya.directions = {'up', 'down', 'left', 'right'}
     goriya.direction = goriya.directions[math.random(#goriya.directions)]
@@ -55,9 +57,13 @@ function goriyas:update(dt)
     -- loop for all goriyas in the table
     for i, goriya in ipairs(goriyas) do
 
+        if goriya.dead then
+            goto continue
+        end
+
         if goriya.health <= 0 then
             goriyaDeath(i)
-            return
+            goto continue
         end
 
         if goriya.invincible then
@@ -94,7 +100,7 @@ function goriyas:update(dt)
                     goriya.turnTimer = 0
                     goriya.shot = false
                     goriya.projectileReturn = false
-                    return
+                    goto continue
                 end
 
                 if checkIfSeePlayer(goriya.x, goriya.y, goriya.direction) == true and 
@@ -104,7 +110,7 @@ function goriyas:update(dt)
                     goriya.turnTimer = 0
                     goriya.shot = false
                     goriya.projectileReturn = false
-                    return
+                    goto continue
                 end
             end
 
@@ -138,7 +144,7 @@ function goriyas:update(dt)
         elseif goriya.state == 'pushed' then
 
             goriya.x, goriya.y = goriya.collider:getPosition()
-            local x, y = (getDirectionVector(Player.direction) * dt * 600):unpack()
+            local x, y = (getDirectionVector(Sword.direction) * dt * 600):unpack()
             goriya.collider:setLinearVelocity(x * goriya.speed, y * goriya.speed)
 
             goriya.pushedTimer = goriya.pushedTimer + 1 * dt
@@ -146,6 +152,7 @@ function goriyas:update(dt)
                 goriya.state = goriya.tmpState
             end
         end
+        ::continue::
     end
 end
 
@@ -153,15 +160,28 @@ function goriyas:draw()
     goriyasProjectile:draw()
     for i, goriya in ipairs(goriyas) do
 
+        if goriya.dead then
+            goto continue
+        end
+
         if goriya.invincible then
             love.graphics.setColor(1,0,0,1)
         else
             love.graphics.setColor(1,1,1,1)
         end
-        love.graphics.print(i, goriya.x-4, goriya.y-16)
+
         goriya.currentAnim:draw(sprites.goriya, goriya.x-8, goriya.y-8)
         love.graphics.setColor(1,1,1,1)
+        ::continue::
     end
+end
+
+function goriyaDrop(drops)
+    if math.random(10) == 1 then
+        local item_drop = drops[math.random(#drops)]
+        return item_drop
+    end
+    return 0
 end
 
 function setGoriyaDirection(index)
@@ -194,6 +214,11 @@ function checkGoriyaDamage(index)
         goriya.tmpState = goriya.state
         goriya.state = 'pushed'
         goriya.health = goriya.health - Sword.damage
+
+        if goriya.health > 0 then
+            sounds.enemyHit:stop()
+            sounds.enemyHit:play()
+        end
     end
 end
 
@@ -216,9 +241,11 @@ end
 function goriyaDeath(index)
     local goriya = goriyas[index]
 
+    deathSpawn(goriya.x-7.5, goriya.y-7.5, goriyaDrop(goriya.drops))
+
     for i, projectile in ipairs(goriyasProjectile) do
         -- check if goriya has a projectile and delete it
-        if projectile.id == index and projectile.exists == true then
+        if projectile.id == index then
             goriyasProjectileRemove(i)
         end
     end
@@ -231,7 +258,7 @@ function goriyaDeath(index)
     -- subtracts a goriya from the goriyas list in the current room
     enemiesDungeon1_rooms[currentDungeonRoom][4] = enemiesDungeon1_rooms[currentDungeonRoom][4] - 1
 
-    table.remove(goriyas, index)
+    goriya.dead = true
 end
 
 function deleteGoriyas()
