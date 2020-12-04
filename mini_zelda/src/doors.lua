@@ -10,7 +10,7 @@ doorsCreated = false
 -- up, down, left, right
 doorsState = {
     {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
-    {0,0,0,0}, {0,0,1,0}, {0,0,0,2}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
+    {0,0,0,0}, {0,1,1,0}, {0,0,0,2}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
     {0,0,0,0}, {2,0,0,1}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
     {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
     {0,0,0,0}, {0,0,0,0}, {2,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}
@@ -23,9 +23,10 @@ function doorsSpawn()
 end
 
 function doors:update(dt)
-    for i, door in ipairs(currentDoors) do
-        checkIfPlayerTryToOpen()
-        if gameState == 'running' and closedDoorsCreated == false then
+
+    if gameState == 'running' and closedDoorsCreated == false then
+        -- iterates for al the doors and close some
+        for i, door in ipairs(currentDoors) do
             for j, closedDoor in ipairs(closedDoors) do
                 if door.name == closedDoor then
 
@@ -39,6 +40,10 @@ function doors:update(dt)
                 end
             end
         end
+    end
+
+    for i, door in ipairs(currentDoors) do
+        checkIfPlayerTryToOpen()
         closedDoorsLogic(i)
     end
 end
@@ -99,6 +104,11 @@ function createDoors(type, nxRoom)
                 door.y = doorL.y + 40
 
                 if doorsState[currentDungeonRoom][1] == 1 then
+
+                    -- check if a door that player is going to walk thru is gonna be closed
+                    if Player.direction == 'down' then
+                        Player.enterInClosedDoor = true
+                    end
                     table.insert(closedDoors, doorL.name)
 
                 elseif doorsState[currentDungeonRoom][1] == 2 then
@@ -115,14 +125,20 @@ function createDoors(type, nxRoom)
                 colliderDoors2:setCollisionClass('Wall')
                 colliderDoors2:setType('static')
                 table.insert(colliders, colliderDoors2)
-                
-            elseif doorL.name == 'left' then
+            end
+
+            if doorL.name == 'left' then
                 door.currentDoor = door.openLeft
 
                 door.x = doorL.x
                 door.y = doorL.y + 32
 
                 if doorsState[currentDungeonRoom][3] == 1 then
+
+                    -- check if a door that player is going to walk thru is gonna be closed
+                    if Player.direction == 'right' then
+                        Player.enterInClosedDoor = true
+                    end
                     table.insert(closedDoors, doorL.name)
 
                 elseif doorsState[currentDungeonRoom][3] == 2 then
@@ -134,14 +150,19 @@ function createDoors(type, nxRoom)
                 colliderDoors1:setCollisionClass('Wall')
                 colliderDoors1:setType('static')
                 table.insert(colliders, colliderDoors1)
-
-            elseif doorL.name == 'down' then
+            end
+            if doorL.name == 'down' then
                 door.currentDoor = door.openDown
 
                 door.x = doorL.x
                 door.y = doorL.y + 24
 
                 if doorsState[currentDungeonRoom][2] == 1 then
+
+                    -- check if a door that player is going to walk thru is gonna be closed
+                    if Player.direction == 'up' then
+                        Player.enterInClosedDoor = true
+                    end
                     table.insert(closedDoors, doorL.name)
 
                 elseif doorsState[currentDungeonRoom][2] == 2 then
@@ -158,14 +179,19 @@ function createDoors(type, nxRoom)
                 colliderDoors2:setCollisionClass('Wall')
                 colliderDoors2:setType('static')
                 table.insert(colliders, colliderDoors2)
-                
-            elseif doorL.name == 'right' then
+            end
+            if doorL.name == 'right' then
                 door.currentDoor = door.openRight
 
                 door.x = doorL.x - 16
                 door.y = doorL.y + 32
 
                 if doorsState[currentDungeonRoom][4] == 1 then
+
+                    -- check if a door that player is going to walk thru is gonna be closed
+                    if Player.direction == 'left' then
+                        Player.enterInClosedDoor = true
+                    end
                     table.insert(closedDoors, doorL.name)
 
                 elseif doorsState[currentDungeonRoom][4] == 2 then

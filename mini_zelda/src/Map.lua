@@ -103,11 +103,17 @@ function Map:init()
 end
 
 function Map:update(dt)
+
+    -- check if is not the dungeon exit for not activate the "changing_room"
+    local isNotDungeon1Exit = not (Map.type == 'dungeon_1' and currentDungeonRoom == 27)
+
     if Player.y <= 67 and love.keyboard.isDown('up') and Player.direction == 'up' then
         direct = 'up'
         changing_room = true
 
-    elseif Player.y >= 226 and love.keyboard.isDown('down') and Player.direction == 'down' then
+    elseif Player.y >= 226 and love.keyboard.isDown('down') and Player.direction == 'down' 
+            and isNotDungeon1Exit then
+
         direct = 'down'
         changing_room = true
 
@@ -127,12 +133,10 @@ function Map:update(dt)
             nextRoom(direct)
         end
         Map.timer1 = 0
+    elseif gameState ~= 'running' then
+        gameState = 'animation'
     else
-        Map.timer1 = Map.timer1 + 1 * dt
-        if Map.timer1 >= 0.25 then
-            gameState = 'running'
-        end
-        Map.timer = 0
+        gameState = 'running'
     end
 end
 
@@ -146,21 +150,29 @@ end
 function changeMap(type_map)
     Map.type = type_map
     if type_map == 'overworld' then
+        loading = true
+        
+        Player.collider:setPosition(120, 129)
+        Player.x, Player.y = Player.collider:getPosition()
+
         map = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
         deleteRoomCollisions()
         createRoomCollisions()
         deleteAllEntities()
         enemiesPerRoom()
-        Player.collider:setPosition(123, 128)
     end
 
     if type_map == 'dungeon_1' then
+
+        Player.collider:setPosition(128, 231)
+        Player.x, Player.y = Player.collider:getPosition()
+
         map = sti(dungeon1Rooms[currentDungeonRoom], { 'box2d' })
         deleteRoomCollisions()
         createRoomCollisions()
         deleteAllEntities()
+        enemiesPerRoom()
         doorsSpawn()
-        Player.collider:setPosition(128, 202)
     end
     
     doorsCreated = false
@@ -330,6 +342,9 @@ function changeRoom(room)
     elseif Map.type == 'dungeon_1' then
         currentDungeonRoom = room
         map = sti(dungeon1Rooms[currentDungeonRoom], { 'box2d' })
+
+        Player.enterInDungeonRoom = true
+        Player.walkDistance = 16
     end
     
     deleteRoomCollisions()
@@ -377,13 +392,13 @@ function checkLayer(layer, x, y)
 
     if map.layers[layer].data[y-3][x] ~= nil then
         local tileID = map.layers[layer].data[y-3][x].gid
-
+        
         if layer == 'Ground_layer' then
+            
             if tileID == 3 then
                 return 'sand'
-            end
 
-            if tileID == 9 and Map.type == 'dungeon_1' then
+            elseif tileID == 9 and Map.type == 'dungeon_1' then
                 return 'dungeon_brick'
             end
 

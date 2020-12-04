@@ -28,6 +28,10 @@ function Player:init()
     Player.bombs = 0
     Player.max_hearts = 3
     Player.hearts = Player.max_hearts
+    
+    Player.enterInClosedDoor = false
+    Player.exitEntrance = true
+    Player.walkDistance = 16
 
     Player.collider = world:newCircleCollider(Player.x, Player.y, 5)
     Player.collider:setCollisionClass('Player')
@@ -49,10 +53,27 @@ function Player:init()
     Player.attackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
 
     Player.timer = 0
+    Player.animationTimer = 0
+    Player.waitTimer = 0
 end
 
 function Player:update(dt)
-    --print(Player.collider:getPosition())
+
+    if Player.enter == true then
+        gameState = 'animation'
+        playerEnterAnimation(dt)
+    end
+
+    if Player.out == true then
+        gameState = 'animation'
+        playerOutAnimation(dt)
+    end
+
+    if Player.enterInDungeonRoom == true then
+        gameState = 'animation'
+        playerWalkAnimation(dt, Player.walkDistance)
+    end
+
     if gameState == 'running' then
         
         if Player.hearts <= 0 then
@@ -151,11 +172,23 @@ function Player:update(dt)
             end
         end
         Player:pickupItems()
+
     elseif gameState == 'changingRoom' then
         Player.currentAnimation:update(dt)
-        if Map.type == 'dungeon_1' then
-            Player.collider:setLinearVelocity(Player.vectorX * 100, Player.vectorY * 100)
-            Player.x, Player.y = Player.collider:getPosition()
+        Player.collider:setLinearVelocity(0, 0)
+
+    elseif gameState == 'animation' then
+        Player.currentAnimation:update(dt)
+
+        -- make the player walk more for the door close behind them
+        if Player.enterInClosedDoor then
+            Player.walkDistance = 32
+            Player.animationTimer = Player.animationTimer + 1 * dt
+            if Player.animationTimer >= 1 then
+                gameState = 'running'
+            end
+        else
+            gameState = 'running'
         end
     end
 end
@@ -167,9 +200,7 @@ function Player:draw()
         love.graphics.setColor(1, 1, 1, 1)
     end
     -- Draw the animation
-    Player.currentAnimation:draw(
-        sprites.linkSheet, Player.x-9, Player.y-10
-    )
+    Player.currentAnimation:draw(sprites.linkSheet, Player.x-8.2, Player.y-10)
     love.graphics.setColor(1, 1, 1, 1)
 end
 
@@ -244,21 +275,97 @@ function Player:pickupItems()
                 sounds.pickupRupee:play()
             end
         end
-
-        if item.collected == true then
-            
-        end
     end
 end
 
 function checkPlayerEnterInDoor()
     if Map.type == 'overworld' then
-        if currentOverworldRoom == 3 and (Player.x >= 117.1 and Player.x <= 122.8) and (Player.y <= 129.5 and Player.y >= 125.1) then
-            changeMap('dungeon_1')
+        local layer = checkLayer('Ground_layer', map:convertPixelToTile(Player.x+12, Player.y+13))
+
+        -- check if player is in the blank tile for enter in the dungeon
+        if currentOverworldRoom == 3 and layer == 'none' and Player.exitEntrance and Player.direction == 'up' then
+            Player.exitEntrance = false
+            Player.enter = true
         end
-    elseif Map.type == 'dungeon_1' then
-        if currentDungeonRoom == 27 and Player.y >= 210.6 then
+
+        if layer ~= 'none' and Player.exitEntrance == false then
+            Player.exitEntrance = true
+        end
+
+    -- check if the player is in the right place for they get out of the dungeon
+    elseif Map.type == 'dungeon_1' and currentDungeonRoom == 27 then
+
+        if currentDungeonRoom == 27 and Player.y >= 226 and Player.direction == 'down' then
             changeMap('overworld')
+            Player.y = 152
+            Player.out = true
         end
+    end
+end
+
+function playerEnterAnimation(dt)
+    deleteAllEntities()
+    mapOverlap = true -- make the map be draw on top of everything
+    
+    Player.x = 120
+    Player.y = Player.y + 30 * dt
+    
+    if Player.y > 152 then
+        -- create a wait time for the black rectangle disappear
+        Player.waitTimer = Player.waitTimer + 1 * dt
+        if Player.waitTimer < 0.5 then
+            loading = true
+            return
+        else
+            loading = false
+            Player.waitTimer = 0
+        end
+        
+        mapOverlap = false
+        Player.enter = false
+        Player.walkDistance = 16
+        Player.animationTimer = 0
+        Player.enterInDungeonRoom = true
+        changeMap('dungeon_1')
+    end
+end
+
+function playerOutAnimation(dt)
+    deleteAllEntities()
+    mapOverlap = true -- make the map be draw on top of everything
+
+    -- create a wait time for the black rectangle disappear
+    Player.waitTimer = Player.waitTimer + 1 * dt
+    if Player.waitTimer < 0.5 then
+        return
+    else
+        loading = false
+    end
+
+    Player.x = 119
+    Player.y = Player.y - 30 * dt
+    
+    Player.collider:setPosition(119, 129)
+    if Player.y <= 129 then
+        Player.waitTimer = 0
+        mapOverlap = false
+        Player.out = false
+        Player.x, Player.y = Player.collider:getPosition()
+        enemiesPerRoom()
+    end
+end
+
+function playerWalkAnimation(dt, walkDistance)
+
+    Player.x = Player.x + (Player.vectorX * WALK_SPEED * dt)
+    Player.y = Player.y + (Player.vectorY * WALK_SPEED * dt)
+    local x, y = Player.collider:getPosition()
+
+    -- check if the player walked enough
+    if distanceFrom(Player.x, Player.y, x, y) >= walkDistance then
+        Player.collider:setPosition(Player.x, Player.y)
+        Player.enterInDungeonRoom = false
+        Player.enterInClosedDoor = false
+        getDistancePosition = false
     end
 end

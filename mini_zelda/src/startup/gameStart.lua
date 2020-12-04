@@ -42,4 +42,6 @@ function gameStart()
     sword = Sword()
     player = Player()
     GUI = GUI()
+
+    mapOverlap = false
 end

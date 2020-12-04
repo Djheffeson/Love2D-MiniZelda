@@ -22,7 +22,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.clear(23/255, 75/255, 1, 1)
 
     push:start()
 
@@ -36,6 +35,17 @@ function love.draw()
     GUI:draw()
     swordThrow:draw()
     --world:draw() -- debug collisions
+    
+    if mapOverlap then
+        map1:draw()
+    end
+
+    -- draw a black rectangle for loading
+    if loading then
+        love.graphics.setColor(0,0,0,1)
+        love.graphics.rectangle('fill', 0, 0, 256, 672)
+        love.graphics.setColor(1,1,1,1)
+    end
     
     push:finish()
 end
