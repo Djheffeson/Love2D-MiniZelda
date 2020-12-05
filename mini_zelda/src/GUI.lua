@@ -53,4 +53,16 @@ function GUI:draw()
     love.graphics.print(keys, 96, 32)
     local bombs = string.format('X%d', Player.bombs)
     love.graphics.print(bombs, 96, 40)
+
+    -- print mouse position
+    local mouse = {}
+    mouse.x, mouse.y = love.mouse.getPosition()
+    mouse.x, mouse.y = math.floor(mouse.x/3), math.floor(mouse.y/3)
+
+    mouse.x = string.format('X:%d', mouse.x)
+    mouse.y = string.format('Y:%d', mouse.y)
+
+    love.graphics.print(mouse.x, 8, 8)
+    love.graphics.print(mouse.y, 8, 16)
+    
 end

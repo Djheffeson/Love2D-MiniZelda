@@ -34,7 +34,7 @@ function love.draw()
     doors:draw()
     GUI:draw()
     swordThrow:draw()
-    --world:draw() -- debug collisions
+    world:draw() -- debug collisions
     
     if mapOverlap then
         map1:draw()
@@ -43,7 +43,7 @@ function love.draw()
     -- draw a black rectangle for loading
     if loading then
         love.graphics.setColor(0,0,0,1)
-        love.graphics.rectangle('fill', 0, 0, 256, 672)
+        love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
         love.graphics.setColor(1,1,1,1)
     end
     

@@ -10,6 +10,7 @@ require 'src/enemies/dungeons/keeses'
 require 'src/enemies/dungeons/gels'
 require 'src/enemies/dungeons/stalfos'
 require 'src/enemies/dungeons/goriyas'
+require 'src/enemies/dungeons/wallMasters'
 
 sounds.enemyHit:setVolume(0.5)
 
@@ -33,12 +34,13 @@ enemies_room = {
 -- gel = 2
 -- stalfo = 3
 -- goriya = 4
+-- wall master = 5
 enemiesDungeon1_rooms = {
-    {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
-    {0,0,0,0}, {0,3,0,0}, {0,5,0,0}, {0,0,0,3}, {0,0,0,0}, {0,0,0,0},
-    {0,0,0,0}, {6,0,0,0}, {0,0,5,0}, {8,0,0,0}, {0,0,0,0}, {0,0,0,0},
-    {0,0,0,0}, {0,0,0,0}, {0,0,3,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
-    {0,0,0,0}, {3,0,0,0}, {0,0,0,0}, {0,0,5,0}, {0,0,0,0}, {0,0,0,0}
+    {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
+    {0,0,0,0,0}, {0,3,0,0,0}, {0,5,0,0,0}, {0,0,0,3,0}, {0,0,0,0,0}, {0,0,0,0,0},
+    {0,0,0,0,0}, {6,0,0,0,0}, {0,0,5,0,0}, {8,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
+    {0,0,0,0,0}, {0,0,0,0,0}, {0,0,3,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
+    {0,0,0,0,0}, {3,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,1}, {0,0,0,0,0}, {0,0,0,0,0}
 }
 
 function enemies:update(dt)
@@ -77,6 +79,10 @@ function enemies:update(dt)
     if goriyas ~= nil then
         goriyas:update(dt)
     end
+
+    if wallMasters ~= nil then
+        wallMasters:update(dt)
+    end
 end
 
 function enemies:draw()
@@ -114,6 +120,10 @@ function enemies:draw()
 
     if goriyas ~= nil then
         goriyas:draw()
+    end
+
+    if wallMasters ~= nil then
+        wallMasters:draw()
     end
 end
 
@@ -167,6 +177,10 @@ function enemiesPerRoom()
             spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][4], 'goriyas')
         end
 
+        if enemiesDungeon1_rooms[currentDungeonRoom][5] ~= nil then
+            spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][5], 'wall_master')
+        end
+
     end
 
 end
@@ -216,6 +230,10 @@ function spawnEnemy(quantity, enemy)
             spawnGoriya()
         end
 
+        if enemy == 'wall_master' then
+            spawnWallMaster()
+        end
+
     end
 end
 
@@ -229,4 +247,5 @@ function deleteAllEntities()
     deleteGels()
     deleteStalfos()
     deleteGoriyas()
+    deleteWallMasters()
 end
