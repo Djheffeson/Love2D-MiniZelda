@@ -6,7 +6,7 @@ function spawnStalfo()
     repeat
         stalfo.x = multiple16(love.math.random(16,256))
         stalfo.y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(stalfo.x+12, stalfo.y+12)) == 'dungeon_brick'
+    until checkLayer('Ground_layer', map:convertPixelToTile(stalfo.x+6, stalfo.y+6)) == 'dungeon_brick'
 
     stalfo.vectorX = 0
     stalfo.vectorY = 0

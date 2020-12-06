@@ -10,7 +10,8 @@ function spawnLeever(type)
     repeat
         x = multiple16(love.math.random(16,256))
         y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'sand'
+        print('a')
+    until checkLayer('Ground_layer', map:convertPixelToTile(x+6, y+6)) == 'sand'
 
     leever.x = x
     leever.y = y

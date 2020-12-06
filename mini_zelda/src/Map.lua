@@ -1,20 +1,20 @@
 Map = Class{}
 
-room_1 = 'assets/tilemaps/overworld/room_1.lua'
-room_2 = 'assets/tilemaps/overworld/room_2.lua'
+room_1 = nil
+room_2 = nil
 room_3 = 'assets/tilemaps/new_overworld/room_3.lua'
-room_4 = 'assets/tilemaps/overworld/room_4.lua'
-room_5 = 'assets/tilemaps/overworld/room_5.lua'
-room_6 = 'assets/tilemaps/overworld/room_6.lua'
-room_7 = 'assets/tilemaps/overworld/room_7.lua'
-room_8 = 'assets/tilemaps/overworld/room_8.lua'
-room_9 = 'assets/tilemaps/overworld/room_9.lua'
-room_10 = 'assets/tilemaps/overworld/room_10.lua'
-room_11 = 'assets/tilemaps/overworld/room_11.lua'
-room_12 = 'assets/tilemaps/overworld/room_12.lua'
-room_13 = 'assets/tilemaps/overworld/room_13.lua'
-room_14 = 'assets/tilemaps/overworld/room_14.lua'
-room_15 = 'assets/tilemaps/overworld/room_15.lua'
+room_4 = 'assets/tilemaps/new_overworld/room_4.lua'
+room_5 = 'assets/tilemaps/new_overworld/room_5.lua'
+room_6 = nil
+room_7 = 'assets/tilemaps/new_overworld/room_7.lua'
+room_8 = 'assets/tilemaps/new_overworld/room_8.lua'
+room_9 = 'assets/tilemaps/new_overworld/room_9.lua'
+room_10 = 'assets/tilemaps/new_overworld/room_10.lua'
+room_11 = 'assets/tilemaps/new_overworld/room_11.lua'
+room_12 = 'assets/tilemaps/new_overworld/room_12.lua'
+room_13 = 'assets/tilemaps/new_overworld/room_13.lua'
+room_14 = 'assets/tilemaps/new_overworld/room_14.lua'
+room_15 = 'assets/tilemaps/new_overworld/room_15.lua'
 room_16 = 'assets/tilemaps/overworld/room_16.lua'
 room_17 = 'assets/tilemaps/overworld/room_17.lua'
 room_18 = 'assets/tilemaps/overworld/room_18.lua'
@@ -407,11 +407,21 @@ function checkLayer(layer, x, y)
 
         elseif layer == 'Water_layer' then
             watersID = {
-                73, 74, 75, 78, 79, 80,
-                91, 92, 93, 97, 98, 99,
-                109, 110, 111, 115, 116, 117
+                288, 289, 290, 291, 292, 293,
+                324, 325, 326, 327, 328, 329,
+                360, 361, 362, 363, 364, 365,
+                396, 397, 398, 399, 400, 401,
+                432, 433, 434, 435, 436, 437,
+                468, 469, 470, 471, 472, 473,
+
+                300, 301, 302, 303, 304, 305,
+                336, 337, 338, 339, 340, 341,
+                372, 373, 374, 375, 376, 377,
+                408, 409, 410, 411, 412, 413,
+                444, 445, 446, 447, 448, 449,
+                480, 481, 482, 483, 484, 485, 
             }
-            
+
             if contains(tileID, watersID) then
                 return 'water'
             end
