@@ -58,6 +58,7 @@ function Player:init()
 end
 
 function Player:update(dt)
+    print(checkLayer('Ground_layer', map:convertPixelToTile(Player.x, Player.y)))
 
     if Player.enter == true then
         gameState = 'animation'
@@ -280,7 +281,7 @@ end
 
 function checkPlayerEnterInDoor()
     if Map.type == 'overworld' then
-        local layer = checkLayer('Ground_layer', map:convertPixelToTile(Player.x+12, Player.y+13))
+        local layer = checkLayer('Ground_layer', map:convertPixelToTile(Player.x, Player.y))
 
         -- check if player is in the blank tile for enter in the dungeon
         if currentOverworldRoom == 3 and layer == 'none' and Player.exitEntrance and Player.direction == 'up' then

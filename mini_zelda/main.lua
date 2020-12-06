@@ -26,12 +26,12 @@ function love.draw()
     push:start()
 
     map1:draw()
+    doors:draw()
     items:draw()
     deaths:draw()
     enemies:draw()
     sword:draw()
     player:draw()
-    doors:draw()
     GUI:draw()
     swordThrow:draw()
     world:draw() -- debug collisions

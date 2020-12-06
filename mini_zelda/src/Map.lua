@@ -2,7 +2,7 @@ Map = Class{}
 
 room_1 = 'assets/tilemaps/overworld/room_1.lua'
 room_2 = 'assets/tilemaps/overworld/room_2.lua'
-room_3 = 'assets/tilemaps/overworld/room_3.lua'
+room_3 = 'assets/tilemaps/new_overworld/room_3.lua'
 room_4 = 'assets/tilemaps/overworld/room_4.lua'
 room_5 = 'assets/tilemaps/overworld/room_5.lua'
 room_6 = 'assets/tilemaps/overworld/room_6.lua'
@@ -49,7 +49,7 @@ dRoom_10 = 'assets/tilemaps/dungeon_1/room_10.lua'
 dRoom_11 = 'assets/tilemaps/dungeon_1/room_11.lua'
 dRoom_12 = nil
 dRoom_13 = nil
-dRoom_14 = 'assets/tilemaps/dungeon_1/room_14.lua'
+dRoom_14 = 'assets/tilemaps/new_dungeon_1/room_14.lua'
 dRoom_15 = 'assets/tilemaps/dungeon_1/room_15.lua'
 dRoom_16 = 'assets/tilemaps/dungeon_1/room_16.lua'
 dRoom_17 = nil
@@ -62,8 +62,8 @@ dRoom_23 = nil
 dRoom_24 = nil
 dRoom_25 = nil
 dRoom_26 = 'assets/tilemaps/dungeon_1/room_26.lua'
-dRoom_27 = 'assets/tilemaps/dungeon_1/room_27.lua'
-dRoom_28 = 'assets/tilemaps/dungeon_1/room_28.lua'
+dRoom_27 = 'assets/tilemaps/new_dungeon_1/room_27.lua'
+dRoom_28 = 'assets/tilemaps/new_dungeon_1/room_28.lua'
 dRoom_29 = nil
 dRoom_30 = nil
 
@@ -366,9 +366,9 @@ function createRoomCollisions()
         -- Create a collide box in the position of the object "collide"
         collideBox = world:newRectangleCollider(
             collideObjectX,
-            collideObjectY-16+56,
-            16,
-            16
+            collideObjectY-8+56,
+            8,
+            8
         )
         collideBox:setCollisionClass('Wall')
         collideBox:setType('static')
@@ -390,15 +390,18 @@ function checkLayer(layer, x, y)
     local x = math.floor(x)
     local y = math.floor(y)
 
-    if map.layers[layer].data[y-3][x] ~= nil then
-        local tileID = map.layers[layer].data[y-3][x].gid
+    if map.layers[layer].data[y-6][x+1] ~= nil then
+        local tileID = map.layers[layer].data[y-6][x+1].gid
+        print(tileID)
         
         if layer == 'Ground_layer' then
             
-            if tileID == 3 then
+            dungeonBricksID = {427, 428, 491, 492}
+
+            if tileID == 5 then
                 return 'sand'
 
-            elseif tileID == 9 and Map.type == 'dungeon_1' then
+            elseif contains(tileID, dungeonBricksID) and Map.type == 'dungeon_1' then
                 return 'dungeon_brick'
             end
 
@@ -408,10 +411,9 @@ function checkLayer(layer, x, y)
                 91, 92, 93, 97, 98, 99,
                 109, 110, 111, 115, 116, 117
             }
-            for i = 1, #watersID, 1 do
-                if watersID[i] == tileID then
-                    return 'water'
-                end
+            
+            if contains(tileID, watersID) then
+                return 'water'
             end
         end
     else
