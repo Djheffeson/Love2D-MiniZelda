@@ -177,8 +177,13 @@ function enemiesPerRoom()
             spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][4], 'goriyas')
         end
 
+        -- check if the current room have wall masters
         if enemiesDungeon1_rooms[currentDungeonRoom][5] ~= nil then
-            spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][5], 'wall_master')
+            if enemiesDungeon1_rooms[currentDungeonRoom][5] == 1 then
+                wallMasterRoom = true
+            elseif enemiesDungeon1_rooms[currentDungeonRoom][5] == 0 then
+                wallMasterRoom = false
+            end
         end
 
     end
@@ -228,10 +233,6 @@ function spawnEnemy(quantity, enemy)
 
         if enemy == 'goriyas' then
             spawnGoriya()
-        end
-
-        if enemy == 'wall_master' then
-            spawnWallMaster()
         end
 
     end

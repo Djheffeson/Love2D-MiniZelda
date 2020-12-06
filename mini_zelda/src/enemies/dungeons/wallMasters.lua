@@ -1,12 +1,11 @@
 wallMasters = {}
+wallMasterRoom = false
 
-function spawnWallMaster()
+function spawnWallMaster(attackDirection)
     local wallMaster = {}
 
-    repeat
-        wallMaster.x = multiple16(math.random(48, 132))
-        wallMaster.y = multiple16(math.random(88, 132))
-    until checkLayer('Ground_layer', map:convertPixelToTile(wallMaster.x+12, wallMaster.y+12)) == 'dungeon_brick'
+    wallMaster.x = -16
+    wallMaster.y = -16
 
     wallMaster.targetX = 0
     wallMaster.targetY = 0
@@ -16,7 +15,7 @@ function spawnWallMaster()
 
     wallMaster.speed = 16
     wallMaster.attack = false
-    wallMaster.attackDirection = 'none'
+    wallMaster.attackPosition = attackDirection
     wallMaster.direction = 'none'
     wallMaster.setPosition = false
     wallMaster.reachTarget = false
@@ -37,26 +36,34 @@ end
 
 function wallMasters:update(dt)
 
+    if Map.type == 'dungeon_1' and wallMasterRoom then
+        if #wallMasters < 2 then
+            if Player.y <= 100 then
+                spawnWallMaster('up')
+
+            elseif Player.y >= 192 then
+                spawnWallMaster('down')
+
+            elseif Player.x <= 40 and Player.x >= 32 then
+                spawnWallMaster('left')
+
+            elseif Player.x >= 210 then
+                spawnWallMaster('right')
+            end
+        end
+    end
+
     for i, wallMaster in ipairs(wallMasters) do
         wallMaster.animation:update(dt)
         wallMaster.x, wallMaster.y = wallMaster.collider:getPosition()
 
         if wallMaster.attack == false then
             wallMaster.targetX = multiple16(Player.x)+8
-            wallMaster.targetY = multiple16(Player.y)
+            wallMaster.targetY = multiple16(Player.y+8)
         end
 
-        if Player.y >= 192 and wallMaster.attack == false then
+        if wallMaster.attack == false then
             wallMaster.attack = true
-            wallMaster.attackPosition = 'down'
-            wallMaster.outTimer = 0
-        elseif Player.y <= 100 and wallMaster.attack == false then
-            wallMaster.attack = true
-            wallMaster.attackPosition = 'up'
-            wallMaster.outTimer = 0
-        elseif Player.x >= 210 and wallMaster.attack == false then
-            wallMaster.attack = true
-            wallMaster.attackPosition = 'right'
             wallMaster.outTimer = 0
         end
 
@@ -65,8 +72,13 @@ function wallMasters:update(dt)
         end
 
         if wallMaster.isReturning then
-            if wallMaster.x <= 0 or wallMaster.x >= 255 then
-                -- TODO
+            if wallMaster.x <= 0 or wallMaster.x >= 256 then
+                removeWallMaster(i)
+                print('return')
+            end
+
+            if wallMaster.y <= 56 or wallMaster.y >= 224 then
+                removeWallMaster(i)
                 print('return')
             end
         end
@@ -85,19 +97,23 @@ function wallMasterAttack(index, direction, dt)
 
     if wallMaster.setPosition == false then
         if direction == 'down' then
-            wallMaster.collider:setPosition(wallMaster.targetX+64, wallMaster.targetY+32)
+            wallMaster.collider:setPosition(wallMaster.targetX+64, wallMaster.targetY+40)
             wallMaster.setPosition = true
             wallMaster.direction = 'up'
             return
         elseif direction == 'up' then
-            wallMaster.collider:setPosition(wallMaster.targetX+64, wallMaster.targetY-32)
+            wallMaster.collider:setPosition(wallMaster.targetX+64, wallMaster.targetY-40)
             wallMaster.animation:flipV()
             wallMaster.setPosition = true
             wallMaster.direction = 'down'
         elseif direction == 'right' then
-            wallMaster.collider:setPosition(wallMaster.targetX+48, wallMaster.targetY+32)
+            wallMaster.collider:setPosition(wallMaster.targetX+40, wallMaster.targetY+48)
             wallMaster.setPosition = true
             wallMaster.direction = 'left'
+        elseif direction == 'left' then
+            wallMaster.collider:setPosition(wallMaster.targetX-40, wallMaster.targetY+48)
+            wallMaster.setPosition = true
+            wallMaster.direction = 'right'
         end
     end
     wallMaster.x, wallMaster.y = wallMaster.collider:getPosition()
@@ -142,6 +158,16 @@ function wallMasterAttack(index, direction, dt)
 
     wallMaster.vectorX, wallMaster.vectorY = getDirectionVector(wallMaster.direction):unpack()
     wallMaster.collider:setLinearVelocity(wallMaster.vectorX * wallMaster.speed, wallMaster.vectorY * wallMaster.speed)
+end
+
+function removeWallMaster(index)
+    local wallMaster = wallMasters[index]
+
+    if wallMaster.colliderExists then
+        wallMaster.collider:destroy()
+        wallMaster.colliderExists = false
+    end
+    table.remove(wallMasters, index)
 end
 
 function deleteWallMasters()
