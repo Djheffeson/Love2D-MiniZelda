@@ -29,6 +29,7 @@ sprites.keese = love.graphics.newImage('assets/graphics/keese_sprites.png')
 sprites.gel = love.graphics.newImage('assets/graphics/gel_sprite.png')
 sprites.stalfo = love.graphics.newImage('assets/graphics/stalfos_sprite.png')
 sprites.goriya = love.graphics.newImage('assets/graphics/goriya_sheet.png')
+sprites.wallMaster = love.graphics.newImage('assets/graphics/wall_master_sheet.png')
 
 sprites.deathSheet = love.graphics.newImage('assets/graphics/death_sheet.png')
 sprites.recoverHeart = love.graphics.newImage('assets/graphics/recovery_heart_sheet.png')
