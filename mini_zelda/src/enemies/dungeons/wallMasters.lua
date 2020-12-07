@@ -36,7 +36,7 @@ end
 
 function wallMasters:update(dt)
 
-    if Map.type == 'dungeon_1' and wallMasterRoom then
+    if Map.type == 'dungeon_1' and wallMasterRoom and gameState == 'running' then
         if #wallMasters < 2 then
             if Player.y <= 100 then
                 spawnWallMaster('up')

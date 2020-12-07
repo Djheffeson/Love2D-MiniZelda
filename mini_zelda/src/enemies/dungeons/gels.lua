@@ -107,7 +107,7 @@ function gelGetTarget(index)
             x = x + 16
         end
 
-    until checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'dungeon_brick'
+    until checkLayer('Ground_layer', map:convertPixelToTile(x+6, y+6)) == 'dungeon_brick'
 
     return x, y
 end

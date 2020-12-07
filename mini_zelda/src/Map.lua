@@ -34,7 +34,7 @@ overworldRooms = {
     room_21, room_22, room_23, room_24, room_25
 }
 
-currentOverworldRoom = 23
+currentOverworldRoom = 3
 
 dRoom_1 = nil
 dRoom_2 = nil
@@ -103,7 +103,6 @@ function Map:init()
 end
 
 function Map:update(dt)
-    print(currentOverworldRoom)
 
     -- check if is not the dungeon exit for not activate the "changing_room"
     local isNotDungeon1Exit = not (Map.type == 'dungeon_1' and currentDungeonRoom == 27)
@@ -118,7 +117,7 @@ function Map:update(dt)
         direct = 'down'
         changing_room = true
 
-    elseif Player.x <= 11 and love.keyboard.isDown('left') and Player.direction == 'left' then
+    elseif Player.x <= 8 and love.keyboard.isDown('left') and Player.direction == 'left' then
         direct = 'left'
         changing_room = true
     elseif Player.x >= 247 and love.keyboard.isDown('right') and Player.direction == 'right' then
@@ -146,6 +145,34 @@ function Map:draw()
         tmpMap:draw(tmpMapX, tmpMapY+56)
     end
     map:draw(mapX, mapY+56)
+end
+
+function Map:drawDungeonWalls()
+
+    if gameState == 'changingRoom' and tmpMap.layers[3].name == 'Wall_layer' then
+        local x = tmpMap.layers[3].x
+        local y = tmpMap.layers[3].y
+
+        tmpMap.layers[3].x = tmpMapX
+        tmpMap.layers[3].y = tmpMapY+56
+
+        tmpMap:drawLayer(tmpMap.layers[3])
+
+        tmpMap.layers[3].x = x
+        tmpMap.layers[3].y = y
+    end
+
+    local x = map.layers[3].x
+    local y = map.layers[3].y
+
+    map.layers[3].x = mapX
+    map.layers[3].y = mapY+56
+
+    map:drawLayer(map.layers[3])
+
+    map.layers[3].x = x
+    map.layers[3].y = y
+
 end
 
 function changeMap(type_map)
@@ -377,6 +404,10 @@ function createRoomCollisions()
         table.insert(colliders, collideBox)
     end
     map:removeLayer('Collide')
+
+    map:addCustomLayer('Walls', 5)
+    map.layers[5] = deepcopy(map.layers[3])
+
 end
 
 function deleteRoomCollisions()

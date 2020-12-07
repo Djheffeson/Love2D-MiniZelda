@@ -74,7 +74,13 @@ function swordThrow:update(dt)
             sword.particleDownRight:update(dt)
         end
 
-        if (sword.x < 0 or sword.x > 256) or (sword.y < 64 or sword.y > 224) then
+        if Map.type == 'dungeon_1' then
+            if (sword.x < 20 or sword.x > 236) or (sword.y < 84 or sword.y > 208) then
+                sword.collide = true
+            end
+        end
+
+        if (sword.x < 0 or sword.x > 256) or (sword.y < 64 or sword.y > 244) then
             sword.collide = true
         elseif sword.collider:enter('Enemy') or sword.collider:enter('IgnoreWallEnemy') then
             sword.collide = true
@@ -114,7 +120,7 @@ function swordExplosion(index)
         sword.colliderExists = false
     end
 
-    if sword.timerFade >= 0.350 then
+    if sword.timerFade >= 0.270 then
         swordThrowDestroy(index)
     end
 end
