@@ -58,7 +58,7 @@ function Player:init()
 end
 
 function Player:update(dt)
-    print(checkLayer('Ground_layer', map:convertPixelToTile(Player.x, Player.y)))
+    --print(checkLayer('Ground_layer', map:convertPixelToTile(Player.x, Player.y)))
 
     if Player.enter == true then
         gameState = 'animation'

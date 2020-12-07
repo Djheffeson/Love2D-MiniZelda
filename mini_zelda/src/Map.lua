@@ -2,19 +2,19 @@ Map = Class{}
 
 room_1 = nil
 room_2 = nil
-room_3 = 'assets/tilemaps/new_overworld/room_3.lua'
-room_4 = 'assets/tilemaps/new_overworld/room_4.lua'
-room_5 = 'assets/tilemaps/new_overworld/room_5.lua'
+room_3 = 'assets/tilemaps/overworld/room_3.lua'
+room_4 = 'assets/tilemaps/overworld/room_4.lua'
+room_5 = 'assets/tilemaps/overworld/room_5.lua'
 room_6 = nil
-room_7 = 'assets/tilemaps/new_overworld/room_7.lua'
-room_8 = 'assets/tilemaps/new_overworld/room_8.lua'
-room_9 = 'assets/tilemaps/new_overworld/room_9.lua'
-room_10 = 'assets/tilemaps/new_overworld/room_10.lua'
-room_11 = 'assets/tilemaps/new_overworld/room_11.lua'
-room_12 = 'assets/tilemaps/new_overworld/room_12.lua'
-room_13 = 'assets/tilemaps/new_overworld/room_13.lua'
-room_14 = 'assets/tilemaps/new_overworld/room_14.lua'
-room_15 = 'assets/tilemaps/new_overworld/room_15.lua'
+room_7 = 'assets/tilemaps/overworld/room_7.lua'
+room_8 = 'assets/tilemaps/overworld/room_8.lua'
+room_9 = 'assets/tilemaps/overworld/room_9.lua'
+room_10 = 'assets/tilemaps/overworld/room_10.lua'
+room_11 = 'assets/tilemaps/overworld/room_11.lua'
+room_12 = 'assets/tilemaps/overworld/room_12.lua'
+room_13 = 'assets/tilemaps/overworld/room_13.lua'
+room_14 = 'assets/tilemaps/overworld/room_14.lua'
+room_15 = 'assets/tilemaps/overworld/room_15.lua'
 room_16 = 'assets/tilemaps/overworld/room_16.lua'
 room_17 = 'assets/tilemaps/overworld/room_17.lua'
 room_18 = 'assets/tilemaps/overworld/room_18.lua'
@@ -34,7 +34,7 @@ overworldRooms = {
     room_21, room_22, room_23, room_24, room_25
 }
 
-currentOverworldRoom = 3
+currentOverworldRoom = 23
 
 dRoom_1 = nil
 dRoom_2 = nil
@@ -103,6 +103,7 @@ function Map:init()
 end
 
 function Map:update(dt)
+    print(currentOverworldRoom)
 
     -- check if is not the dungeon exit for not activate the "changing_room"
     local isNotDungeon1Exit = not (Map.type == 'dungeon_1' and currentDungeonRoom == 27)
@@ -392,7 +393,6 @@ function checkLayer(layer, x, y)
 
     if map.layers[layer].data[y-6][x+1] ~= nil then
         local tileID = map.layers[layer].data[y-6][x+1].gid
-        print(tileID)
         
         if layer == 'Ground_layer' then
             
