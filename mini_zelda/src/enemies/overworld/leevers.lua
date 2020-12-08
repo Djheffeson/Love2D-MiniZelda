@@ -10,7 +10,7 @@ function spawnLeever(type)
     repeat
         x = multiple16(love.math.random(16,256))
         y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'sand'
+    until checkLayer('Ground_layer', map:convertPixelToTile(x-8, y-8)) == 'sand'
 
     leever.x = x
     leever.y = y
@@ -233,7 +233,7 @@ function leeverNewPosition(index)
         
         if (x > 32 and x < 240) and (y > 72 and y < 208) then
 
-            if checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'sand' then
+            if checkLayer('Ground_layer', map:convertPixelToTile(x-8, y-8)) == 'sand' then
                 leever.x = x
                 leever.y = y
                 if leever.colliderExists then
@@ -252,7 +252,7 @@ function leeverNewPosition(index)
         repeat
             x = multiple16(love.math.random(16,256))
             y = multiple16(love.math.random(72,224))
-        until checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'sand'
+        until checkLayer('Ground_layer', map:convertPixelToTile(x-8, y-8)) == 'sand'
 
         leever.x = x
         leever.y = y
@@ -477,7 +477,7 @@ function leeverAttackBack(index, x, y)
     end
     
     if (x > 32 and x < 240) and (y > 72 and y < 208) then
-        if checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'sand' then
+        if checkLayer('Ground_layer', map:convertPixelToTile(x-8, y-8)) == 'sand' then
             leever.x = x
             leever.y = y
             if leever.colliderExists then

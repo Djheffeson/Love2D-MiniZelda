@@ -34,7 +34,6 @@ function doors:update(dt)
                     if door.name == 'down' then door.currentDoor = door.closedDown end
                     if door.name == 'left' then door.currentDoor = door.closedLeft end
                     if door.name == 'right' then door.currentDoor = door.closedRight end
-
                     createCollisionDoors(door.name)
                     closedDoorsCreated = true
                 end
@@ -50,6 +49,7 @@ end
 
 function doors:draw()
     if Map.type == 'dungeon_1' then
+        
         for i, door in ipairs(currentDoors) do
             door.currentDoor:draw(sprites.dungeonDoors, door.x, door.y) 
         end
@@ -75,35 +75,40 @@ function createDoors(type, nxRoom)
     end
 
     for i, doorL in pairs(doorLayer) do
+
         local door = {}
 
-        door.grid = anim8.newGrid(32, 32, sprites.dungeonDoors:getWidth(), sprites.dungeonDoors:getHeight())
-        door.openUp = anim8.newAnimation(door.grid(1, 1), 1)
-        door.openLeft = anim8.newAnimation(door.grid(2, 1), 1)
-        door.openDown = anim8.newAnimation(door.grid(1, 2), 1)
-        door.openRight = anim8.newAnimation(door.grid(2, 2), 1)
+        door.grid = anim8.newGrid(16, 16, sprites.dungeonDoors:getWidth(), sprites.dungeonDoors:getHeight())
 
-        door.lockedUp = anim8.newAnimation(door.grid(3, 1), 1)
-        door.lockedLeft = anim8.newAnimation(door.grid(4, 1), 1)
-        door.lockedDown = anim8.newAnimation(door.grid(3, 2), 1)
-        door.lockedRight = anim8.newAnimation(door.grid(4, 2), 1)
+        door.air = anim8.newAnimation(door.grid(5, 1), 1)
 
-        door.closedUp = anim8.newAnimation(door.grid(5, 1), 1)
-        door.closedLeft = anim8.newAnimation(door.grid(6, 1), 1)
-        door.closedDown = anim8.newAnimation(door.grid(5, 2), 1)
-        door.closedRight = anim8.newAnimation(door.grid(6, 2), 1)
+        door.lockedUp = anim8.newAnimation(door.grid(1, 1), 1)
+        door.lockedLeft = anim8.newAnimation(door.grid(2, 1), 1)
+        door.lockedDown = anim8.newAnimation(door.grid(1, 2), 1)
+        door.lockedRight = anim8.newAnimation(door.grid(2, 2), 1)
 
+        door.closedUp = anim8.newAnimation(door.grid(3, 1), 1)
+        door.closedLeft = anim8.newAnimation(door.grid(4, 1), 1)
+        door.closedDown = anim8.newAnimation(door.grid(3, 2), 1)
+        door.closedRight = anim8.newAnimation(door.grid(4, 2), 1)
+
+        if doorL.name == nil then
+            goto continue
+        end
+        door.name = doorL.name
         if type == 'current' then
 
-            door.name = doorL.name
+            door.currentDoor = door.air
 
             if doorL.name == 'up' then
-                door.currentDoor = door.openUp
 
                 door.x = doorL.x
                 door.y = doorL.y + 40
 
-                if doorsState[currentDungeonRoom][1] == 1 then
+                if doorsState[currentDungeonRoom][1] == 0 then
+                    goto continue
+
+                elseif doorsState[currentDungeonRoom][1] == 1 then
 
                     -- check if a door that player is going to walk thru is gonna be closed
                     if Player.direction == 'down' then
@@ -115,25 +120,15 @@ function createDoors(type, nxRoom)
                     door.currentDoor = door.lockedUp
                     createCollisionDoors(doorL.name, 2)
                 end
-
-                local colliderDoors1 = world:newRectangleCollider(112, 56, 10, 32)
-                colliderDoors1:setCollisionClass('Wall')
-                colliderDoors1:setType('static')
-                table.insert(colliders, colliderDoors1)
-
-                local colliderDoors2 = world:newRectangleCollider(136, 56, 10, 32)
-                colliderDoors2:setCollisionClass('Wall')
-                colliderDoors2:setType('static')
-                table.insert(colliders, colliderDoors2)
-            end
-
-            if doorL.name == 'left' then
-                door.currentDoor = door.openLeft
+            elseif doorL.name == 'left' then
 
                 door.x = doorL.x
-                door.y = doorL.y + 32
+                door.y = doorL.y + 40
 
-                if doorsState[currentDungeonRoom][3] == 1 then
+                if doorsState[currentDungeonRoom][3] == 0 then
+                    goto continue
+                    
+                elseif doorsState[currentDungeonRoom][3] == 1 then
 
                     -- check if a door that player is going to walk thru is gonna be closed
                     if Player.direction == 'right' then
@@ -145,20 +140,16 @@ function createDoors(type, nxRoom)
                     door.currentDoor = door.lockedLeft
                     createCollisionDoors(doorL.name, 2)
                 end
-
-                local colliderDoors1 = world:newRectangleCollider(0, 136, 32, 5)
-                colliderDoors1:setCollisionClass('Wall')
-                colliderDoors1:setType('static')
-                table.insert(colliders, colliderDoors1)
-            end
-            if doorL.name == 'down' then
-                door.currentDoor = door.openDown
+            elseif doorL.name == 'down' then
 
                 door.x = doorL.x
-                door.y = doorL.y + 24
+                door.y = doorL.y + 40
 
-                if doorsState[currentDungeonRoom][2] == 1 then
+                if doorsState[currentDungeonRoom][2] == 0 then
+                    goto continue
 
+                elseif doorsState[currentDungeonRoom][2] == 1 then
+                    
                     -- check if a door that player is going to walk thru is gonna be closed
                     if Player.direction == 'up' then
                         Player.enterInClosedDoor = true
@@ -169,24 +160,15 @@ function createDoors(type, nxRoom)
                     door.currentDoor = door.lockedDown
                     createCollisionDoors(doorL.name, 2)
                 end
+            elseif doorL.name == 'right' then
 
-                local colliderDoors1 = world:newRectangleCollider(112, 200, 10, 32)
-                colliderDoors1:setCollisionClass('Wall')
-                colliderDoors1:setType('static')
-                table.insert(colliders, colliderDoors1)
+                door.x = doorL.x
+                door.y = doorL.y + 40
 
-                local colliderDoors2 = world:newRectangleCollider(136, 200, 10, 32)
-                colliderDoors2:setCollisionClass('Wall')
-                colliderDoors2:setType('static')
-                table.insert(colliders, colliderDoors2)
-            end
-            if doorL.name == 'right' then
-                door.currentDoor = door.openRight
-
-                door.x = doorL.x - 16
-                door.y = doorL.y + 32
-
-                if doorsState[currentDungeonRoom][4] == 1 then
+                if doorsState[currentDungeonRoom][4] == 0 then
+                    goto continue
+                    
+                elseif doorsState[currentDungeonRoom][4] == 1 then
 
                     -- check if a door that player is going to walk thru is gonna be closed
                     if Player.direction == 'left' then
@@ -198,11 +180,6 @@ function createDoors(type, nxRoom)
                     door.currentDoor = door.lockedRight
                     createCollisionDoors(doorL.name, 2)
                 end
-
-                local colliderDoors1 = world:newRectangleCollider(224, 136, 32, 5)
-                colliderDoors1:setCollisionClass('Wall')
-                colliderDoors1:setType('static')
-                table.insert(colliders, colliderDoors1)
             end
 
             table.insert(currentDoors, door)
@@ -210,45 +187,47 @@ function createDoors(type, nxRoom)
             if doorL.name == 'up' then
                 door.x = doorL.x + tmpMapX
                 door.y = doorL.y + 40 + tmpMapY
-                if doorsState[nxRoom][1] == 2 then
+
+                if doorsState[nxRoom][1] == 0 or doorsState[nxRoom][1] == 1 then
+                    goto continue
+                elseif doorsState[nxRoom][1] == 2 then
                     door.currentDoor = door.lockedUp
-                else
-                    door.currentDoor = door.openUp
                 end
 
             elseif doorL.name == 'left' then
                 door.x = doorL.x + tmpMapX
-                door.y = doorL.y + 32 + tmpMapY
+                door.y = doorL.y  + 40 + tmpMapY
 
-                if doorsState[nxRoom][3] == 2 then
+                if doorsState[nxRoom][3] == 0 or doorsState[nxRoom][3] == 1 then
+                    goto continue
+                elseif doorsState[nxRoom][3] == 2 then
                     door.currentDoor = door.lockedLeft
-                else
-                    door.currentDoor = door.openLeft
                 end
 
             elseif doorL.name == 'down' then
                 door.x = doorL.x + tmpMapX
-                door.y = doorL.y + 24 + tmpMapY
+                door.y = doorL.y + 40 + tmpMapY
 
-                if doorsState[nxRoom][2] == 2 then
+                if doorsState[nxRoom][2] == 0 or doorsState[nxRoom][2] == 1 then
+                    goto continue
+                elseif doorsState[nxRoom][2] == 2 then
                     door.currentDoor = door.lockedDown
-                else
-                    door.currentDoor = door.openDown
                 end
 
             elseif doorL.name == 'right' then
-                door.x = doorL.x - 16 + tmpMapX
-                door.y = doorL.y + 32 + tmpMapY
+                door.x = doorL.x + tmpMapX
+                door.y = doorL.y + 40 + tmpMapY
 
-                if doorsState[nxRoom][4] == 2 then
+                if doorsState[nxRoom][4] == 0 or doorsState[nxRoom][4] == 1 then
+                    goto continue
+                elseif doorsState[nxRoom][4] == 2 then
                     door.currentDoor = door.lockedRight
-                else
-                    door.currentDoor = door.openRight
                 end
             end
 
             table.insert(tmpDoors, door)
         end
+        ::continue::
     end
     doorsCreated = true
 end
@@ -259,6 +238,7 @@ function createTmpDoors(room)
 end
 
 function createCollisionDoors(direction, type)
+
     if direction == 'up' then
         upDoorCollider = world:newRectangleCollider(112, 72, 32, 15)
         upDoorCollider:setCollisionClass('Wall')
@@ -313,7 +293,7 @@ function checkIfPlayerTryToOpen()
             doorsState[currentDungeonRoom][1] = 0
             for i, door in ipairs(currentDoors) do
                 if door.name == 'up' then
-                    door.currentDoor = door.openUp
+                    table.remove(currentDoors, i)
                     sounds.openDoor:stop()
                     sounds.openDoor:play()
                 end
@@ -329,7 +309,7 @@ function checkIfPlayerTryToOpen()
             doorsState[currentDungeonRoom][2] = 0
             for i, door in ipairs(currentDoors) do
                 if door.name == 'down' then
-                    door.currentDoor = door.openDown
+                    table.remove(currentDoors, i)
                     sounds.openDoor:stop()
                     sounds.openDoor:play()
                 end
@@ -345,7 +325,7 @@ function checkIfPlayerTryToOpen()
             doorsState[currentDungeonRoom][3] = 0
             for i, door in ipairs(currentDoors) do
                 if door.name == 'left' then
-                    door.currentDoor = door.openLeft
+                    table.remove(currentDoors, i)
                     sounds.openDoor:stop()
                     sounds.openDoor:play()
                 end
@@ -361,7 +341,7 @@ function checkIfPlayerTryToOpen()
             doorsState[currentDungeonRoom][4] = 0
             for i, door in ipairs(currentDoors) do
                 if door.name == 'right' then
-                    door.currentDoor = door.openRight
+                    table.remove(currentDoors, i)
                     sounds.openDoor:stop()
                     sounds.openDoor:play()
                 end
@@ -376,7 +356,8 @@ function closedDoorsLogic(index)
     local enemiesNumber = enemiesDungeon1_rooms[currentDungeonRoom]
     if currentDungeonRoom == 14 and enemiesNumber[1] <= 0 then
         if door.name == 'right' then
-            door.currentDoor = door.openRight
+            table.remove(currentDoors, index)
+            doorsState[currentDungeonRoom][4] = 0
             sounds.openDoor:stop()
             sounds.openDoor:play()
         end

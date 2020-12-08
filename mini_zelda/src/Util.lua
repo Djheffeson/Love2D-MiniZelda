@@ -92,3 +92,11 @@ function checkIfSeePlayer(x, y, facing)
     end
     return false
 end
+
+function copyTable(table)
+    local tableCopy = {}
+    for i, t in pairs(table) do
+        tableCopy[i] = t
+    end
+    return tableCopy
+end

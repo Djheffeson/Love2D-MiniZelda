@@ -280,7 +280,7 @@ end
 
 function checkPlayerEnterInDoor()
     if Map.type == 'overworld' then
-        local layer = checkLayer('Ground_layer', map:convertPixelToTile(Player.x+12, Player.y+13))
+        local layer = checkLayer('Ground_layer', map:convertPixelToTile(Player.x, Player.y))
 
         -- check if player is in the blank tile for enter in the dungeon
         if currentOverworldRoom == 3 and layer == 'none' and Player.exitEntrance and Player.direction == 'up' then
@@ -357,8 +357,9 @@ end
 
 function playerWalkAnimation(dt, walkDistance)
 
-    Player.x = Player.x + (Player.vectorX * WALK_SPEED * dt)
-    Player.y = Player.y + (Player.vectorY * WALK_SPEED * dt)
+    local vectX, vectY = getDirectionVector(Player.direction):unpack()
+    Player.x = Player.x + (vectX * WALK_SPEED * dt)
+    Player.y = Player.y + (vectY * WALK_SPEED * dt)
     local x, y = Player.collider:getPosition()
 
     -- check if the player walked enough

@@ -8,7 +8,7 @@ function spawnPeahat()
     repeat
         x = multiple16(love.math.random(16,256))
         y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(x+12, y+12)) == 'sand'
+    until checkLayer('Ground_layer', map:convertPixelToTile(x-8, y-8)) == 'sand'
 
     peahat.x = x
     peahat.y = y

@@ -13,7 +13,7 @@ function spawnWallMaster(attackDirection)
     wallMaster.vectorX = 0
     wallMaster.vectorY = 0
 
-    wallMaster.speed = 16
+    wallMaster.speed = 22
     wallMaster.attack = false
     wallMaster.attackPosition = attackDirection
     wallMaster.direction = 'none'
@@ -36,7 +36,7 @@ end
 
 function wallMasters:update(dt)
 
-    if Map.type == 'dungeon_1' and wallMasterRoom then
+    if Map.type == 'dungeon_1' and wallMasterRoom and gameState == 'running' then
         if #wallMasters < 2 then
             if Player.y <= 100 then
                 spawnWallMaster('up')
@@ -74,12 +74,10 @@ function wallMasters:update(dt)
         if wallMaster.isReturning then
             if wallMaster.x <= 0 or wallMaster.x >= 256 then
                 removeWallMaster(i)
-                print('return')
             end
 
             if wallMaster.y <= 56 or wallMaster.y >= 224 then
                 removeWallMaster(i)
-                print('return')
             end
         end
     end

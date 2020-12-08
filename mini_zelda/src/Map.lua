@@ -1,11 +1,11 @@
 Map = Class{}
 
-room_1 = 'assets/tilemaps/overworld/room_1.lua'
-room_2 = 'assets/tilemaps/overworld/room_2.lua'
+room_1 = nil
+room_2 = nil
 room_3 = 'assets/tilemaps/overworld/room_3.lua'
 room_4 = 'assets/tilemaps/overworld/room_4.lua'
 room_5 = 'assets/tilemaps/overworld/room_5.lua'
-room_6 = 'assets/tilemaps/overworld/room_6.lua'
+room_6 = nil
 room_7 = 'assets/tilemaps/overworld/room_7.lua'
 room_8 = 'assets/tilemaps/overworld/room_8.lua'
 room_9 = 'assets/tilemaps/overworld/room_9.lua'
@@ -107,7 +107,7 @@ function Map:update(dt)
     -- check if is not the dungeon exit for not activate the "changing_room"
     local isNotDungeon1Exit = not (Map.type == 'dungeon_1' and currentDungeonRoom == 27)
 
-    if Player.y <= 67 and love.keyboard.isDown('up') and Player.direction == 'up' then
+    if Player.y <= 62 and love.keyboard.isDown('up') and Player.direction == 'up' then
         direct = 'up'
         changing_room = true
 
@@ -117,10 +117,10 @@ function Map:update(dt)
         direct = 'down'
         changing_room = true
 
-    elseif Player.x <= 11 and love.keyboard.isDown('left') and Player.direction == 'left' then
+    elseif Player.x <= 6 and love.keyboard.isDown('left') and Player.direction == 'left' then
         direct = 'left'
         changing_room = true
-    elseif Player.x >= 247 and love.keyboard.isDown('right') and Player.direction == 'right' then
+    elseif Player.x >= 250 and love.keyboard.isDown('right') and Player.direction == 'right' then
         direct = 'right'
         changing_room = true
     end
@@ -145,6 +145,34 @@ function Map:draw()
         tmpMap:draw(tmpMapX, tmpMapY+56)
     end
     map:draw(mapX, mapY+56)
+end
+
+function Map:drawDungeonWalls()
+
+    if gameState == 'changingRoom' and tmpMap.layers[3].name == 'Wall_layer' then
+        local x = tmpMap.layers[3].x
+        local y = tmpMap.layers[3].y
+
+        tmpMap.layers[3].x = tmpMapX
+        tmpMap.layers[3].y = tmpMapY+56
+
+        tmpMap:drawLayer(tmpMap.layers[3])
+
+        tmpMap.layers[3].x = x
+        tmpMap.layers[3].y = y
+    end
+
+    local x = map.layers[3].x
+    local y = map.layers[3].y
+
+    map.layers[3].x = mapX
+    map.layers[3].y = mapY+56
+
+    map:drawLayer(map.layers[3])
+
+    map.layers[3].x = x
+    map.layers[3].y = y
+
 end
 
 function changeMap(type_map)
@@ -366,9 +394,9 @@ function createRoomCollisions()
         -- Create a collide box in the position of the object "collide"
         collideBox = world:newRectangleCollider(
             collideObjectX,
-            collideObjectY-16+56,
-            16,
-            16
+            collideObjectY-8+56,
+            8,
+            8
         )
         collideBox:setCollisionClass('Wall')
         collideBox:setType('static')
@@ -376,6 +404,10 @@ function createRoomCollisions()
         table.insert(colliders, collideBox)
     end
     map:removeLayer('Collide')
+
+    map:addCustomLayer('Walls', 5)
+    map.layers[5] = copyTable(map.layers[3])
+
 end
 
 function deleteRoomCollisions()
@@ -390,28 +422,36 @@ function checkLayer(layer, x, y)
     local x = math.floor(x)
     local y = math.floor(y)
 
-    if map.layers[layer].data[y-3][x] ~= nil then
-        local tileID = map.layers[layer].data[y-3][x].gid
-        
+    if map.layers[layer].data[y-6][x+1] ~= nil then
+        local tileID = map.layers[layer].data[y-6][x+1].gid
         if layer == 'Ground_layer' then
             
-            if tileID == 3 then
+            if tileID == 5 then
                 return 'sand'
 
-            elseif tileID == 9 and Map.type == 'dungeon_1' then
+            elseif tileID == 428 and Map.type == 'dungeon_1' then
                 return 'dungeon_brick'
             end
 
         elseif layer == 'Water_layer' then
             watersID = {
-                73, 74, 75, 78, 79, 80,
-                91, 92, 93, 97, 98, 99,
-                109, 110, 111, 115, 116, 117
+                289, 290, 291, 292, 293, 294,
+                325, 326, 327, 328, 329, 330,
+                361, 362, 363, 364, 365, 366,
+                397, 398, 399, 400, 401, 402,
+                433, 434, 435, 436, 437, 438,
+                469, 470, 471, 472, 473, 474,
+
+                301, 302, 303, 304, 305, 306, 
+                337, 338, 339, 340, 341, 342, 
+                373, 374, 375, 376, 377, 378, 
+                409, 410, 411, 412, 413, 414, 
+                445, 446, 447, 448, 449, 450, 
+                481, 482, 483, 484, 485, 486,
             }
-            for i = 1, #watersID, 1 do
-                if watersID[i] == tileID then
-                    return 'water'
-                end
+
+            if contains(tileID, watersID) then
+                return 'water'
             end
         end
     else

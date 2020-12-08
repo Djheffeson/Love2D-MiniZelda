@@ -8,7 +8,7 @@ function spawnZora()
     repeat
         zora.x = multiple16(love.math.random(16,256))
         zora.y = multiple16(love.math.random(72,224))
-    until checkLayer('Water_layer', map:convertPixelToTile(zora.x + 12, zora.y + 12)) == 'water'
+    until checkLayer('Water_layer', map:convertPixelToTile(zora.x-8, zora.y-8)) == 'water'
 
     zora.health = 2
     zora.state = 'sink'
