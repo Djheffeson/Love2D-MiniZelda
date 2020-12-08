@@ -18,6 +18,7 @@ function Player:init()
     Player.direction = 'up'
     Player.invincible = false
     Player.receive_damage = false
+    Player.grabbed = false
 
     Player.slot1 = 'wooden_sword'
     Player.slot2 = nil
@@ -58,6 +59,13 @@ function Player:init()
 end
 
 function Player:update(dt)
+
+    if Player.grabbed == true then
+        Player.currentAnimation:update(dt)
+        Player.collider:setLinearVelocity(0, 0)
+        Player.x, Player.y = Player.collider:getPosition()
+        return
+    end
 
     if Player.enter == true then
         gameState = 'animation'
@@ -303,6 +311,15 @@ function checkPlayerEnterInDoor()
     end
 end
 
+function playerWasReleased()    
+    loading = true
+    currentDungeonRoom = 27
+    changeMap('dungeon_1')
+    Player.direction = 'up'
+    Player.currentAnimation = Player.walkUp
+    Player.enterInDungeonRoom = true
+end
+
 function playerEnterAnimation(dt)
     deleteAllEntities()
     mapOverlap = true -- make the map be draw on top of everything
@@ -311,15 +328,9 @@ function playerEnterAnimation(dt)
     Player.y = Player.y + 30 * dt
     
     if Player.y > 152 then
-        -- create a wait time for the black rectangle disappear
-        Player.waitTimer = Player.waitTimer + 1 * dt
-        if Player.waitTimer < 0.5 then
-            loading = true
-            return
-        else
-            loading = false
-            Player.waitTimer = 0
-        end
+
+        -- make the game start to "load"
+        loading = true
         
         mapOverlap = false
         Player.enter = false
@@ -334,13 +345,8 @@ function playerOutAnimation(dt)
     deleteAllEntities()
     mapOverlap = true -- make the map be draw on top of everything
 
-    -- create a wait time for the black rectangle disappear
-    Player.waitTimer = Player.waitTimer + 1 * dt
-    if Player.waitTimer < 0.5 then
-        return
-    else
-        loading = false
-    end
+    -- make the game stop "load"
+    loading = false
 
     Player.x = 119
     Player.y = Player.y - 30 * dt

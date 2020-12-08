@@ -43,5 +43,7 @@ function gameStart()
     player = Player()
     GUI = GUI()
 
+    loading = false
+    loadingTimer = 0
     mapOverlap = false
 end

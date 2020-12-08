@@ -1,6 +1,9 @@
 wallMasters = {}
 wallMasterRoom = false
 
+local wallMasterLimit = 3
+local wallMasterTimer = 1.5
+
 function spawnWallMaster(attackDirection)
     local wallMaster = {}
 
@@ -13,6 +16,10 @@ function spawnWallMaster(attackDirection)
     wallMaster.vectorX = 0
     wallMaster.vectorY = 0
 
+    wallMaster.drops = {1,3}
+
+    wallMaster.health = 2
+    wallMaster.damage = 0.5
     wallMaster.speed = 22
     wallMaster.attack = false
     wallMaster.attackPosition = attackDirection
@@ -20,6 +27,8 @@ function spawnWallMaster(attackDirection)
     wallMaster.setPosition = false
     wallMaster.reachTarget = false
     wallMaster.isReturning = false
+    wallMaster.invincible = false
+    wallMaster.grabPlayer = false
 
     wallMaster.grid = anim8.newGrid(16, 16, sprites.wallMaster:getWidth(), sprites.wallMaster:getHeight())
     wallMaster.animation = anim8.newAnimation(wallMaster.grid('1-2', 1), 0.15)
@@ -29,7 +38,7 @@ function spawnWallMaster(attackDirection)
     wallMaster.collider:setFixedRotation(true)
     wallMaster.colliderExists = true
 
-    wallMaster.outTimer = 0
+    wallMaster.invincibleTimer = 0
 
     table.insert(wallMasters, wallMaster)
 end
@@ -37,23 +46,54 @@ end
 function wallMasters:update(dt)
 
     if Map.type == 'dungeon_1' and wallMasterRoom and gameState == 'running' then
-        if #wallMasters < 2 then
+
+        if enemiesDungeon1_rooms[currentDungeonRoom][5] < wallMasterLimit then
+            wallMasterLimit = enemiesDungeon1_rooms[currentDungeonRoom][5]
+        end
+
+        wallMasterTimer = wallMasterTimer + 1 * dt
+        if wallMasterTimer >= 1.5 and #wallMasters < wallMasterLimit then
+
             if Player.y <= 100 then
                 spawnWallMaster('up')
-
-            elseif Player.y >= 192 then
+                wallMasterTimer = 0
+            end
+            if Player.y >= 192 then
                 spawnWallMaster('down')
-
-            elseif Player.x <= 40 and Player.x >= 32 then
+                wallMasterTimer = 0
+            end
+            if Player.x <= 40 and Player.x >= 32 then
                 spawnWallMaster('left')
-
-            elseif Player.x >= 210 then
+                wallMasterTimer = 0
+            end
+            if Player.x >= 210 then
                 spawnWallMaster('right')
+                wallMasterTimer = 0
             end
         end
     end
 
     for i, wallMaster in ipairs(wallMasters) do
+
+        wallMasterCheckDamage(i)
+        checkIfWallMasterGrabsPlayer(i)
+
+        if wallMaster.health <= 0 then
+            wallMasterDeath(i)
+            goto continue
+        end
+
+        if wallMaster.grabPlayer == true then
+            Player.collider:setPosition(wallMaster.x, wallMaster.y)
+        end
+
+        if wallMaster.invincible == true then
+            wallMaster.invincibleTimer = wallMaster.invincibleTimer + 1 * dt
+            if wallMaster.invincibleTimer >= 0.750 then
+                wallMaster.invincible = false
+            end
+        end
+
         wallMaster.animation:update(dt)
         wallMaster.x, wallMaster.y = wallMaster.collider:getPosition()
 
@@ -64,7 +104,6 @@ function wallMasters:update(dt)
 
         if wallMaster.attack == false then
             wallMaster.attack = true
-            wallMaster.outTimer = 0
         end
 
         if wallMaster.attack == true then
@@ -73,18 +112,24 @@ function wallMasters:update(dt)
 
         if wallMaster.isReturning then
             if wallMaster.x <= 0 or wallMaster.x >= 256 then
-                removeWallMaster(i)
+                removeWallMaster(i, dt)
             end
 
             if wallMaster.y <= 56 or wallMaster.y >= 224 then
-                removeWallMaster(i)
+                removeWallMaster(i, dt)
             end
         end
     end
+    ::continue::
 end
 
 function wallMasters:draw()
     for i, wallMaster in ipairs(wallMasters) do
+        if wallMaster.invincible == true then
+            love.graphics.setColor(1, 0, 0, 1)
+        else
+            love.graphics.setColor(1, 1, 1, 1)
+        end
         wallMaster.animation:draw(sprites.wallMaster, wallMaster.x-8, wallMaster.y-8)
     end
 end
@@ -92,34 +137,52 @@ end
 function wallMasterAttack(index, direction, dt)
 
     local wallMaster = wallMasters[index]
+    
 
     if wallMaster.setPosition == false then
+
+        local x = wallMaster.targetX
+        local y = wallMaster.targetY
+
+        if direction == 'up' or direction == 'down' then
+            if wallMaster.targetX >= 128 then
+                x = 64
+            else
+                x = -64
+                wallMaster.animation:flipH()
+            end
+        else
+            if wallMaster.targetY >= 140 then
+                y = 48
+            else
+                y = -48
+                wallMaster.animation:flipV()
+            end
+        end
+
         if direction == 'down' then
-            wallMaster.collider:setPosition(wallMaster.targetX+64, wallMaster.targetY+40)
+            wallMaster.collider:setPosition(wallMaster.targetX+x, wallMaster.targetY+40)
             wallMaster.setPosition = true
             wallMaster.direction = 'up'
-            return
+            
         elseif direction == 'up' then
-            wallMaster.collider:setPosition(wallMaster.targetX+64, wallMaster.targetY-40)
-            wallMaster.animation:flipV()
+            wallMaster.collider:setPosition(wallMaster.targetX+x, wallMaster.targetY-40)
             wallMaster.setPosition = true
             wallMaster.direction = 'down'
+            wallMaster.animation:flipV()
+            
         elseif direction == 'right' then
-            wallMaster.collider:setPosition(wallMaster.targetX+40, wallMaster.targetY+48)
+            wallMaster.collider:setPosition(wallMaster.targetX+40, wallMaster.targetY+y)
             wallMaster.setPosition = true
             wallMaster.direction = 'left'
+            
         elseif direction == 'left' then
-            wallMaster.collider:setPosition(wallMaster.targetX-40, wallMaster.targetY+48)
+            wallMaster.collider:setPosition(wallMaster.targetX-40, wallMaster.targetY+y)
             wallMaster.setPosition = true
             wallMaster.direction = 'right'
         end
     end
     wallMaster.x, wallMaster.y = wallMaster.collider:getPosition()
-
-    wallMaster.outTimer = wallMaster.outTimer + 1 * dt
-    if wallMaster.outTimer <= 1.5 * (index-1) then
-        return
-    end
 
     local distance = math.floor(distanceFrom(wallMaster.x, wallMaster.y, wallMaster.targetX, wallMaster.targetY))
     local distanceX = math.floor(wallMaster.x - wallMaster.targetX)
@@ -158,8 +221,48 @@ function wallMasterAttack(index, direction, dt)
     wallMaster.collider:setLinearVelocity(wallMaster.vectorX * wallMaster.speed, wallMaster.vectorY * wallMaster.speed)
 end
 
-function removeWallMaster(index)
+function checkIfWallMasterGrabsPlayer(index)
     local wallMaster = wallMasters[index]
+    if wallMaster.collider:enter('Player') then
+        Player.hearts = Player.hearts - wallMaster.damage
+        wallMaster.grabPlayer = true
+        Player.grabbed = true
+    end
+end
+
+function wallMasterCheckDamage(index)
+    local wallMaster = wallMasters[index]
+    if wallMaster.collider:enter('Weapon') and wallMaster.invincible == false then
+        wallMaster.health = wallMaster.health - Sword.damage
+        wallMaster.invincible = true
+        wallMaster.invincibleTimer = 0
+    end
+end
+
+function wallMasterDeath(index)
+    local wallMaster = wallMasters[index]
+
+    deathSpawn(wallMaster.x-8, wallMaster.y-8, WallMasterDrop(wallMaster.drops))
+    removeWallMaster(index)
+    enemiesDungeon1_rooms[currentDungeonRoom][5] = enemiesDungeon1_rooms[currentDungeonRoom][5] - 1
+end
+
+function WallMasterDrop(drops)
+    if math.random(10) == 1 then
+        local item_drop = drops[math.random(#drops)]
+        return item_drop
+    end
+    return 0
+end
+
+function removeWallMaster(index, dt)
+    local wallMaster = wallMasters[index]
+
+    if wallMaster.grabPlayer == true then
+        wallMaster.grabPlayer = false
+        Player.grabbed = false
+        playerWasReleased()
+    end
 
     if wallMaster.colliderExists then
         wallMaster.collider:destroy()

@@ -7,6 +7,19 @@ function love.load()
 end
 
 function love.update(dt)
+
+    -- check if the game is "loading"
+    if loading then
+        loadingTimer = loadingTimer + 1 * dt
+        if loadingTimer < 0.5 then
+            loading = true
+            return
+        else
+            loading = false
+            loadingTimer = 0
+        end
+    end
+
     map:update(dt)
     map1:update(dt)
     items:update(dt)
@@ -19,6 +32,7 @@ function love.update(dt)
     doors:update(dt)
 
     love.keyboard.keysPressed = {}
+
 end
 
 function love.draw()
@@ -35,6 +49,10 @@ function love.draw()
     swordThrow:draw()
     --world:draw() -- debug collisions
     
+    if Player.grabbed == true then
+        enemies:draw()
+    end
+
     if Map.type == 'dungeon_1' then
         Map:drawDungeonWalls()
     end

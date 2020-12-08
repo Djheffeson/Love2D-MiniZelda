@@ -37,10 +37,10 @@ enemies_room = {
 -- wall master = 5
 enemiesDungeon1_rooms = {
     {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
-    {0,0,0,0,0}, {0,3,0,0,0}, {0,5,0,0,0}, {0,0,0,3,0}, {0,0,0,0,1}, {0,0,0,0,0},
+    {0,0,0,0,0}, {0,3,0,0,0}, {0,5,0,0,0}, {0,0,0,3,0}, {0,0,0,0,8}, {0,0,0,0,0},
     {0,0,0,0,0}, {6,0,0,0,0}, {0,0,5,0,0}, {8,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
     {0,0,0,0,0}, {0,0,0,0,0}, {0,0,3,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
-    {0,0,0,0,0}, {3,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,1}, {0,0,0,0,0}, {0,0,0,0,0}
+    {0,0,0,0,0}, {3,0,0,0,0}, {0,0,0,0,0}, {0,0,5,0,0}, {0,0,0,0,0}, {0,0,0,0,0}
 }
 
 function enemies:update(dt)
@@ -179,9 +179,9 @@ function enemiesPerRoom()
 
         -- check if the current room have wall masters
         if enemiesDungeon1_rooms[currentDungeonRoom][5] ~= nil then
-            if enemiesDungeon1_rooms[currentDungeonRoom][5] == 1 then
+            if enemiesDungeon1_rooms[currentDungeonRoom][5] > 0 then
                 wallMasterRoom = true
-            elseif enemiesDungeon1_rooms[currentDungeonRoom][5] == 0 then
+            else
                 wallMasterRoom = false
             end
         end
