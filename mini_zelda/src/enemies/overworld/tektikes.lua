@@ -14,7 +14,7 @@ function spawnTektike(type)
     repeat
         tektike.x = multiple16(love.math.random(16,256))
         tektike.y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(tektike.x+6, tektike.y+6)) == 'sand'
+    until checkLayer('Ground_layer', map:convertPixelToTile(tektike.x-8, tektike.y-8)) == 'sand'
 
     tektike.dx = 0
     tektike.dy = 0

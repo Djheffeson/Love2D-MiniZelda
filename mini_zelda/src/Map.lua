@@ -49,21 +49,21 @@ dRoom_10 = 'assets/tilemaps/dungeon_1/room_10.lua'
 dRoom_11 = 'assets/tilemaps/dungeon_1/room_11.lua'
 dRoom_12 = nil
 dRoom_13 = nil
-dRoom_14 = 'assets/tilemaps/new_dungeon_1/room_14.lua'
+dRoom_14 = 'assets/tilemaps/dungeon_1/room_14.lua'
 dRoom_15 = 'assets/tilemaps/dungeon_1/room_15.lua'
 dRoom_16 = 'assets/tilemaps/dungeon_1/room_16.lua'
 dRoom_17 = nil
 dRoom_18 = nil
 dRoom_19 = nil
 dRoom_20 = nil
-dRoom_21 = 'assets/tilemaps/new_dungeon_1/room_21.lua'
+dRoom_21 = 'assets/tilemaps/dungeon_1/room_21.lua'
 dRoom_22 = nil
 dRoom_23 = nil
 dRoom_24 = nil
 dRoom_25 = nil
-dRoom_26 = 'assets/tilemaps/new_dungeon_1/room_26.lua'
-dRoom_27 = 'assets/tilemaps/new_dungeon_1/room_27.lua'
-dRoom_28 = 'assets/tilemaps/new_dungeon_1/room_28.lua'
+dRoom_26 = 'assets/tilemaps/dungeon_1/room_26.lua'
+dRoom_27 = 'assets/tilemaps/dungeon_1/room_27.lua'
+dRoom_28 = 'assets/tilemaps/dungeon_1/room_28.lua'
 dRoom_29 = nil
 dRoom_30 = nil
 
@@ -406,7 +406,7 @@ function createRoomCollisions()
     map:removeLayer('Collide')
 
     map:addCustomLayer('Walls', 5)
-    map.layers[5] = deepcopy(map.layers[3])
+    map.layers[5] = copyTable(map.layers[3])
 
 end
 
@@ -424,33 +424,30 @@ function checkLayer(layer, x, y)
 
     if map.layers[layer].data[y-6][x+1] ~= nil then
         local tileID = map.layers[layer].data[y-6][x+1].gid
-        
         if layer == 'Ground_layer' then
             
-            dungeonBricksID = {427, 428, 491, 492}
-
             if tileID == 5 then
                 return 'sand'
 
-            elseif contains(tileID, dungeonBricksID) and Map.type == 'dungeon_1' then
+            elseif tileID == 428 and Map.type == 'dungeon_1' then
                 return 'dungeon_brick'
             end
 
         elseif layer == 'Water_layer' then
             watersID = {
-                288, 289, 290, 291, 292, 293,
-                324, 325, 326, 327, 328, 329,
-                360, 361, 362, 363, 364, 365,
-                396, 397, 398, 399, 400, 401,
-                432, 433, 434, 435, 436, 437,
-                468, 469, 470, 471, 472, 473,
+                289, 290, 291, 292, 293, 294,
+                325, 326, 327, 328, 329, 330,
+                361, 362, 363, 364, 365, 366,
+                397, 398, 399, 400, 401, 402,
+                433, 434, 435, 436, 437, 438,
+                469, 470, 471, 472, 473, 474,
 
-                300, 301, 302, 303, 304, 305,
-                336, 337, 338, 339, 340, 341,
-                372, 373, 374, 375, 376, 377,
-                408, 409, 410, 411, 412, 413,
-                444, 445, 446, 447, 448, 449,
-                480, 481, 482, 483, 484, 485, 
+                301, 302, 303, 304, 305, 306, 
+                337, 338, 339, 340, 341, 342, 
+                373, 374, 375, 376, 377, 378, 
+                409, 410, 411, 412, 413, 414, 
+                445, 446, 447, 448, 449, 450, 
+                481, 482, 483, 484, 485, 486,
             }
 
             if contains(tileID, watersID) then

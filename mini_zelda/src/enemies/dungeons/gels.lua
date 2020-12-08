@@ -6,7 +6,7 @@ function spawnGel()
     repeat
         gel.x = multiple16(love.math.random(16,256))
         gel.y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(gel.x, gel.y)) == 'dungeon_brick'
+    until checkLayer('Ground_layer', map:convertPixelToTile(gel.x-4, gel.y-4)) == 'dungeon_brick'
 
     gel.health = 1
     gel.damage = 0.5
@@ -106,8 +106,7 @@ function gelGetTarget(index)
         elseif gel.target == 'right' then
             x = x + 16
         end
-
-    until checkLayer('Ground_layer', map:convertPixelToTile(x+6, y+6)) == 'dungeon_brick'
+    until checkLayer('Ground_layer', map:convertPixelToTile(x, y-8)) == 'dungeon_brick'
 
     return x, y
 end

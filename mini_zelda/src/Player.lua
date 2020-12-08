@@ -58,7 +58,6 @@ function Player:init()
 end
 
 function Player:update(dt)
-    print(Player.collider:getPosition())
 
     if Player.enter == true then
         gameState = 'animation'
@@ -358,8 +357,9 @@ end
 
 function playerWalkAnimation(dt, walkDistance)
 
-    Player.x = Player.x + (Player.vectorX * WALK_SPEED * dt)
-    Player.y = Player.y + (Player.vectorY * WALK_SPEED * dt)
+    local vectX, vectY = getDirectionVector(Player.direction):unpack()
+    Player.x = Player.x + (vectX * WALK_SPEED * dt)
+    Player.y = Player.y + (vectY * WALK_SPEED * dt)
     local x, y = Player.collider:getPosition()
 
     -- check if the player walked enough

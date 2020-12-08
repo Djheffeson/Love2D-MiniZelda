@@ -9,7 +9,7 @@ function spawnGoriya()
     repeat
         goriya.x = multiple16(love.math.random(16,256))
         goriya.y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(goriya.x, goriya.y)) == 'dungeon_brick'
+    until checkLayer('Ground_layer', map:convertPixelToTile(goriya.x-8, goriya.y-8)) == 'dungeon_brick'
 
     goriya.vectorX = 0
     goriya.vectorY = 0

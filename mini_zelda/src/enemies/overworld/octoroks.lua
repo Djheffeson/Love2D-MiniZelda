@@ -8,7 +8,7 @@ function spawnOctorok(type)
     repeat
         octorok.x = multiple16(love.math.random(16,256))
         octorok.y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(octorok.x+6, octorok.y+6)) == 'sand'
+    until checkLayer('Ground_layer', map:convertPixelToTile(octorok.x-8, octorok.y-8)) == 'sand'
     
     octorok.walk = love.math.random(40, 50)
     octorok.vectorX = 0
