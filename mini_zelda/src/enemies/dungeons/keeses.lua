@@ -6,7 +6,7 @@ function spawnKeese()
     repeat
         keese.x = multiple16(love.math.random(16,256))
         keese.y = multiple16(love.math.random(72,224))
-    until checkLayer('Ground_layer', map:convertPixelToTile(keese.x+6, keese.y+6)) == 'dungeon_brick'
+    until checkLayer('Ground_layer', map:convertPixelToTile(keese.x+4, keese.y+4)) == 'dungeon_brick'
 
     repeat
         keese.vectorX = math.random(-1, 1)

@@ -56,12 +56,12 @@ dRoom_17 = nil
 dRoom_18 = nil
 dRoom_19 = nil
 dRoom_20 = nil
-dRoom_21 = 'assets/tilemaps/dungeon_1/room_21.lua'
+dRoom_21 = 'assets/tilemaps/new_dungeon_1/room_21.lua'
 dRoom_22 = nil
 dRoom_23 = nil
 dRoom_24 = nil
 dRoom_25 = nil
-dRoom_26 = 'assets/tilemaps/dungeon_1/room_26.lua'
+dRoom_26 = 'assets/tilemaps/new_dungeon_1/room_26.lua'
 dRoom_27 = 'assets/tilemaps/new_dungeon_1/room_27.lua'
 dRoom_28 = 'assets/tilemaps/new_dungeon_1/room_28.lua'
 dRoom_29 = nil
@@ -107,7 +107,7 @@ function Map:update(dt)
     -- check if is not the dungeon exit for not activate the "changing_room"
     local isNotDungeon1Exit = not (Map.type == 'dungeon_1' and currentDungeonRoom == 27)
 
-    if Player.y <= 67 and love.keyboard.isDown('up') and Player.direction == 'up' then
+    if Player.y <= 62 and love.keyboard.isDown('up') and Player.direction == 'up' then
         direct = 'up'
         changing_room = true
 
@@ -117,10 +117,10 @@ function Map:update(dt)
         direct = 'down'
         changing_room = true
 
-    elseif Player.x <= 8 and love.keyboard.isDown('left') and Player.direction == 'left' then
+    elseif Player.x <= 6 and love.keyboard.isDown('left') and Player.direction == 'left' then
         direct = 'left'
         changing_room = true
-    elseif Player.x >= 247 and love.keyboard.isDown('right') and Player.direction == 'right' then
+    elseif Player.x >= 250 and love.keyboard.isDown('right') and Player.direction == 'right' then
         direct = 'right'
         changing_room = true
     end

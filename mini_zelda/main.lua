@@ -32,13 +32,14 @@ function love.draw()
     enemies:draw()
     sword:draw()
     player:draw()
-    GUI:draw()
     swordThrow:draw()
-    --world:draw() -- debug collisions
+    world:draw() -- debug collisions
     
     if Map.type == 'dungeon_1' then
         Map:drawDungeonWalls()
     end
+
+    GUI:draw()
 
     if mapOverlap then
         map1:draw()
