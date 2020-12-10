@@ -12,7 +12,7 @@ function zoraProjectileCharge(x, y, targetX, targetY)
     projectile.dy = projectile.dy * 14
 
     projectile.grid = anim8.newGrid(8, 10, 
-        sprites.zoraProjectileSheet:getWidth(), sprites.zoraProjectileSheet:getHeight())
+        sprites.ball_projectile:getWidth(), sprites.ball_projectile:getHeight())
     projectile.sprite = anim8.newAnimation(projectile.grid('1-6', 1), 0.017)
 
     projectile.shot = false
@@ -48,7 +48,7 @@ end
 
 function zoraProjectile:draw()
     for i, projectile in ipairs(zoraProjectile) do
-        projectile.sprite:draw(sprites.zoraProjectileSheet, projectile.x-12, projectile.y-4)
+        projectile.sprite:draw(sprites.ball_projectile, projectile.x-12, projectile.y-4)
     end
 end
 

@@ -92,7 +92,6 @@ function zoras:update(dt)
                 zora.health = 2
             end
 
-            zoraProjectile:update(dt)
             zora.currentAnimation:update(dt)
 
         else
@@ -100,6 +99,7 @@ function zoras:update(dt)
             deleteZoras()
         end
     end
+    zoraProjectile:update(dt)
 end
 
 function zoras:draw()
@@ -111,8 +111,8 @@ function zoras:draw()
         end
         zora.currentAnimation:draw(sprites.zoraSheet, zora.x-16, zora.y-8)
         love.graphics.setColor(1, 1, 1, 1)
-        zoraProjectile:draw()
     end
+    zoraProjectile:draw()
 end
 
 function zoraEmerge(index)

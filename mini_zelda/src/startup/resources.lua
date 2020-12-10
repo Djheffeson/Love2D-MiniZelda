@@ -17,7 +17,8 @@ sprites.blueOctorokSheet = love.graphics.newImage('assets/graphics/blue_octorok_
 sprites.octorok_projectile = love.graphics.newImage('assets/graphics/octorok_projectile.png')
 
 sprites.zoraSheet = love.graphics.newImage('assets/graphics/zora_sheet.png')
-sprites.zoraProjectileSheet = love.graphics.newImage('assets/graphics/zora_projectile_sheet.png')
+
+sprites.ball_projectile = love.graphics.newImage('assets/graphics/ball_projectile_sheet.png')
 
 sprites.tektikeSheet = love.graphics.newImage('assets/graphics/tektike_sheet.png')
 sprites.leeverSheet = love.graphics.newImage('assets/graphics/leever_sheet.png')
@@ -30,6 +31,8 @@ sprites.gel = love.graphics.newImage('assets/graphics/gel_sprite.png')
 sprites.stalfo = love.graphics.newImage('assets/graphics/stalfos_sprite.png')
 sprites.goriya = love.graphics.newImage('assets/graphics/goriya_sheet.png')
 sprites.wallMaster = love.graphics.newImage('assets/graphics/wall_master_sheet.png')
+
+sprites.aquamentus = love.graphics.newImage('assets/graphics/aquamentus_sprite.png')
 
 sprites.deathSheet = love.graphics.newImage('assets/graphics/death_sheet.png')
 sprites.recoverHeart = love.graphics.newImage('assets/graphics/recovery_heart_sheet.png')

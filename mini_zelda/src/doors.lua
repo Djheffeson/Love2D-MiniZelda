@@ -362,6 +362,15 @@ function closedDoorsLogic(index)
             sounds.openDoor:play()
         end
         deleteDoorCollision('right')
+
+    elseif currentDungeonRoom == 5 and enemiesNumber[6] <= 0 then
+        if door.name == 'right' then
+            table.remove(currentDoors, index)
+            doorsState[currentDungeonRoom][4] = 0
+            sounds.openDoor:stop()
+            sounds.openDoor:play()
+        end
+        deleteDoorCollision('right')
     end
 end
 

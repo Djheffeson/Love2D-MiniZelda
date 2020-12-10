@@ -11,6 +11,7 @@ require 'src/enemies/dungeons/gels'
 require 'src/enemies/dungeons/stalfos'
 require 'src/enemies/dungeons/goriyas'
 require 'src/enemies/dungeons/wallMasters'
+require 'src/enemies/dungeons/bosses/aquamentus'
 
 sounds.enemyHit:setVolume(0.5)
 
@@ -23,11 +24,11 @@ sounds.enemyHit:setVolume(0.5)
 -- blue leever = 7 blue leever have some bugs
 -- peahat = 8
 enemies_room = {
-    {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 0, 0, 0, 0, 0, 0}, {3, 1, 1, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 2, 0, 0}, {5, 1, 0, 0, 0, 0, 0, 0},
-    {1, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 4},
-    {4, 0, 1, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 1, 0, 0, 0, 0, 0},
-    {0, 0, 1, 0, 0, 0, 2, 1}, {0, 0, 0, 4, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {4, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 5, 0, 0, 0}
+    {0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0}, {1,0,0,0,0,0,0,0}, {3,1,1,0,0,0,0,0}, {0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0}, {0,0,1,0,0,0,0,0}, {0,0,1,0,0,0,0,0}, {0,0,1,0,0,2,0,0}, {5,1,0,0,0,0,0,0},
+    {1,0,1,0,0,0,0,0}, {4,0,1,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {0,0,1,0,0,0,0,4},
+    {4,0,1,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {4,0,1,0,0,0,0,0},
+    {0,0,1,0,0,0,2,1}, {0,0,0,4,0,0,0,0}, {0,0,0,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {0,0,0,0,5,0,0,0}
 }
 
 -- keese = 1
@@ -35,12 +36,13 @@ enemies_room = {
 -- stalfo = 3
 -- goriya = 4
 -- wall master = 5
+-- aquamentus = 6
 enemiesDungeon1_rooms = {
-    {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
-    {0,0,0,0,0}, {0,3,0,0,0}, {0,5,0,0,0}, {0,0,0,3,0}, {0,0,0,0,8}, {0,0,0,0,0},
-    {0,0,0,0,0}, {6,0,0,0,0}, {0,0,5,0,0}, {8,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
-    {0,0,0,0,0}, {0,0,0,0,0}, {0,0,3,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0},
-    {0,0,0,0,0}, {3,0,0,0,0}, {0,0,0,0,0}, {0,0,5,0,0}, {0,0,0,0,0}, {0,0,0,0,0}
+    {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,1}, {0,0,0,0,0,0},
+    {0,0,0,0,0,0}, {0,3,0,0,0,0}, {0,5,0,0,0,0}, {0,0,0,3,0,0}, {0,0,0,0,8,0}, {0,0,0,0,0,0},
+    {0,0,0,0,0,0}, {6,0,0,0,0,0}, {0,0,5,0,0,0}, {8,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
+    {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,3,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
+    {0,0,0,0,0,0}, {3,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,5,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}
 }
 
 function enemies:update(dt)
@@ -83,6 +85,10 @@ function enemies:update(dt)
     if wallMasters ~= nil then
         wallMasters:update(dt)
     end
+
+    if aquamentus ~= nil then
+        aquamentus:update(dt)
+    end
 end
 
 function enemies:draw()
@@ -124,6 +130,10 @@ function enemies:draw()
 
     if wallMasters ~= nil then
         wallMasters:draw()
+    end
+
+    if aquamentus ~= nil then
+        aquamentus:draw()
     end
 end
 
@@ -186,6 +196,10 @@ function enemiesPerRoom()
             end
         end
 
+        if enemiesDungeon1_rooms[currentDungeonRoom][6] ~= nil then
+            spawnEnemy(enemiesDungeon1_rooms[currentDungeonRoom][6], 'aquamentus')
+        end
+
     end
 
 end
@@ -235,6 +249,10 @@ function spawnEnemy(quantity, enemy)
             spawnGoriya()
         end
 
+        if enemy == 'aquamentus' then
+            spawnAquamentus()
+        end
+
     end
 end
 
@@ -249,4 +267,5 @@ function deleteAllEntities()
     deleteStalfos()
     deleteGoriyas()
     deleteWallMasters()
+    deleteAquamentus()
 end
