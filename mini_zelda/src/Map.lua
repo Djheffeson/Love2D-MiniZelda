@@ -104,6 +104,8 @@ end
 
 function Map:update(dt)
 
+    roomsLogic()
+
     -- check if is not the dungeon exit for not activate the "changing_room"
     local isNotDungeon1Exit = not (Map.type == 'dungeon_1' and currentDungeonRoom == 27)
 
@@ -133,9 +135,9 @@ function Map:update(dt)
             nextRoom(direct)
         end
         Map.timer1 = 0
-    elseif gameState ~= 'running' then
+    elseif gameState ~= 'running' and gameState ~= 'shardCollected' then
         gameState = 'animation'
-    else
+    elseif gameState ~= 'shardCollected' then
         gameState = 'running'
     end
 end
@@ -416,6 +418,17 @@ function deleteRoomCollisions()
     end
     colliders = {}
     clearDoorsCollisions()
+end
+
+function roomsLogic()
+    if Map.type == 'dungeon_1' then
+        if currentDungeonRoom == 6 then
+            if shard1Spawn == false and shard1Collected == false then
+                spawnItem(5, 118, 143)
+                shard1Spawn = true
+            end
+        end
+    end
 end
 
 function checkLayer(layer, x, y)

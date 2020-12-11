@@ -53,6 +53,9 @@ function Player:init()
     Player.attackLeft = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete):flipH()
     Player.attackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
 
+    Player.holdingSword = anim8.newAnimation(walkGrid(1, 4), 1)
+    Player.holdingItem = anim8.newAnimation(walkGrid(2, 4), 1)
+
     Player.timer = 0
     Player.animationTimer = 0
     Player.waitTimer = 0
@@ -198,6 +201,17 @@ function Player:update(dt)
         else
             gameState = 'running'
         end
+        
+    elseif gameState == 'shardCollected' then
+        print('YOU WIN')
+        Player.currentAnimation = Player.holdingItem
+
+        Player.x = math.floor(Player.x)
+        Player.y = math.floor(Player.y)
+
+        if #items == 0 then
+            spawnItem(5, Player.x-10, Player.y-20)
+        end
     end
 end
 
@@ -282,6 +296,25 @@ function Player:pickupItems()
                 sounds.pickupRupee:stop()
                 sounds.pickupRupee:play()
             end
+
+        elseif item.id == 4 and item.collected == false then
+            if distanceFrom(Player.x-6.5, Player.y-6.5, item.x, item.y) < 10 then
+                Player.max_hearts = Player.max_hearts + 1
+                Player.hearts = Player.hearts + 1
+                item.collected = true
+                sounds.getItem:stop()
+                sounds.getItem:play()
+            end
+
+        elseif item.id == 5 and item.collected == false then
+            if distanceFrom(Player.x-5, Player.y-5, item.x, item.y) < 10 then
+                shard1Collected = true
+                gameState = 'shardCollected'
+                Player.hearts = Player.max_hearts
+                item.collected = true
+                sounds.getItem:stop()
+                sounds.getItem:play()
+            end
         end
     end
 end
@@ -322,13 +355,15 @@ end
 
 function playerEnterAnimation(dt)
     deleteAllEntities()
+
+    sounds.stairs:play()
+
     mapOverlap = true -- make the map be draw on top of everything
     
     Player.x = 120
     Player.y = Player.y + 30 * dt
     
     if Player.y > 152 then
-
         -- make the game start to "load"
         loading = true
         
@@ -338,11 +373,15 @@ function playerEnterAnimation(dt)
         Player.animationTimer = 0
         Player.enterInDungeonRoom = true
         changeMap('dungeon_1')
+        sounds.stairs:stop()
     end
 end
 
 function playerOutAnimation(dt)
     deleteAllEntities()
+
+    sounds.stairs:play()
+
     mapOverlap = true -- make the map be draw on top of everything
 
     -- make the game stop "load"
@@ -358,6 +397,7 @@ function playerOutAnimation(dt)
         Player.out = false
         Player.x, Player.y = Player.collider:getPosition()
         enemiesPerRoom()
+        sounds.stairs:stop()
     end
 end
 

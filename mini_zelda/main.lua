@@ -97,7 +97,9 @@ function love.keypressed(key)
     if key == '3' then
         spawnItem(3, 148, 104)
     end
-
+    if key == '4' then
+        spawnItem(4, 193, 138)
+    end
 end
  
 function love.keyboard.wasPressed(key)

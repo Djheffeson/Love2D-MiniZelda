@@ -40,6 +40,8 @@ sprites.key = love.graphics.newImage('assets/graphics/key.png')
 sprites.rupee = love.graphics.newImage('assets/graphics/rupee_sheet.png')
 sprites.boomerang = love.graphics.newImage('assets/graphics/boomerang_sprite.png')
 sprites.splash = love.graphics.newImage('assets/graphics/splash_sprite.png')
+sprites.heartContainer = love.graphics.newImage('assets/graphics/heart_container.png')
+sprites.triforceShard = love.graphics.newImage('assets/graphics/triforce_shard.png')
 
 sounds.useSword = love.audio.newSource('assets/sounds/sword_slash.wav', 'stream')
 sounds.swordShoot = love.audio.newSource('assets/sounds/sword_shoot.wav', 'stream')
@@ -51,5 +53,9 @@ sounds.lowHealth = love.audio.newSource('assets/sounds/low_health.wav', 'stream'
 sounds.linkHurt = love.audio.newSource('assets/sounds/link_hurt.wav', 'stream')
 sounds.pickupItem = love.audio.newSource('assets/sounds/pickup_item.wav', 'stream')
 sounds.pickupRupee = love.audio.newSource('assets/sounds/pickup_rupee.wav', 'stream')
+sounds.getItem = love.audio.newSource('assets/sounds/get_item.wav', 'stream')
 
 sounds.openDoor = love.audio.newSource('assets/sounds/door_unlock.wav', 'stream')
+
+sounds.keyAppear = love.audio.newSource('assets/sounds/key_appear.wav', 'stream')
+sounds.stairs = love.audio.newSource('assets/sounds/stairs.wav', 'stream')

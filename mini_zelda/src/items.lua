@@ -1,8 +1,15 @@
 items = {}
+itemsNotToDisappear = {2,4,5}
+
+shard1Spawn = false
+shard1Collected = false
+
 -- id = item
 -- 1 = recovery heart
 -- 2 = key
 -- 3 = orange rupee
+-- 4 = heart container
+-- 5 = triforce shard
 
 function spawnItem(id, x, y)
     local item = {}
@@ -20,6 +27,7 @@ function spawnItem(id, x, y)
         item.y = item.y + item.sprite:getHeight() / 2
 
     elseif id == 2 then
+        sounds.keyAppear:play()
         item.sprite = sprites.key
         local itemGrid = anim8.newGrid(8, 16, item.sprite:getWidth(), item.sprite:getHeight())
         item.spriteAnim = anim8.newAnimation(itemGrid(1, 1), 1)
@@ -34,7 +42,22 @@ function spawnItem(id, x, y)
 
         item.x = item.x + item.sprite:getWidth() / 2 - 16
         item.y = item.y + item.sprite:getHeight() / 2 - 8
+    elseif id == 4 then
+        item.sprite = sprites.heartContainer
+        local itemGrid = anim8.newGrid(13, 13, item.sprite:getWidth(), item.sprite:getHeight())
+        item.spriteAnim = anim8.newAnimation(itemGrid(1, 1), 1)
 
+        item.x = item.x + item.sprite:getWidth() / 2 - 6.5
+        item.y = item.y + item.sprite:getHeight() / 2 - 6.5
+
+    elseif id == 5 then
+
+        item.sprite = sprites.triforceShard
+        local itemGrid = anim8.newGrid(10, 10, item.sprite:getWidth(), item.sprite:getHeight())
+        item.spriteAnim = anim8.newAnimation(itemGrid('1-2', 1), 0.1)
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 5
+        item.y = item.y + item.sprite:getHeight() / 2 - 5
     end
 
     table.insert(items, item)
@@ -49,11 +72,10 @@ function items:update(dt)
 
         -- timer for item despawn
         currentItem.timer = currentItem.timer + 1 * dt
-        if currentItem.timer >= 8.100 then
-            currentItem.timer = 0
+        if currentItem.timer >= 10 and not contains(currentItem.id, itemsNotToDisappear) then
             table.remove(items, i)
+            currentItem.timer = 0
         end
-
         currentItem.spriteAnim:update(dt)
     end
 end

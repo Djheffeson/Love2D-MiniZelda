@@ -140,6 +140,7 @@ function aquamentusDeath(index)
     end
     enemiesDungeon1_rooms[currentDungeonRoom][6] = enemiesDungeon1_rooms[currentDungeonRoom][6] - 1
     table.remove(aquamentus, i)
+    spawnItem(4, 193, 138)
 end
 
 function deleteAquamentus()
