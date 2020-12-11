@@ -11,6 +11,25 @@ function swordSpawn(x, y, direction)
     sword.tmpNum = 0
     sword.collide = false
 
+    sword.grid = anim8.newGrid(16, 16, sprites.woodenSword:getWidth(), sprites.woodenSword:getHeight())
+    sword.up = anim8.newAnimation(sword.grid(1, '1-4'), 0.02)
+    sword.down = anim8.newAnimation(sword.grid(1, '1-4'), 0.02):flipV()
+    sword.left = anim8.newAnimation(sword.grid(2, '1-4'), 0.02):flipH()
+    sword.right = anim8.newAnimation(sword.grid(2, '1-4'), 0.02)
+
+    if direction == 'up' then
+        sword.animation = sword.up
+
+    elseif direction == 'down' then
+        sword.animation = sword.down
+
+    elseif direction == 'left' then
+        sword.animation = sword.left
+
+    elseif direction == 'right' then
+        sword.animation = sword.right
+    end
+
     sword.particleGrid = anim8.newGrid(8, 10, sprites.swordParticles:getWidth(), sprites.swordParticles:getHeight())
     sword.particleUpLeft = anim8.newAnimation(sword.particleGrid('1-4', 1), 0.02)
     sword.particleDownLeft = anim8.newAnimation(sword.particleGrid('1-4', 1), 0.02):flipV()
@@ -104,7 +123,7 @@ function swordThrow:draw()
                 sword.particleDownRight:draw(sprites.swordParticles, sword.x+sword.tmpNum-6, sword.y+sword.tmpNum-4)
             else
                 sword.x, sword.y = sword.collider:getPosition()
-                sword.animation:draw(Sword.sprite, sword.x-9, sword.y-8)
+                sword.animation:draw(sprites.woodenSword, sword.x-9, sword.y-8)
             end
 
         end

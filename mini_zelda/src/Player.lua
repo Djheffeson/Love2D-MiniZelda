@@ -283,6 +283,12 @@ function Player:pickupItems()
             end
         elseif item.id == 2 and item.collected == false then
             if distanceFrom(Player.x-5, Player.y-8, item.x, item.y) < 10 then
+                
+                if currentDungeonRoom == 11 then key11Collected = true end
+                if currentDungeonRoom == 15 then key15Collected = true end
+                if currentDungeonRoom == 26 then key26Collected = true end
+                if currentDungeonRoom == 28 then key28Collected = true end
+
                 Player.keys = Player.keys + 1
                 item.collected = true
                 sounds.pickupItem:stop()

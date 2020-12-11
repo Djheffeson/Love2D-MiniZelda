@@ -421,13 +421,43 @@ function deleteRoomCollisions()
 end
 
 function roomsLogic()
-    if Map.type == 'dungeon_1' then
+
+    if Map.type == 'dungeon_1' and gameState ~= 'changingRoom' then
         if currentDungeonRoom == 6 then
             if shard1Spawn == false and shard1Collected == false then
                 spawnItem(5, 118, 143)
                 shard1Spawn = true
             end
+
+        elseif currentDungeonRoom == 11 and key11Collected == false and key11Spawn == false then
+            spawnItem(2, 160, 180)
+            key11Spawn = true
+
+        elseif currentDungeonRoom == 15 and key15Collected == false then
+            if enemiesDungeon1_rooms[currentDungeonRoom][3] <= 0 and key15Spawn == false then
+                spawnItem(2, 144, 100)
+                key15Spawn = true
+            end
+
+        elseif currentDungeonRoom == 26 and key26Collected == false then
+            if enemiesDungeon1_rooms[currentDungeonRoom][1] <= 0 and key26Spawn == false then
+                spawnItem(2, 160, 180)
+                key26Spawn = true
+            end
+
+        elseif currentDungeonRoom == 28 and key28Collected == false then
+            if enemiesDungeon1_rooms[currentDungeonRoom][3] <= 0 and key28Spawn == false then
+                spawnItem(2, 192, 132)
+                key28Spawn = true
+            end
         end
+    end
+
+    if gameState == 'changingRoom' then
+        key11Spawn = false
+        key15Spawn = false
+        key26Spawn = false
+        key28Spawn = false
     end
 end
 

@@ -4,6 +4,15 @@ itemsNotToDisappear = {2,4,5}
 shard1Spawn = false
 shard1Collected = false
 
+key11Spawn = false
+key11Collected = false
+key15Spawn = false
+key15Collected = false
+key26Spawn = false
+key26Collected = false
+key28Spawn = false
+key28Collected = false
+
 -- id = item
 -- 1 = recovery heart
 -- 2 = key
