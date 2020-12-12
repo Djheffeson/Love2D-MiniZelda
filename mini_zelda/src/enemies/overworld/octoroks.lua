@@ -251,9 +251,12 @@ function octoroks:draw()
             end
 
             if octorok.invincible then
-                love.graphics.setColor(1, 0, 0, 1)
+                if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
+                    love.graphics.setShader(white_flash)
+                end
             end
             octorok.currentAnimation:draw(octorok.sprite, octorok.x-8, octorok.y-8)
+            love.graphics.setShader()
         end
     end
 end

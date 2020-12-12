@@ -118,9 +118,12 @@ end
 function stalfos:draw()
     for i, stalfo in ipairs(stalfos) do
         if stalfo.invincible == true then
-            love.graphics.setColor(1, 0, 0, 1)
+            -- makes the sprite blink white
+            if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
+                love.graphics.setShader(white_flash)
+            end
         else
-            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.setShader()
         end
         stalfo.animation:draw(sprites.stalfo, stalfo.x-8, stalfo.y-8)
     end

@@ -39,7 +39,7 @@ function zoras:update(dt)
 
             if zora.invincible == true then
                 zora.invincibleTimer = zora.invincibleTimer + 1 * dt
-                if zora.invincibleTimer >= 0.133 then
+                if zora.invincibleTimer >= 0.750 then
                     zora.invincible = false
                 end
             else
@@ -105,12 +105,13 @@ end
 function zoras:draw()
     for i, zora in ipairs(zoras) do
         if zora.invincible == true then
-            love.graphics.setColor(1, 0, 0, 1)
-        else
-            love.graphics.setColor(1, 1, 1, 1)
+            if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
+                love.graphics.setShader(white_flash)
+            end
         end
         zora.currentAnimation:draw(sprites.zoraSheet, zora.x-16, zora.y-8)
         love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.setShader()
     end
     zoraProjectile:draw()
 end

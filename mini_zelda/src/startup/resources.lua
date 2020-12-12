@@ -59,3 +59,5 @@ sounds.openDoor = love.audio.newSource('assets/sounds/door_unlock.wav', 'stream'
 
 sounds.keyAppear = love.audio.newSource('assets/sounds/key_appear.wav', 'stream')
 sounds.stairs = love.audio.newSource('assets/sounds/stairs.wav', 'stream')
+
+sounds.deathMusic = love.audio.newSource('assets/sounds/death_music.wav', 'stream')

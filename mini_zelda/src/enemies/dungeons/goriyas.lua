@@ -166,9 +166,12 @@ function goriyas:draw()
         end
 
         if goriya.invincible then
-            love.graphics.setColor(1,0,0,1)
+            -- makes the sprite blink white
+            if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
+                love.graphics.setShader(white_flash)
+            end
         else
-            love.graphics.setColor(1,1,1,1)
+            love.graphics.setShader()
         end
 
         goriya.currentAnim:draw(sprites.goriya, goriya.x-8, goriya.y-8)

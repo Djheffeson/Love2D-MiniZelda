@@ -69,7 +69,7 @@ function love.draw()
         love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
         love.graphics.setColor(1,1,1,1)
     end
-    
+
     push:finish()
 end
 
@@ -82,6 +82,10 @@ function love.keypressed(key)
     love.keyboard.keysPressed[key] = true
 
     -- keys for debug:
+
+    if key == 'k' then
+        playerDamage(3)
+    end
     if key == 'v' then
         playerDamage(0.5)
     end

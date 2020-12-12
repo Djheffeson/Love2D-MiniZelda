@@ -127,6 +127,10 @@ function Map:update(dt)
         changing_room = true
     end
 
+    if gameState == 'death' then
+        return
+    end
+
     -- Prevents player to move when the room is changing
     if changing_room then
         gameState = 'changingRoom'

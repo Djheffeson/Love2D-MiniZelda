@@ -103,12 +103,14 @@ function aquamentus:draw()
     aquamentusProjectile:draw()
     for i, aqua in ipairs(aquamentus) do
         if aqua.invincible == true then
-            love.graphics.setColor(233/255, 20/255, 65/255, 1)
-        else
-            love.graphics.setColor(1, 1, 1, 1)
+            -- makes the sprite blink white
+            if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
+                love.graphics.setShader(white_flash)
+            end
         end
         aqua.currentAnimation:draw(sprites.aquamentus, aqua.x, aqua.y)
     end
+    love.graphics.setShader()
 end
 
 function checkIfPlayerDamageAquamentus(index)

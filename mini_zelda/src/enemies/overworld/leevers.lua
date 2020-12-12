@@ -196,13 +196,14 @@ end
 function leevers:draw()
     for i, leever in ipairs(leevers) do
         if leever.invincible == true then
-            love.graphics.setColor(1, 0, 0, 1)
-        else
-            love.graphics.setColor(1, 1, 1, 1)
+            if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
+                love.graphics.setShader(white_flash)
+            end
         end
         if leever.state ~= 'none' then
             leever.currentAnimation:draw(sprites.leeverSheet, leever.x-8, leever.y-8)
         end
+        love.graphics.setShader()
     end
 end
 

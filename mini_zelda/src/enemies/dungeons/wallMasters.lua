@@ -126,11 +126,12 @@ end
 function wallMasters:draw()
     for i, wallMaster in ipairs(wallMasters) do
         if wallMaster.invincible == true then
-            love.graphics.setColor(1, 0, 0, 1)
-        else
-            love.graphics.setColor(1, 1, 1, 1)
+            if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
+                love.graphics.setShader(white_flash)
+            end
         end
         wallMaster.animation:draw(sprites.wallMaster, wallMaster.x-8, wallMaster.y-8)
+        love.graphics.setShader()
     end
 end
 

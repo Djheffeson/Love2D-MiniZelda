@@ -354,23 +354,28 @@ end
 function closedDoorsLogic(index)
     local door = currentDoors[index]
     local enemiesNumber = enemiesDungeon1_rooms[currentDungeonRoom]
+
+    if door == nil then
+        return
+    end
+
     if currentDungeonRoom == 14 and enemiesNumber[1] <= 0 then
-        if door.name == 'right' then
+        if door.name == 'right' and doorsState[currentDungeonRoom][4] == 1 then
             table.remove(currentDoors, index)
             doorsState[currentDungeonRoom][4] = 0
             sounds.openDoor:stop()
             sounds.openDoor:play()
+            deleteDoorCollision('right')
         end
-        deleteDoorCollision('right')
 
     elseif currentDungeonRoom == 5 and enemiesNumber[6] <= 0 then
-        if door.name == 'right' then
+        if door.name == 'right' and doorsState[currentDungeonRoom][4] == 1 then
             table.remove(currentDoors, index)
             doorsState[currentDungeonRoom][4] = 0
             sounds.openDoor:stop()
             sounds.openDoor:play()
+            deleteDoorCollision('right')
         end
-        deleteDoorCollision('right')
     end
 end
 

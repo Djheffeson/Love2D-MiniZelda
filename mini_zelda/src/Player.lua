@@ -53,15 +53,49 @@ function Player:init()
     Player.attackLeft = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete):flipH()
     Player.attackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
 
-    Player.holdingSword = anim8.newAnimation(walkGrid(1, 4), 1)
-    Player.holdingItem = anim8.newAnimation(walkGrid(2, 4), 1)
+    Player.holdingSword = anim8.newAnimation(walkGrid(1, 5), 1)
+    Player.holdingItem = anim8.newAnimation(walkGrid(2, 5), 1)
+
+    Player.deathAnimation = anim8.newAnimation(walkGrid(1, '1-4'), 0.083)
 
     Player.timer = 0
     Player.animationTimer = 0
     Player.waitTimer = 0
+
+    Player.deathAnimTimer = 0
 end
 
 function Player:update(dt)
+
+    if Player.state == 'dead' then
+        return
+    end
+
+    if Player.hearts <= 0 and Player.state ~= 'dead' then
+        deleteAllEntities()
+        gameState = 'death'
+
+        Player.deathAnimTimer = Player.deathAnimTimer + 1 * dt
+
+        if Player.deathAnimTimer <= 1 then
+            Player.currentAnimation = Player.walkDown
+
+        elseif Player.deathAnimTimer <= 2.250 then
+            Player.currentAnimation = Player.deathAnimation
+            Player.currentAnimation:update(dt)
+            sounds.deathMusic:play()
+
+        elseif Player.deathAnimTimer <= 3.200 then
+            Player.currentAnimation = Player.walkDown
+
+        elseif #deaths == 0 then
+            Player.state = 'dead'
+            deathSpawn(Player.x-8, Player.y-8, 0)
+        end
+
+        if Player.hearts < 0 then Player.hearts = 0 end
+        return
+    end
 
     if Player.grabbed == true then
         Player.currentAnimation:update(dt)
@@ -87,12 +121,6 @@ function Player:update(dt)
 
     if gameState == 'running' then
         
-        if Player.hearts <= 0 then
-            print("YOU DIE")
-            if Player.hearts < 0 then Player.hearts = 0 end
-            return
-        end
-
         if Player.hearts > Player.max_hearts then
             Player.hearts = Player.max_hearts
         end
@@ -217,13 +245,16 @@ end
 
 function Player:draw()
     if Player.invincible then
-        love.graphics.setColor(1, 0, 0, 1)
-    else
-        love.graphics.setColor(1, 1, 1, 1)
+        if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
+            love.graphics.setShader(white_flash)
+        end
     end
     -- Draw the animation
-    Player.currentAnimation:draw(sprites.linkSheet, Player.x-8.2, Player.y-10)
+    if Player.state ~= 'dead' then
+        Player.currentAnimation:draw(sprites.linkSheet, Player.x-8.2, Player.y-10)
+    end
     love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setShader()
 end
 
 function Player:attack()
