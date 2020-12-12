@@ -37,7 +37,8 @@ function gameStart()
     require 'src/items'
     require 'src/deathAnimation'
     require 'src/doors'
-
+    require 'src/menu'
+    
     map1 = Map()
     sword = Sword()
     player = Player()
@@ -53,7 +54,23 @@ function gameStart()
             return pixel;
         }
     ]]
+
+    local shader_blackAndWhite = [[
+        vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ) {
+
+            vec4 pixel = Texel(texture, texture_coords);
+            float avarage = (pixel.r + pixel.g + pixel.b) / 3;
+
+            pixel.r = avarage;
+            pixel.g = avarage;
+            pixel.b = avarage;
+
+            return pixel;
+        }
+    ]]
+
     white_flash = love.graphics.newShader(shader_white)
+    blackAndWhiteShader = love.graphics.newShader(shader_blackAndWhite)
 
     loading = false
     loadingTimer = 0

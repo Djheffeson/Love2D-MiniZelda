@@ -9,6 +9,8 @@ function GUI:update(dt)
 end
 
 function GUI:draw()
+    if gameState == 'menu_continue' then return end
+    
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.rectangle('fill', 0, 0, 256, 56)
     

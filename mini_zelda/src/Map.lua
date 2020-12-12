@@ -34,7 +34,7 @@ overworldRooms = {
     room_21, room_22, room_23, room_24, room_25
 }
 
-currentOverworldRoom = 3
+currentOverworldRoom = 23
 
 dRoom_1 = nil
 dRoom_2 = nil
@@ -79,6 +79,19 @@ currentDungeonRoom = 27
 
 colliders = {}
 
+function respawnOverworld()
+    deleteRoomCollisions()
+    currentOverworldRoom = 23
+    Map:init()
+end
+
+function respawnDungeon1()
+    deleteRoomCollisions()
+    currentDungeonRoom = 27
+    changeMap('dungeon_1')
+    Player.enter = true
+end
+
 function Map:init()
 
     mapX = 0
@@ -93,7 +106,7 @@ function Map:init()
     map = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
 
     changing_room = false
-    local direct = 'up'
+    direct = 'up'
 
     createRoomCollisions()
     enemiesPerRoom()
@@ -427,7 +440,15 @@ end
 function roomsLogic()
 
     if Map.type == 'dungeon_1' and gameState ~= 'changingRoom' then
-        if currentDungeonRoom == 6 then
+        if currentDungeonRoom == 5 then
+            if enemiesDungeon1_rooms[currentDungeonRoom][6] == 0 and heartContainer1Collected == false then
+                if heartContainer1Spawn == false then
+                    spawnItem(4, 193, 138)
+                    heartContainer1Spawn = true
+                end
+            end
+            
+        elseif currentDungeonRoom == 6 then
             if shard1Spawn == false and shard1Collected == false then
                 spawnItem(5, 118, 143)
                 shard1Spawn = true
@@ -462,6 +483,7 @@ function roomsLogic()
         key15Spawn = false
         key26Spawn = false
         key28Spawn = false
+        heartContainer1Spawn = false
     end
 end
 

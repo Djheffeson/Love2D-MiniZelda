@@ -4,6 +4,30 @@ PLAYER_WIDTH = 16
 PLAYER_HEIGHT = 16
 WALK_SPEED = 80
 
+function playerRespawn()
+    baw = false
+    Player.hearts = 3
+    Player.x = 130
+    Player.y = 150
+
+    Player.collider:setPosition(Player.x, Player.y)
+
+    Player.isMoving = false
+    Player.state = 'walking'
+    Player.direction = 'up'
+    Player.invincible = false
+    Player.receive_damage = false
+    Player.grabbed = false
+
+    Player.currentAnimation = Player.walkUp
+
+    Player.timer = 0
+    Player.animationTimer = 0
+    Player.waitTimer = 0
+    Player.deathAnimTimer = 0
+    Player.waitMenuTimer = 0
+end
+
 function Player:init()
 
     Player.x = 130
@@ -63,15 +87,22 @@ function Player:init()
     Player.waitTimer = 0
 
     Player.deathAnimTimer = 0
+    Player.waitMenuTimer = 0
 end
 
 function Player:update(dt)
 
     if Player.state == 'dead' then
+
+        Player.waitMenuTimer = Player.waitMenuTimer + 1 * dt
+        if Player.waitMenuTimer >= 0.750 then
+            gameState = 'game_over'
+        end
         return
     end
 
     if Player.hearts <= 0 and Player.state ~= 'dead' then
+        deleteItems()
         deleteAllEntities()
         gameState = 'death'
 
@@ -88,9 +119,13 @@ function Player:update(dt)
         elseif Player.deathAnimTimer <= 3.200 then
             Player.currentAnimation = Player.walkDown
 
+            if Player.deathAnimTimer >= 2.800 then
+                baw = true
+            end
+
         elseif #deaths == 0 then
             Player.state = 'dead'
-            deathSpawn(Player.x-8, Player.y-8, 0)
+            deathSpawn(Player.x-6.2, Player.y-10, 0)
         end
 
         if Player.hearts < 0 then Player.hearts = 0 end
@@ -244,6 +279,11 @@ function Player:update(dt)
 end
 
 function Player:draw()
+
+    if baw == true then
+        love.graphics.setShader(blackAndWhiteShader)
+    end
+
     if Player.invincible then
         if math.floor(math.cos(love.timer.getTime() * 18 % 2 * math.pi)) == 0 then
             love.graphics.setShader(white_flash)
@@ -336,6 +376,9 @@ function Player:pickupItems()
 
         elseif item.id == 4 and item.collected == false then
             if distanceFrom(Player.x-6.5, Player.y-6.5, item.x, item.y) < 10 then
+
+                if currentDungeonRoom == 5 then heartContainer1Collected = true end
+
                 Player.max_hearts = Player.max_hearts + 1
                 Player.hearts = Player.hearts + 1
                 item.collected = true

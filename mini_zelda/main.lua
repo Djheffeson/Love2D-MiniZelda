@@ -30,6 +30,7 @@ function love.update(dt)
     deaths:update(dt)
     enemies:update(dt)
     doors:update(dt)
+    menu:update(dt)
 
     love.keyboard.keysPressed = {}
 
@@ -47,13 +48,14 @@ function love.draw()
     sword:draw()
     player:draw()
     swordThrow:draw()
+    menu:draw()
     --world:draw() -- debug collisions
-    
+
     if Player.grabbed == true then
         enemies:draw()
     end
 
-    if Map.type == 'dungeon_1' then
+    if Map.type == 'dungeon_1' and gameState ~= 'game_over' and gameState ~= 'menu_continue' then
         Map:drawDungeonWalls()
     end
 

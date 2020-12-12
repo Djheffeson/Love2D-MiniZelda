@@ -13,6 +13,9 @@ key26Collected = false
 key28Spawn = false
 key28Collected = false
 
+heartContainer1Spawn = false
+heartContainer1Collected = false
+
 -- id = item
 -- 1 = recovery heart
 -- 2 = key
