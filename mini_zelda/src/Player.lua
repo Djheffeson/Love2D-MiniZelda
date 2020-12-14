@@ -18,6 +18,7 @@ function playerRespawn()
     Player.invincible = false
     Player.receive_damage = false
     Player.grabbed = false
+    Player.visible = true
 
     Player.currentAnimation = Player.walkUp
 
@@ -43,6 +44,7 @@ function Player:init()
     Player.invincible = false
     Player.receive_damage = false
     Player.grabbed = false
+    Player.visible = true
 
     Player.slot1 = 'wooden_sword'
     Player.slot2 = nil
@@ -102,6 +104,8 @@ function Player:update(dt)
     end
 
     if Player.hearts <= 0 and Player.state ~= 'dead' then
+        sounds.overworldTheme:stop()
+        sounds.dungeonTheme:stop()
         deleteItems()
         deleteAllEntities()
         gameState = 'death'
@@ -266,13 +270,12 @@ function Player:update(dt)
         end
         
     elseif gameState == 'shardCollected' then
-        print('YOU WIN')
         Player.currentAnimation = Player.holdingItem
 
         Player.x = math.floor(Player.x)
         Player.y = math.floor(Player.y)
 
-        if #items == 0 then
+        if #items == 0 and Player.visible == true then
             spawnItem(5, Player.x-10, Player.y-20)
         end
     end
@@ -290,8 +293,8 @@ function Player:draw()
         end
     end
     -- Draw the animation
-    if Player.state ~= 'dead' then
-        Player.currentAnimation:draw(sprites.linkSheet, Player.x-8.2, Player.y-10)
+    if Player.state ~= 'dead' and Player.visible == true then
+        Player.currentAnimation:draw(sprites.linkSheet, Player.x-8.2, Player.y-10+guiY)
     end
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setShader()
@@ -424,7 +427,8 @@ function checkPlayerEnterInDoor()
     end
 end
 
-function playerWasReleased()    
+function playerWasReleased()
+    deleteItems()
     loading = true
     currentDungeonRoom = 27
     changeMap('dungeon_1')

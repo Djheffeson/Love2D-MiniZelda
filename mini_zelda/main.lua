@@ -31,6 +31,8 @@ function love.update(dt)
     enemies:update(dt)
     doors:update(dt)
     menu:update(dt)
+    endGame:update(dt)
+    writer:update(dt)
 
     love.keyboard.keysPressed = {}
 
@@ -49,13 +51,14 @@ function love.draw()
     player:draw()
     swordThrow:draw()
     menu:draw()
+    endGame:draw()
     --world:draw() -- debug collisions
 
     if Player.grabbed == true then
         enemies:draw()
     end
 
-    if Map.type == 'dungeon_1' and gameState ~= 'game_over' and gameState ~= 'menu_continue' then
+    if Map.type == 'dungeon_1' and gameState ~= 'game_over' and gameState ~= 'menu_continue' and gameState ~= 'shardCollected' then
         Map:drawDungeonWalls()
     end
 
@@ -71,6 +74,8 @@ function love.draw()
         love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
         love.graphics.setColor(1,1,1,1)
     end
+
+    writer:draw()
 
     push:finish()
 end

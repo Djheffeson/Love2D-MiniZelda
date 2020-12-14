@@ -38,11 +38,15 @@ function gameStart()
     require 'src/deathAnimation'
     require 'src/doors'
     require 'src/menu'
+    require 'src/endGame'
+    require 'src/writer'
     
     map1 = Map()
     sword = Sword()
     player = Player()
     GUI = GUI()
+
+    endGameStart()
 
     local shader_white = [[
         vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ) {

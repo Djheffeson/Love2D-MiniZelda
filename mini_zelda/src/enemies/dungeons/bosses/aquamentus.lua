@@ -56,6 +56,7 @@ function aquamentus:update(dt)
             spawnAquaProjectiles(aqua.x, aqua.y)
 
         elseif aqua.attackTimer >= aqua.attackTime-0.5 then
+            sounds.bossScream:play()
             aqua.currentAnimation = aqua.attackAnim
         end
 

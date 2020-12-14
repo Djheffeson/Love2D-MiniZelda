@@ -24,6 +24,13 @@ end
 
 function doors:update(dt)
 
+    -- reset the doors
+    if gameState == 'changingRoom' then
+        doorsState[14][4] = 1
+        doorsState[5][4] = 1
+        doorsState[8][3] = 1
+    end
+
     if gameState == 'running' and closedDoorsCreated == false then
         -- iterates for al the doors and close some
         for i, door in ipairs(currentDoors) do
@@ -375,6 +382,15 @@ function closedDoorsLogic(index)
             sounds.openDoor:stop()
             sounds.openDoor:play()
             deleteDoorCollision('right')
+        end
+
+    elseif currentDungeonRoom == 8 and enemiesNumber[2] <= 0 then
+        if door.name == 'left' and doorsState[currentDungeonRoom][3] == 1 then
+            table.remove(currentDoors, index)
+            doorsState[currentDungeonRoom][3] = 0
+            sounds.openDoor:stop()
+            sounds.openDoor:play()
+            deleteDoorCollision('left')
         end
     end
 end

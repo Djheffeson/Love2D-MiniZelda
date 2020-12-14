@@ -49,6 +49,8 @@ sounds.swordShoot = love.audio.newSource('assets/sounds/sword_shoot.wav', 'strea
 sounds.enemyDie = love.audio.newSource('assets/sounds/enemy_die.wav', 'stream') 
 sounds.enemyHit = love.audio.newSource('assets/sounds/enemy_hit.wav', 'stream')
 
+sounds.bossScream = love.audio.newSource('assets/sounds/boss_scream.wav', 'stream')
+
 sounds.lowHealth = love.audio.newSource('assets/sounds/low_health.wav', 'stream')
 sounds.linkHurt = love.audio.newSource('assets/sounds/link_hurt.wav', 'stream')
 sounds.pickupItem = love.audio.newSource('assets/sounds/pickup_item.wav', 'stream')
@@ -57,7 +59,23 @@ sounds.getItem = love.audio.newSource('assets/sounds/get_item.wav', 'stream')
 
 sounds.openDoor = love.audio.newSource('assets/sounds/door_unlock.wav', 'stream')
 
+sounds.text = love.audio.newSource('assets/sounds/text.wav', 'stream')
+
 sounds.keyAppear = love.audio.newSource('assets/sounds/key_appear.wav', 'stream')
 sounds.stairs = love.audio.newSource('assets/sounds/stairs.wav', 'stream')
 
 sounds.deathMusic = love.audio.newSource('assets/sounds/death_music.wav', 'stream')
+
+sounds.getShard = love.audio.newSource('assets/sounds/get_shard.mp3', 'stream')
+
+sounds.menuTheme = love.audio.newSource('assets/sounds/menu_theme.mp3', 'stream')
+sounds.overworldTheme = love.audio.newSource('assets/sounds/overworld.mp3', 'stream')
+sounds.dungeonTheme = love.audio.newSource('assets/sounds/dungeon.mp3', 'stream')
+sounds.endingTheme = love.audio.newSource('assets/sounds/ending_theme.mp3', 'stream')
+
+sounds.overworldTheme:setVolume(0.5)
+sounds.dungeonTheme:setVolume(0.5)
+sounds.endingTheme:setVolume(0.5)
+sounds.menuTheme:setVolume(0.5)
+sounds.enemyHit:setVolume(0.5)
+sounds.getShard:setVolume(0.5)

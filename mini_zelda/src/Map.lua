@@ -113,9 +113,27 @@ function Map:init()
 
     Map.timer = 0
     Map.timer1 = 0
+
 end
 
 function Map:update(dt)
+
+    if gameState == 'shardCollected' then
+        endGame.start = true
+    end
+
+    if Player.enter ~= true and Player.out ~= true and Player.state ~= 'dead' and gameState ~= 'shardCollected' then
+        if Map.type == 'overworld' then
+            sounds.dungeonTheme:stop()
+            sounds.overworldTheme:play()
+        elseif Map.type == 'dungeon_1' then
+            sounds.overworldTheme:stop()
+            sounds.dungeonTheme:play()
+        end
+    else
+        sounds.dungeonTheme:stop()
+        sounds.overworldTheme:stop()
+    end
 
     roomsLogic()
 
@@ -160,10 +178,16 @@ function Map:update(dt)
 end
 
 function Map:draw()
+
+    if gameState == 'shardCollected' then
+        return
+    end
+    
     if gameState == 'changingRoom' then
         tmpMap:draw(tmpMapX, tmpMapY+56)
     end
     map:draw(mapX, mapY+56)
+    love.graphics.setShader()
 end
 
 function Map:drawDungeonWalls()
