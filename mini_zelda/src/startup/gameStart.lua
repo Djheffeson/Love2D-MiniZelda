@@ -40,6 +40,7 @@ function gameStart()
     require 'src/menu'
     require 'src/endGame'
     require 'src/writer'
+    require 'src/NPCs'
     
     map1 = Map()
     sword = Sword()

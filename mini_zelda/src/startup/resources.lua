@@ -42,6 +42,8 @@ sprites.boomerang = love.graphics.newImage('assets/graphics/boomerang_sprite.png
 sprites.splash = love.graphics.newImage('assets/graphics/splash_sprite.png')
 sprites.heartContainer = love.graphics.newImage('assets/graphics/heart_container.png')
 sprites.triforceShard = love.graphics.newImage('assets/graphics/triforce_shard.png')
+sprites.oldman = love.graphics.newImage('assets/graphics/oldman.png')
+sprites.fire = love.graphics.newImage('assets/graphics/fire.png')
 
 sounds.useSword = love.audio.newSource('assets/sounds/sword_slash.wav', 'stream')
 sounds.swordShoot = love.audio.newSource('assets/sounds/sword_shoot.wav', 'stream')
@@ -67,6 +69,7 @@ sounds.stairs = love.audio.newSource('assets/sounds/stairs.wav', 'stream')
 sounds.deathMusic = love.audio.newSource('assets/sounds/death_music.wav', 'stream')
 
 sounds.getShard = love.audio.newSource('assets/sounds/get_shard.mp3', 'stream')
+sounds.newItem = love.audio.newSource('assets/sounds/new_item.wav', 'stream')
 
 sounds.menuTheme = love.audio.newSource('assets/sounds/menu_theme.mp3', 'stream')
 sounds.overworldTheme = love.audio.newSource('assets/sounds/overworld.mp3', 'stream')

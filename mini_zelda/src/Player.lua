@@ -46,7 +46,7 @@ function Player:init()
     Player.grabbed = false
     Player.visible = true
 
-    Player.slot1 = 'wooden_sword'
+    Player.slot1 = nil
     Player.slot2 = nil
 
     Player.maxMoney = 255
@@ -90,6 +90,7 @@ function Player:init()
 
     Player.deathAnimTimer = 0
     Player.waitMenuTimer = 0
+    Player.timerHoldingItem = 0
 end
 
 function Player:update(dt)
@@ -100,6 +101,12 @@ function Player:update(dt)
         if Player.waitMenuTimer >= 0.750 then
             gameState = 'game_over'
         end
+        return
+
+    end
+
+    if writing == true then
+        Player.collider:setLinearVelocity(0, 0)
         return
     end
 
@@ -153,7 +160,7 @@ function Player:update(dt)
         playerOutAnimation(dt)
     end
 
-    if Player.enterInDungeonRoom == true then
+    if Player.enterInUndergroundRoom == true then
         gameState = 'animation'
         playerWalkAnimation(dt, Player.walkDistance)
     end
@@ -189,7 +196,7 @@ function Player:update(dt)
             end
         end
         
-        if love.keyboard.wasPressed('f') and Sword.timer < 0 and Player.state == 'walking' then
+        if love.keyboard.wasPressed('f') and Sword.timer < 0 and Player.state == 'walking' and Player.slot1 ~= nil then
             Player:attack()
         end
 
@@ -248,6 +255,15 @@ function Player:update(dt)
                 damage_timer = 0
                 Player.state = 'walking'
             end
+
+        elseif Player.state == 'holding_weapon' then        
+            Player.collider:setLinearVelocity(0, 0)
+            Player.currentAnimation = Player.holdingSword
+            Player.timerHoldingItem = Player.timerHoldingItem + 1 * dt
+            if Player.timerHoldingItem >= 2 then
+                Player.state = 'walking'
+                Player.currentAnimation = Player.walkDown
+            end
         end
         Player:pickupItems()
 
@@ -285,6 +301,10 @@ function Player:draw()
 
     if baw == true then
         love.graphics.setShader(blackAndWhiteShader)
+    end
+
+    if Player.state == 'holding_weapon' and Player.slot1 == 'wooden_sword' then
+        Sword.up:draw(sprites.woodenSword, Player.x-13, Player.y-26)
     end
 
     if Player.invincible then
@@ -399,6 +419,17 @@ function Player:pickupItems()
                 sounds.getItem:play()
             end
         end
+
+        if item.id == 10 and item.collected == false then
+            if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
+                sounds.newItem:play()
+                Player.state = 'holding_weapon'
+                Player.slot1 = 'wooden_sword'
+                item.collected = true
+                sounds.getItem:stop()
+                sounds.getItem:play()
+            end
+        end
     end
 end
 
@@ -410,6 +441,13 @@ function checkPlayerEnterInDoor()
         if currentOverworldRoom == 3 and layer == 'none' and Player.exitEntrance and Player.direction == 'up' then
             Player.exitEntrance = false
             Player.enter = true
+            Map.nextMap = 'dungeon_1'
+        end
+
+        if currentOverworldRoom == 23 and layer == 'none' and Player.exitEntrance and Player.direction == 'up' then
+            Player.exitEntrance = false
+            Player.enter = true
+            Map.nextMap = 'cavern'
         end
 
         if layer ~= 'none' and Player.exitEntrance == false then
@@ -419,9 +457,17 @@ function checkPlayerEnterInDoor()
     -- check if the player is in the right place for they get out of the dungeon
     elseif Map.type == 'dungeon_1' and currentDungeonRoom == 27 then
 
-        if currentDungeonRoom == 27 and Player.y >= 226 and Player.direction == 'down' then
+        if Player.y >= 226 and Player.direction == 'down' then
             changeMap('overworld')
             Player.y = 152
+            Player.out = true
+        end
+
+    elseif Map.type == 'cavern' then
+
+        if Player.y >= 226 and Player.direction == 'down' then
+            changeMap('overworld')
+            Player.y = 107
             Player.out = true
         end
     end
@@ -434,7 +480,7 @@ function playerWasReleased()
     changeMap('dungeon_1')
     Player.direction = 'up'
     Player.currentAnimation = Player.walkUp
-    Player.enterInDungeonRoom = true
+    Player.enterInUndergroundRoom = true
 end
 
 function playerEnterAnimation(dt)
@@ -444,10 +490,16 @@ function playerEnterAnimation(dt)
 
     mapOverlap = true -- make the map be draw on top of everything
     
-    Player.x = 120
-    Player.y = Player.y + 30 * dt
+    if Map.nextMap == 'dungeon_1' then
+        Player.x = 120
+        Player.y = Player.y + 30 * dt
+    elseif Map.nextMap == 'cavern' then
+        Player.x = 72
+        Player.y = Player.y + 30 * dt
+    end
     
-    if Player.y > 152 then
+    if Player.y > 152 and Map.nextMap == 'dungeon_1' then
+
         -- make the game start to "load"
         loading = true
         
@@ -455,8 +507,20 @@ function playerEnterAnimation(dt)
         Player.enter = false
         Player.walkDistance = 16
         Player.animationTimer = 0
-        Player.enterInDungeonRoom = true
+        Player.enterInUndergroundRoom = true
         changeMap('dungeon_1')
+        sounds.stairs:stop()
+        
+    elseif Player.y > 104 and Map.nextMap == 'cavern' then
+
+        loading = true
+        
+        mapOverlap = false
+        Player.enter = false
+        Player.walkDistance = 16
+        Player.animationTimer = 0
+        Player.enterInUndergroundRoom = true
+        changeMap('cavern')
         sounds.stairs:stop()
     end
 end
@@ -471,11 +535,18 @@ function playerOutAnimation(dt)
     -- make the game stop "load"
     loading = false
 
-    Player.x = 119
+    if Map.nextMap == 'dungeon_1' then
+        Player.x = 119
+        Player.collider:setPosition(119, 129)
+
+    elseif Map.nextMap == 'cavern' then
+        Player.x = 71
+        Player.collider:setPosition(71, 81)
+    end
+
     Player.y = Player.y - 30 * dt
-    
-    Player.collider:setPosition(119, 129)
-    if Player.y <= 129 then
+
+    if (Player.y <= 129 and Map.nextMap == 'dungeon_1') or (Player.y <= 81 and Map.nextMap == 'cavern') then
         Player.waitTimer = 0
         mapOverlap = false
         Player.out = false
@@ -495,7 +566,7 @@ function playerWalkAnimation(dt, walkDistance)
     -- check if the player walked enough
     if distanceFrom(Player.x, Player.y, x, y) >= walkDistance then
         Player.collider:setPosition(Player.x, Player.y)
-        Player.enterInDungeonRoom = false
+        Player.enterInUndergroundRoom = false
         Player.enterInClosedDoor = false
         getDistancePosition = false
     end

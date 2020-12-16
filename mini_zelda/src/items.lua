@@ -1,5 +1,5 @@
 items = {}
-itemsNotToDisappear = {2,4,5}
+itemsNotToDisappear = {2,4,5,10}
 
 shard1Spawn = false
 shard1Collected = false
@@ -22,6 +22,8 @@ heartContainer1Collected = false
 -- 3 = orange rupee
 -- 4 = heart container
 -- 5 = triforce shard
+
+-- 10 = wooden sword
 
 function spawnItem(id, x, y)
     local item = {}
@@ -72,6 +74,14 @@ function spawnItem(id, x, y)
         item.y = item.y + item.sprite:getHeight() / 2 - 5
     end
 
+    if id == 10 then
+        item.sprite = sprites.woodenSword
+        item.spriteAnim = Sword.up
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 5
+        item.y = item.y + item.sprite:getHeight() / 2 - 5
+    end
+
     table.insert(items, item)
 end
 
@@ -97,6 +107,15 @@ function items:draw()
     for i, item in ipairs(items) do
         item.spriteAnim:draw(item.sprite, item.x, item.y+guiY)
     end
+end
+
+function checkIfItemExist(id)
+    for i, item in ipairs(items) do
+        if item.id == id then
+            return true
+        end
+    end
+    return false
 end
 
 function deleteItems()

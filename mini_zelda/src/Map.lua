@@ -77,6 +77,11 @@ dungeon1Rooms = {
 
 currentDungeonRoom = 27
 
+cRoom = 'assets/tilemaps/cavern/cavern.lua'
+
+-- 1: sword cavern
+currentCavernRoom = 1
+
 colliders = {}
 
 function respawnOverworld()
@@ -105,6 +110,7 @@ function Map:init()
     tmpMap = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
     map = sti(overworldRooms[currentOverworldRoom], { 'box2d' })
 
+    Map.nextMap = ''
     changing_room = false
     direct = 'up'
 
@@ -129,12 +135,27 @@ function Map:update(dt)
         elseif Map.type == 'dungeon_1' then
             sounds.overworldTheme:stop()
             sounds.dungeonTheme:play()
+        else
+            sounds.overworldTheme:stop()
+            sounds.dungeonTheme:stop()
         end
     else
         sounds.dungeonTheme:stop()
         sounds.overworldTheme:stop()
     end
 
+
+    if Map.type == 'cavern' then
+        if currentCavernRoom == 1 then
+            if #NPCs == 0 and Player.slot1 == nil then
+                npcSpawn(120, 121, 1)
+            elseif Player.slot1 ~= nil then
+                clearPhrases()
+                npcDisappear()
+            end
+        end
+    end
+    
     roomsLogic()
 
     -- check if is not the dungeon exit for not activate the "changing_room"
@@ -219,6 +240,9 @@ function Map:drawDungeonWalls()
 end
 
 function changeMap(type_map)
+    deleteItems()
+    deleteNPCs()
+    clearPhrases()
     Map.type = type_map
     if type_map == 'overworld' then
         loading = true
@@ -244,6 +268,17 @@ function changeMap(type_map)
         deleteAllEntities()
         enemiesPerRoom()
         doorsSpawn()
+    end
+
+    if type_map == 'cavern' then
+
+        Player.collider:setPosition(128, 231)
+        Player.x, Player.y = Player.collider:getPosition()
+
+        map = sti(cRoom, { 'box2d' })
+        deleteRoomCollisions()
+        createRoomCollisions()
+        deleteAllEntities()
     end
     
     doorsCreated = false
@@ -403,6 +438,8 @@ function moveRoom(room, direction)
 end
 
 function changeRoom(room)
+    deleteNPCs()
+    clearPhrases()
     changing_room = false
     mapX = 0
     mapY = 0 
@@ -414,7 +451,7 @@ function changeRoom(room)
         currentDungeonRoom = room
         map = sti(dungeon1Rooms[currentDungeonRoom], { 'box2d' })
 
-        Player.enterInDungeonRoom = true
+        Player.enterInUndergroundRoom = true
         Player.walkDistance = 16
     end
     

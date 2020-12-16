@@ -1,6 +1,8 @@
 writer = {}
 phrases = {}
 
+writing = false
+
 function writeHere(id, txt, x, y, time)
 
     for i, phrase in ipairs(phrases) do
@@ -50,7 +52,7 @@ end
 function writer:update(dt)
 
     for i, phrase in ipairs(phrases) do
-
+        writing = true
         if phrase.finish == true then goto continue end
 
         if phrase.type == 'phrase' then
@@ -80,6 +82,7 @@ function writer:update(dt)
         end
 
         ::continue::
+        writing = false
     end
 end
 
