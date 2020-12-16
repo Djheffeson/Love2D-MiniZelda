@@ -88,7 +88,7 @@ end
 
 function writer:draw()
     for i, phrase in ipairs(phrases) do
-        if phrase.type == 'phrase' then
+        if phrase.type == 'phrase' and gameState == 'running' then
             love.graphics.print(phrase.txt, phrase.x, phrase.y+guiY)
         end
     end

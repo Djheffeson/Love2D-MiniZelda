@@ -537,6 +537,13 @@ function roomsLogic()
                 key28Spawn = true
             end
         end
+
+        if currentDungeonRoom == 7 and gameState == 'running' then
+            if #NPCs == 0 then
+                npcSpawn(120, 121, 1)
+            end
+        end
+
     end
 
     if gameState == 'changingRoom' then

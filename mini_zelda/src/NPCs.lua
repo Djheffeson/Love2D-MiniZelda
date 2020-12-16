@@ -26,11 +26,15 @@ end
 
 function NPCs:update(dt)
 
-    if Map.type == 'cavern' then
+    if Map.type == 'cavern' or currentDungeonRoom == 7 and gameState == 'running' then
         fireAnim:update(dt)
         firesVisible = true
     else
         firesVisible = false
+    end
+
+    if gameState == 'changingRoom' then
+        deleteNPCs()
     end
 
     for i, npc in ipairs(NPCs) do
@@ -40,6 +44,10 @@ function NPCs:update(dt)
             if checkIfItemExist(10) == false then
                 spawnItem(10, 108, 118)
             end
+        end
+
+        if currentDungeonRoom == 7 then
+            writeHere(1, "eastmost penninsula\n   is the secret.", 52, 96, 0.1)
         end
 
         if npc.disappearing then
