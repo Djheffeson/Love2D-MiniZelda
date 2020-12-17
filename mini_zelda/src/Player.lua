@@ -45,6 +45,7 @@ function Player:init()
     Player.receive_damage = false
     Player.grabbed = false
     Player.visible = true
+    Player.isHealing = false
 
     Player.slot1 = nil
     Player.slot2 = nil
@@ -105,7 +106,7 @@ function Player:update(dt)
 
     end
 
-    if writing == true then
+    if writing == true or Player.isHealing then
         Player.collider:setLinearVelocity(0, 0)
         return
     end

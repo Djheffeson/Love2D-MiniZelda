@@ -34,6 +34,7 @@ function love.update(dt)
     menu:update(dt)
     endGame:update(dt)
     writer:update(dt)
+    fairies:update(dt)
 
     love.keyboard.keysPressed = {}
 
@@ -48,6 +49,7 @@ function love.draw()
     items:draw()
     deaths:draw()
     enemies:draw()
+    fairies:draw()
     NPCs:draw()
     sword:draw()
     player:draw()

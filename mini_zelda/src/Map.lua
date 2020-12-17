@@ -544,6 +544,12 @@ function roomsLogic()
             end
         end
 
+    elseif Map.type == 'overworld' and gameState ~= 'changingRoom' then
+
+        if currentOverworldRoom == 5 and #fairies == 0 then
+            spawnFairy(124, 118)
+        end
+
     end
 
     if gameState == 'changingRoom' then

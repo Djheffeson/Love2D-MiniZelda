@@ -41,6 +41,7 @@ function gameStart()
     require 'src/endGame'
     require 'src/writer'
     require 'src/NPCs'
+    require 'src/fairies'
     
     map1 = Map()
     sword = Sword()

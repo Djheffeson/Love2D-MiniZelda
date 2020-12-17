@@ -44,6 +44,7 @@ sprites.heartContainer = love.graphics.newImage('assets/graphics/heart_container
 sprites.triforceShard = love.graphics.newImage('assets/graphics/triforce_shard.png')
 sprites.oldman = love.graphics.newImage('assets/graphics/oldman.png')
 sprites.fire = love.graphics.newImage('assets/graphics/fire.png')
+sprites.fairy = love.graphics.newImage('assets/graphics/fairy_sheet.png')
 
 sounds.useSword = love.audio.newSource('assets/sounds/sword_slash.wav', 'stream')
 sounds.swordShoot = love.audio.newSource('assets/sounds/sword_shoot.wav', 'stream')
@@ -58,6 +59,7 @@ sounds.linkHurt = love.audio.newSource('assets/sounds/link_hurt.wav', 'stream')
 sounds.pickupItem = love.audio.newSource('assets/sounds/pickup_item.wav', 'stream')
 sounds.pickupRupee = love.audio.newSource('assets/sounds/pickup_rupee.wav', 'stream')
 sounds.getItem = love.audio.newSource('assets/sounds/get_item.wav', 'stream')
+sounds.refillLoop = love.audio.newSource('assets/sounds/refill_loop.wav', 'stream')
 
 sounds.openDoor = love.audio.newSource('assets/sounds/door_unlock.wav', 'stream')
 
