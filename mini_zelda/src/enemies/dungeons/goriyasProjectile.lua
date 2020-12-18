@@ -145,7 +145,7 @@ function goriyasProjectileRemove(index)
 end
 
 function deleteAllGoriyasProjectile()
-    for i, projectile in ipairs(goriyasProjectile) do
+    for i=#goriyasProjectile, 0, -1 do
         table.remove(goriyasProjectile, i)
     end
 end

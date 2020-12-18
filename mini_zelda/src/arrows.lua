@@ -12,6 +12,7 @@ function shootArrow()
     arrow.direction = Player.direction
     arrow.sprite = sprites.arrow
     arrow.state = 'moving'
+    arrow.damage = 1
 
     if arrow.direction == 'up' then
         arrow.x = arrow.x - 3
@@ -42,7 +43,7 @@ function shootArrow()
         arrow.collider = world:newRectangleCollider(arrow.x-8, arrow.y+2, 16, 5)
     end
 
-    arrow.collider:setCollisionClass('Weapon')
+    arrow.collider:setCollisionClass('Arrow')
     arrow.colliderExists = true
 
     arrow.timer = 0
@@ -89,7 +90,7 @@ function arrows:update(dt)
             arrow.state = 'collide'
         end
 
-        if arrow.collider:enter('Enemy') and arrow.colliderExists then
+        if arrow.collider:enter('Enemy') or arrow.collider:enter('IgnoreWallEnemy') and arrow.colliderExists then
             arrow.state = 'collide'
         end
 

@@ -64,7 +64,7 @@ function removeAquaProjectile(index)
 end
 
 function deleteAquaProjectiles()
-    for i, projectile in ipairs(aquamentusProjectile) do
-        table.remove(aquamentusProjectile, index)
+    for i=#aquamentusProjectile, 0, -1 do
+        table.remove(aquamentusProjectile, i)
     end
 end

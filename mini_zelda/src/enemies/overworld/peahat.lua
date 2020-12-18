@@ -21,8 +21,6 @@ function spawnPeahat()
     peahat.damage = 0.5
     peahat.health = 1
 
-    peahat.drops = {1,3}
-
     peahat.sprite = sprites.peahatSheet
     peahat.grid = anim8.newGrid(16, 16, peahat.sprite:getWidth(), peahat.sprite:getHeight())
     peahat.animation = anim8.newAnimation(peahat.grid('1-2', 1), 0.033)
@@ -45,7 +43,7 @@ function peahats:update(dt)
     for i, peahat in ipairs(peahats) do
 
         if peahat.health <= 0 then
-            deathSpawn(peahat.x-8, peahat.y-8, peahatDrop(peahat.drops))
+            deathSpawn(peahat.x-8, peahat.y-8, enemyDrops())
             removePeahat(i)
             return
         end
@@ -171,7 +169,7 @@ end
 function checkPeahatDamage(index)
     local peahat = peahats[index]
     
-    if peahat.collider:enter('Weapon') then
+    if peahat.collider:enter('Weapon') or peahat.collider:enter('Arrow') then
         peahat.health = peahat.health - Sword.damage
     end
 end
@@ -194,14 +192,6 @@ function removePeahat(index)
 
     enemies_room[currentOverworldRoom][8] = enemies_room[currentOverworldRoom][8] - 1
     table.remove(peahats, index)
-end
-
-function peahatDrop(drops)
-    if math.random(10) == 1 then
-        local item_drop = drops[math.random(#drops)]
-        return item_drop
-    end
-    return 0
 end
 
 function deletePeahats()

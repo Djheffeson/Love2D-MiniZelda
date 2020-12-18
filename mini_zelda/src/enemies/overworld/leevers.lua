@@ -25,8 +25,6 @@ function spawnLeever(type)
     leever.direction = leever.directions[math.random(#leever.directions)]
     leever.invincible = false
     leever.check = false
-     
-    leever.drops = {1,3}
 
     leever.speed = 40
 
@@ -187,7 +185,7 @@ function leevers:update(dt)
                 enemies_room[currentOverworldRoom][7] = enemies_room[currentOverworldRoom][7] - 1 
             end
 
-            deathSpawn(leever.x-8, leever.y-8, leeverDrop(leever.drops))
+            deathSpawn(leever.x-8, leever.y-8, enemyDrops())
             table.remove(leevers, i)
         end
     end
@@ -427,8 +425,9 @@ end
 
 function checkIfReceiveDamage(index)
     local leever = leevers[index]
-
-    if leever.collider:enter('Weapon') and leever.invincible == false then
+    if leever.invincible then return end
+    
+    if leever.collider:enter('Weapon') then
 
         local sword
         for i, swordT in ipairs(swordThrow) do
@@ -446,15 +445,15 @@ function checkIfReceiveDamage(index)
         end
         
         leever.pushedTimer = 0
-    end
-end
 
-function leeverDrop(drops)
-    if math.random(10) == 1 then
-        local item_drop = drops[math.random(#drops)]
-        return item_drop
+    elseif leever.collider:enter('Arrow') then
+        leever.health = leever.health - arrows[1].damage
+        leever.invincible = true
+        leever.stateTmp = leever.state
+        leever.state = 'pushed'
+        leever.pushedDirection = arrows[1].direction
+        leever.pushedTimer = 0
     end
-    return 0
 end
 
 function leeverAttackBack(index, x, y)

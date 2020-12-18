@@ -22,8 +22,6 @@ function spawnTektike(type)
     tektike.targetX = 0
     tektike.targetY = 0
 
-    tektike.drops = {1,3}
-
     tektike.sprite = sprites.tektikeSheet
     tektike.grid = anim8.newGrid(16, 16, tektike.sprite:getWidth(), tektike.sprite:getHeight())
 
@@ -109,7 +107,7 @@ function tektikes:update(dt)
             elseif tektike.type == 'blue' then
                 enemies_room[currentOverworldRoom][5] = enemies_room[currentOverworldRoom][5] - 1 
             end
-            deathSpawn(tektike.x-8, tektike.y-8, tektikeDrop(tektike.drops))
+            deathSpawn(tektike.x-8, tektike.y-8, enemyDrops())
             tektikeDeath(i)
         end
     end
@@ -122,7 +120,7 @@ function tektikes:draw()
 end
 
 function tektikeCheckDamage(index)
-    if tektikes[index].collider:enter('Weapon') then
+    if tektikes[index].collider:enter('Weapon') or tektikes[index].collider:enter('Arrow') then
         tektikes[index].health = tektikes[index].health - Sword.damage
         if tektikes[index].health >= 1 then
             sounds.enemyHit:stop()
@@ -135,14 +133,6 @@ function tektikeCheckDamagePlayer(index)
     if tektikes[index].collider:enter('Player') then
         playerDamage(0.5)
     end
-end
-
-function tektikeDrop(drops)
-    if math.random(10) == 1 then
-        local item_drop = drops[math.random(#drops)]
-        return item_drop
-    end
-    return 0
 end
 
 function tektikeDeath(index)

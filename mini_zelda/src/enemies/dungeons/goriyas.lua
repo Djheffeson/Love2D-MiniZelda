@@ -20,7 +20,6 @@ function spawnGoriya()
     goriya.health = 3
     goriya.invincible = false
     goriya.dead = false
-    goriya.drops = {1,3}
 
     goriya.directions = {'up', 'down', 'left', 'right'}
     goriya.direction = goriya.directions[math.random(#goriya.directions)]
@@ -180,14 +179,6 @@ function goriyas:draw()
     end
 end
 
-function goriyaDrop(drops)
-    if math.random(10) == 1 then
-        local item_drop = drops[math.random(#drops)]
-        return item_drop
-    end
-    return 0
-end
-
 function setGoriyaDirection(index)
     local goriya = goriyas[index]
 
@@ -211,8 +202,9 @@ end
 
 function checkGoriyaDamage(index)
     local goriya = goriyas[index]
-    if goriya.collider:enter('Weapon') and goriya.invincible == false then
+    if goriya.invincible == true then return end
 
+    if goriya.collider:enter('Weapon') then
         local sword
         for i, swordT in ipairs(swordThrow) do
             sword = swordT
@@ -229,6 +221,20 @@ function checkGoriyaDamage(index)
             goriya.pushedDirection = sword.direction
         end
         goriya.health = goriya.health - Sword.damage
+
+        if goriya.health > 0 then
+            sounds.enemyHit:stop()
+            sounds.enemyHit:play()
+        end
+
+    elseif goriya.collider:enter('Arrow') then
+        goriya.pushedTimer = 0
+        goriya.invincibleTimer = 0
+        goriya.invincible = true
+        goriya.tmpState = goriya.state
+        goriya.state = 'pushed'
+        goriya.pushedDirection = arrows[1].direction
+        goriya.health = goriya.health - arrows[1].damage
 
         if goriya.health > 0 then
             sounds.enemyHit:stop()
@@ -256,7 +262,7 @@ end
 function goriyaDeath(index)
     local goriya = goriyas[index]
 
-    deathSpawn(goriya.x-7.5, goriya.y-7.5, goriyaDrop(goriya.drops))
+    deathSpawn(goriya.x-7.5, goriya.y-7.5, enemyDrops())
 
     for i, projectile in ipairs(goriyasProjectile) do
         -- check if goriya has a projectile and delete it

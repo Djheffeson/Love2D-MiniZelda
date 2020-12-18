@@ -16,8 +16,6 @@ function spawnWallMaster(attackDirection)
     wallMaster.vectorX = 0
     wallMaster.vectorY = 0
 
-    wallMaster.drops = {1,3}
-
     wallMaster.health = 2
     wallMaster.damage = 0.5
     wallMaster.speed = 22
@@ -233,7 +231,7 @@ end
 
 function wallMasterCheckDamage(index)
     local wallMaster = wallMasters[index]
-    if wallMaster.collider:enter('Weapon') and wallMaster.invincible == false then
+    if wallMaster.collider:enter('Weapon') or wallMaster.collider:enter('Arrow') and wallMaster.invincible == false then
         wallMaster.health = wallMaster.health - Sword.damage
         wallMaster.invincible = true
         wallMaster.invincibleTimer = 0
@@ -243,17 +241,9 @@ end
 function wallMasterDeath(index)
     local wallMaster = wallMasters[index]
 
-    deathSpawn(wallMaster.x-8, wallMaster.y-8, WallMasterDrop(wallMaster.drops))
+    deathSpawn(wallMaster.x-8, wallMaster.y-8, enemyDrops())
     removeWallMaster(index)
     enemiesDungeon1_rooms[currentDungeonRoom][5] = enemiesDungeon1_rooms[currentDungeonRoom][5] - 1
-end
-
-function WallMasterDrop(drops)
-    if math.random(10) == 1 then
-        local item_drop = drops[math.random(#drops)]
-        return item_drop
-    end
-    return 0
 end
 
 function removeWallMaster(index, dt)

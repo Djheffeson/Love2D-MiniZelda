@@ -1,5 +1,7 @@
 enemies = {}
 
+enemyDeathCount = 0
+
 require 'src/enemies/overworld/octoroks'
 require 'src/enemies/overworld/zoras'
 require 'src/enemies/overworld/tektikes'
@@ -51,8 +53,9 @@ function respawnAllEnemies()
         {4,0,1,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {4,0,1,0,0,0,0,0},
         {0,0,1,0,0,0,2,1}, {0,0,0,4,0,0,0,0}, {0,0,0,0,0,0,0,0}, {4,0,0,0,0,0,0,0}, {0,0,0,0,5,0,0,0}
     }
+    local a = enemiesDungeon1_rooms[5][7] -- get if aquamentus is alive or not
     enemiesDungeon1_rooms = {
-        {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,1}, {0,0,0,0,0,0},
+        {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,a}, {0,0,0,0,0,0},
         {0,0,0,0,0,0}, {0,3,0,0,0,0}, {0,5,0,0,0,0}, {0,0,0,3,0,0}, {0,0,0,0,8,0}, {0,0,0,0,0,0},
         {0,0,0,0,0,0}, {6,0,0,0,0,0}, {0,0,5,0,0,0}, {8,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
         {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,3,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
@@ -61,6 +64,11 @@ function respawnAllEnemies()
 end
 
 function enemies:update(dt)
+
+    if enemyDeathCount > 9 then
+        enemyDeathCount = 0
+    end
+
     if octoroks ~= nil then
         octoroks:update(dt)
     end
@@ -268,6 +276,35 @@ function spawnEnemy(quantity, enemy)
             spawnAquamentus()
         end
 
+    end
+end
+
+function enemyDrops()
+    
+    if math.random() > 0.5 then
+        return 0 
+    end
+
+    if enemyDeathCount == 0 then
+        return 1
+    elseif enemyDeathCount == 1 then
+        return 3
+    elseif enemyDeathCount == 2 then
+        return 1
+    elseif enemyDeathCount == 3 then
+        return 3
+    elseif enemyDeathCount == 4 then
+        return 1 -- fairy
+    elseif enemyDeathCount == 5 then
+        return 3
+    elseif enemyDeathCount == 6 then
+        return 1
+    elseif enemyDeathCount == 7 then
+        return 1
+    elseif enemyDeathCount == 8 then
+        return 3
+    elseif enemyDeathCount == 9 then
+        return 3
     end
 end
 

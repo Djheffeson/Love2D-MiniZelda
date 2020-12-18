@@ -116,7 +116,7 @@ end
 
 function checkIfPlayerDamageAquamentus(index)
     local aqua = aquamentus[index]
-    if aqua.collider:enter('Weapon') and aqua.invincible == false then
+    if aqua.collider:enter('Weapon') or aqua.collider:enter('Arrow') and aqua.invincible == false then
         aqua.health = aqua.health - Sword.damage
         aqua.invincible = true
 
@@ -136,7 +136,7 @@ end
 
 function aquamentusDeath(index)
     local aqua = aquamentus[index]
-    deathSpawn(aqua.x, aqua.y, 0)
+    deathSpawn(aqua.x, aqua.y, enemyDrops())
     if aqua.colliderExists == true then
         aqua.collider:destroy()
         aqua.colliderExists = false

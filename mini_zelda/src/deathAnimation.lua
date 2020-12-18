@@ -13,6 +13,7 @@ function deathSpawn(x, y, itemDrop)
     table.insert(deaths, death)
     sounds.enemyDie:stop()
     sounds.enemyDie:play()
+    enemyDeathCount = enemyDeathCount + 1
 end
 
 function deaths:update(dt)

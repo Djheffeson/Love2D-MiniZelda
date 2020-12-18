@@ -122,7 +122,7 @@ end
 function checkGelDamage(index)
     local gel = gels[index]
 
-    if gel.collider:enter('Weapon') then
+    if gel.collider:enter('Weapon') or gel.collider:enter('Arrow') then
         gel.health = gel.health - Sword.damage
     end
 end

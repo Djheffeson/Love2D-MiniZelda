@@ -142,7 +142,7 @@ function zoraNewPosition(index)
 end
 
 function zoraCheckDamage(index)
-    if zoras[index].collider:enter('Weapon') then
+    if zoras[index].collider:enter('Weapon') or zoras[index].collider:enter('Arrow') then
         zoras[index].health = zoras[index].health - Sword.damage
         zoras[index].invincibleTimer = 0
         zoras[index].invincible = true

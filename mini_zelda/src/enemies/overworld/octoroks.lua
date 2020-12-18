@@ -30,8 +30,6 @@ function spawnOctorok(type)
 
     octorok.collisionDestroyed = false
 
-    octorok.drops = {1,3}
-
     -- Choose a direction for the enemy start
     local directions = {'up', 'down', 'left', 'right'}
     octorok.direction = directions[math.random(#directions)]
@@ -93,6 +91,19 @@ function octoroks:update(dt)
                 else
                     octorok.pushedDirection = sword.direction
                 end
+                if octorok.health >= 1 then
+                    sounds.enemyHit:stop()
+                    sounds.enemyHit:play()
+                end
+
+            elseif octorok.collider:enter('Arrow') and octorok.invincible == false then
+                octorok.health = octorok.health - arrows[1].damage
+                octorok.invincible = true
+                octorok.timer_invincible = 0
+                octorok.timer_push = 0
+                octorok.state = 'pushed'
+                octorok.pushedDirection = arrows[1].direction
+
                 if octorok.health >= 1 then
                     sounds.enemyHit:stop()
                     sounds.enemyHit:play()
@@ -235,7 +246,7 @@ function octoroks:update(dt)
             elseif octorok.type == 'blue' then
                 enemies_room[currentOverworldRoom][2] = enemies_room[currentOverworldRoom][2] - 1 
             end
-            local item = enemyDrop(octorok.drops)
+            local item = enemyDrops()
             deathSpawn(octorok.x-8, octorok.y-8, item)
             table.remove(octoroks, i)
         end
@@ -272,15 +283,6 @@ function getDirection(vectX, vectY)
         direction = 'right'
     end
     return direction
-end
-
-function enemyDrop(drops)
-    -- 10% chance of drop a item
-    if math.random(10) == 1 then
-        local item_drop = drops[math.random(#drops)]
-        return item_drop
-    end
-    return 0
 end
 
 function deleteOctoroks()

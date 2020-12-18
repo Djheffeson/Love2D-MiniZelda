@@ -16,7 +16,6 @@ function spawnStalfo()
     stalfo.damage = 0.5
     stalfo.invincible = false
     stalfo.state = 'idle'
-    stalfo.drops = {1,3}
 
     stalfo.directions = {'up', 'down', 'left', 'right'}
     stalfo.direction = stalfo.directions[math.random(#stalfo.directions)]
@@ -132,7 +131,9 @@ end
 function checkStalfoDamage(index)
     local stalfo = stalfos[index]
 
-    if stalfo.collider:enter('Weapon') and stalfo.invincible == false then
+    if stalfo.invincible then return end
+
+    if stalfo.collider:enter('Weapon') then
 
         local sword
         for i, swordT in ipairs(swordThrow) do
@@ -152,6 +153,18 @@ function checkStalfoDamage(index)
             sounds.enemyHit:stop()
             sounds.enemyHit:play()
         end
+
+    elseif stalfo.collider:enter('Arrow') then
+        stalfo.health = stalfo.health - arrows[1].damage
+        stalfo.invincible = true
+        stalfo.invincibleTimer = 0
+        stalfo.state = 'pushed'
+        stalfo.pushedDirection = arrows[1].direction
+
+        if stalfo.health >= 1 then
+            sounds.enemyHit:stop()
+            sounds.enemyHit:play()
+        end
     end
 end
 
@@ -166,7 +179,7 @@ end
 function stalfoDeath(index)
     local stalfo = stalfos[index]
 
-    deathSpawn(stalfo.x-8, stalfo.y-8, stalfoDrop(stalfo.drops))
+    deathSpawn(stalfo.x-8, stalfo.y-8, enemyDrops())
     enemiesDungeon1_rooms[currentDungeonRoom][3] = enemiesDungeon1_rooms[currentDungeonRoom][3] - 1
 
     if stalfo.colliderExists then
@@ -175,14 +188,6 @@ function stalfoDeath(index)
     end
 
     table.remove(stalfos, index)
-end
-
-function stalfoDrop(drops)
-    if math.random(10) == 1 then
-        local item_drop = drops[math.random(#drops)]
-        return item_drop
-    end
-    return 0
 end
 
 function deleteStalfos()
