@@ -40,8 +40,8 @@ function GUI:draw()
         Sword.up:draw(sprites.woodenSword, 147, 25+guiY)
     end
 
-    if Player.slot2 == 'wooden_sword' then
-        Sword.up:draw(sprites.woodenSword, 123, 25+guiY)
+    if Player.slot2 == 'bow' then
+        love.graphics.draw(sprites.arrow, 130, 25+guiY)
     end
 
     love.graphics.draw(sprites.guiItems, 88 , 16+guiY)

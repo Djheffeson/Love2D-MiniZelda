@@ -42,7 +42,8 @@ function gameStart()
     require 'src/writer'
     require 'src/NPCs'
     require 'src/fairies'
-    
+    require 'src/arrows'
+
     map1 = Map()
     sword = Sword()
     player = Player()

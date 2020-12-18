@@ -48,10 +48,10 @@ function Player:init()
     Player.isHealing = false
 
     Player.slot1 = nil
-    Player.slot2 = nil
+    Player.slot2 = 'bow'
 
     Player.maxMoney = 255
-    Player.money = 0
+    Player.money = 20
     Player.keys = 0
     Player.bombs = 0
     Player.max_hearts = 3
@@ -95,6 +95,8 @@ function Player:init()
 end
 
 function Player:update(dt)
+
+    arrows:update(dt)
 
     if Player.state == 'dead' then
 
@@ -198,7 +200,11 @@ function Player:update(dt)
         end
         
         if love.keyboard.wasPressed('f') and Sword.timer < 0 and Player.state == 'walking' and Player.slot1 ~= nil then
-            Player:attack()
+            Player:attack('sword')
+        end
+
+        if love.keyboard.wasPressed('d') and #arrows <= 0 and Player.money > 0 and Player.state == 'walking' and Player.slot2 == 'bow' then
+            Player:attack('bow')
         end
 
         if Player.state == 'walking' then
@@ -300,6 +306,8 @@ end
 
 function Player:draw()
 
+    arrows:draw()
+
     if baw == true then
         love.graphics.setShader(blackAndWhiteShader)
     end
@@ -321,7 +329,7 @@ function Player:draw()
     love.graphics.setShader()
 end
 
-function Player:attack()
+function Player:attack(weapon)
     if Player.state == 'walking' then
         Player.state = 'attacking'
         Player.collider:setLinearVelocity(0, 0)
@@ -334,7 +342,11 @@ function Player:attack()
         elseif Player.direction == 'right' then
             Player.currentAnimation = Player.attackRight
         end
-        Sword.attack()
+        if weapon == 'sword' then
+            Sword.attack()
+        elseif weapon == 'bow' then
+            shootArrow()
+        end
     end
 end
 
@@ -445,7 +457,12 @@ function checkPlayerEnterInDoor()
             Map.nextMap = 'dungeon_1'
         end
 
-        if currentOverworldRoom == 23 and layer == 'none' and Player.exitEntrance and Player.direction == 'up' then
+        if layer == 'none' and Player.exitEntrance and Player.direction == 'up' then
+            if currentOverworldRoom == 23 then
+                currentCavernRoom = 1
+            elseif currentOverWorldRoom == 17 then
+                currentCavernRoom = 2
+            end
             Player.exitEntrance = false
             Player.enter = true
             Map.nextMap = 'cavern'
@@ -495,7 +512,11 @@ function playerEnterAnimation(dt)
         Player.x = 120
         Player.y = Player.y + 30 * dt
     elseif Map.nextMap == 'cavern' then
-        Player.x = 72
+        if currentOverworldRoom == 23 then
+            Player.x = 72
+        elseif currentOverworldRoom == 17 then
+            Player.x = 120
+        end
         Player.y = Player.y + 30 * dt
     end
     
@@ -527,6 +548,7 @@ function playerEnterAnimation(dt)
 end
 
 function playerOutAnimation(dt)
+    Player.collider:setLinearVelocity(0, 0)
     deleteAllEntities()
 
     sounds.stairs:play()
@@ -541,8 +563,13 @@ function playerOutAnimation(dt)
         Player.collider:setPosition(119, 129)
 
     elseif Map.nextMap == 'cavern' then
-        Player.x = 71
-        Player.collider:setPosition(71, 81)
+        if currentOverworldRoom == 23 then
+            Player.x = 71
+            Player.collider:setPosition(71, 82)
+        elseif currentOverworldRoom == 17 then
+            Player.x = 119
+            Player.collider:setPosition(119, 82)
+        end
     end
 
     Player.y = Player.y - 30 * dt

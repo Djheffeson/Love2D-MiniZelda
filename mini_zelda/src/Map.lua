@@ -80,7 +80,8 @@ currentDungeonRoom = 27
 cRoom = 'assets/tilemaps/cavern/cavern.lua'
 
 -- 1: sword cavern
-currentCavernRoom = 1
+-- 2: empty
+currentCavernRoom = 0
 
 colliders = {}
 
