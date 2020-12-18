@@ -46,9 +46,10 @@ function Player:init()
     Player.grabbed = false
     Player.visible = true
     Player.isHealing = false
+    Player.itemInHand = nil
 
     Player.slot1 = nil
-    Player.slot2 = 'bow'
+    Player.slot2 = nil
 
     Player.maxMoney = 255
     Player.money = 20
@@ -80,7 +81,7 @@ function Player:init()
     Player.attackLeft = anim8.newAnimation(walkGrid(3,2, 3,2, 3,2), {0.07, 0.077, 0.07}, attackComplete):flipH()
     Player.attackUp = anim8.newAnimation(walkGrid(3,3, 3,3, 3,3), {0.07, 0.077, 0.07}, attackComplete)
 
-    Player.holdingSword = anim8.newAnimation(walkGrid(1, 5), 1)
+    Player.holdingWeapon = anim8.newAnimation(walkGrid(1, 5), 1)
     Player.holdingItem = anim8.newAnimation(walkGrid(2, 5), 1)
 
     Player.deathAnimation = anim8.newAnimation(walkGrid(1, '1-4'), 0.083)
@@ -265,9 +266,10 @@ function Player:update(dt)
 
         elseif Player.state == 'holding_weapon' then        
             Player.collider:setLinearVelocity(0, 0)
-            Player.currentAnimation = Player.holdingSword
+            Player.currentAnimation = Player.holdingWeapon
             Player.timerHoldingItem = Player.timerHoldingItem + 1 * dt
             if Player.timerHoldingItem >= 2 then
+                Player.timerHoldingItem = 0
                 Player.state = 'walking'
                 Player.currentAnimation = Player.walkDown
             end
@@ -312,8 +314,13 @@ function Player:draw()
         love.graphics.setShader(blackAndWhiteShader)
     end
 
-    if Player.state == 'holding_weapon' and Player.slot1 == 'wooden_sword' then
-        Sword.up:draw(sprites.woodenSword, Player.x-13, Player.y-26)
+    if Player.state == 'holding_weapon' then
+        if Player.itemInHand == 'wooden_sword' then
+            Sword.up:draw(sprites.woodenSword, Player.x-13, Player.y-26)
+
+        elseif Player.itemInHand == 'bow' then
+            love.graphics.draw(sprites.bow, Player.x-7, Player.y-26)
+        end
     end
 
     if Player.invincible then
@@ -430,6 +437,7 @@ function Player:pickupItems()
                 item.collected = true
                 sounds.getItem:stop()
                 sounds.getItem:play()
+                Player.itemInHand = 'shard'
             end
         end
 
@@ -438,9 +446,22 @@ function Player:pickupItems()
                 sounds.newItem:play()
                 Player.state = 'holding_weapon'
                 Player.slot1 = 'wooden_sword'
+                Player.itemInHand = 'wooden_sword'
                 item.collected = true
                 sounds.getItem:stop()
                 sounds.getItem:play()
+            end
+
+        elseif item.id == 11 and item.collected == false then
+            if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
+                sounds.newItem:play()
+                Player.state = 'holding_weapon'
+                Player.slot2 = 'bow'
+                Player.itemInHand = 'bow'
+                item.collected = true
+                sounds.getItem:stop()
+                sounds.getItem:play()
+                
             end
         end
     end
@@ -460,7 +481,7 @@ function checkPlayerEnterInDoor()
         if layer == 'none' and Player.exitEntrance and Player.direction == 'up' then
             if currentOverworldRoom == 23 then
                 currentCavernRoom = 1
-            elseif currentOverWorldRoom == 17 then
+            elseif currentOverworldRoom == 17 then
                 currentCavernRoom = 2
             end
             Player.exitEntrance = false

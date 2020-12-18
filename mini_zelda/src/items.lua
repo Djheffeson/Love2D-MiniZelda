@@ -24,6 +24,7 @@ heartContainer1Collected = false
 -- 5 = triforce shard
 
 -- 10 = wooden sword
+-- 11 = bow
 
 function spawnItem(id, x, y)
     local item = {}
@@ -80,6 +81,14 @@ function spawnItem(id, x, y)
 
         item.x = item.x + item.sprite:getWidth() / 2 - 5
         item.y = item.y + item.sprite:getHeight() / 2 - 5
+        
+    elseif id == 11 then
+        item.sprite = sprites.bow
+        local itemGrid = anim8.newGrid(8, 16, item.sprite:getWidth(), item.sprite:getHeight())
+        item.spriteAnim = anim8.newAnimation(itemGrid(1, 1), 0.1)
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 4
+        item.y = item.y + item.sprite:getHeight() / 2 - 8
     end
 
     table.insert(items, item)

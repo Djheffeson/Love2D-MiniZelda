@@ -17,6 +17,8 @@ function npcSpawn(x, y, type)
 
     if npc.type == 1 then
         npc.sprite = sprites.oldman
+    elseif npc.type == 2 then
+        npc.sprite = sprites.merchant
     end
 
     npc.timerDisappear = 0
@@ -43,6 +45,14 @@ function NPCs:update(dt)
             writeHere(1, "it's dangerous to go\n  alone! take this.", 48, 96, 0.1)
             if checkIfItemExist(10) == false then
                 spawnItem(10, 108, 118)
+            end
+        end
+
+        if currentCavernRoom == 2 and Player.slot2 == nil then
+            writeHere(1, "take this bow,", 72, 96, 0.1)
+            writeHere(2, "it should help you.", 56, 104, 0.1)
+            if checkIfItemExist(11) == false then
+                spawnItem(11, 124, 160)
             end
         end
 

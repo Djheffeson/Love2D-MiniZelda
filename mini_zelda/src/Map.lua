@@ -79,8 +79,9 @@ currentDungeonRoom = 27
 
 cRoom = 'assets/tilemaps/cavern/cavern.lua'
 
+-- 0: empty
 -- 1: sword cavern
--- 2: empty
+-- 2: bow cavern
 currentCavernRoom = 0
 
 colliders = {}
@@ -151,6 +152,13 @@ function Map:update(dt)
             if #NPCs == 0 and Player.slot1 == nil then
                 npcSpawn(120, 121, 1)
             elseif Player.slot1 ~= nil then
+                clearPhrases()
+                npcDisappear()
+            end
+        elseif currentCavernRoom == 2 then
+            if #NPCs == 0 and Player.slot2 == nil then
+                npcSpawn(120, 121, 2)
+            elseif Player.slot2 ~= nil then
                 clearPhrases()
                 npcDisappear()
             end
