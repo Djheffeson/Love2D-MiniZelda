@@ -44,10 +44,16 @@ sprites.heartContainer = love.graphics.newImage('assets/graphics/heart_container
 sprites.triforceShard = love.graphics.newImage('assets/graphics/triforce_shard.png')
 sprites.oldman = love.graphics.newImage('assets/graphics/oldman.png')
 sprites.merchant = love.graphics.newImage('assets/graphics/merchant_sprite.png')
+sprites.oldmanDungeon = love.graphics.newImage('assets/graphics/oldman_dungeon.png')
 sprites.fire = love.graphics.newImage('assets/graphics/fire.png')
 sprites.fairy = love.graphics.newImage('assets/graphics/fairy_sheet.png')
 sprites.bow = love.graphics.newImage('assets/graphics/bow.png')
 sprites.arrow = love.graphics.newImage('assets/graphics/arrow.png')
+
+sprites.map = love.graphics.newImage('assets/graphics/map_sprite.png')
+sprites.compass = love.graphics.newImage('assets/graphics/compass_sprite.png')
+
+sprites.minimap1 = love.graphics.newImage('assets/graphics/minimap_dungeon1.png')
 
 sounds.useSword = love.audio.newSource('assets/sounds/sword_slash.wav', 'stream')
 sounds.swordShoot = love.audio.newSource('assets/sounds/sword_shoot.wav', 'stream')

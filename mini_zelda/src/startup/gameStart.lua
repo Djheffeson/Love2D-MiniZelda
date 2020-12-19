@@ -43,6 +43,7 @@ function gameStart()
     require 'src/NPCs'
     require 'src/fairies'
     require 'src/arrows'
+    require 'src/minimap'
 
     map1 = Map()
     sword = Sword()

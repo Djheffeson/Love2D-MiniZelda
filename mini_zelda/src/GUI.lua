@@ -1,12 +1,13 @@
 GUI = Class{}
 
 function GUI:init()
+    minimap:init()
     heart = sprites.heart_full
     guiY = 0
 end
 
 function GUI:update(dt)
-
+    minimap:update(dt)
 end
 
 function GUI:draw()
@@ -56,5 +57,9 @@ function GUI:draw()
     love.graphics.print(keys, 96, 32+guiY)
     local bombs = string.format('X%d', Player.bombs)
     love.graphics.print(bombs, 96, 40+guiY)
-    
+
+    if Map.type == 'dungeon_1' then
+        love.graphics.print('level-1', 16, 8+guiY)
+    end
+    minimap:draw()
 end

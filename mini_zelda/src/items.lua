@@ -1,5 +1,5 @@
 items = {}
-itemsNotToDisappear = {2,4,5,10}
+itemsNotToDisappear = {2,4,5,8,9,10,11}
 
 shard1Spawn = false
 shard1Collected = false
@@ -13,6 +13,9 @@ key26Collected = false
 key28Spawn = false
 key28Collected = false
 
+map1Spawn = false
+compass1Spawn = false
+
 heartContainer1Spawn = false
 heartContainer1Collected = false
 
@@ -22,7 +25,10 @@ heartContainer1Collected = false
 -- 3 = orange rupee
 -- 4 = heart container
 -- 5 = triforce shard
-
+-- 6 = blue rupee
+-- 7 = fairy
+-- 8 = map
+-- 9 = compass
 -- 10 = wooden sword
 -- 11 = bow
 
@@ -73,9 +79,41 @@ function spawnItem(id, x, y)
 
         item.x = item.x + item.sprite:getWidth() / 2 - 5
         item.y = item.y + item.sprite:getHeight() / 2 - 5
-    end
 
-    if id == 10 then
+    elseif id == 6 then
+        item.sprite = sprites.rupee
+        local itemGrid = anim8.newGrid(16, 16, item.sprite:getWidth(), item.sprite:getHeight())
+        item.spriteAnim = anim8.newAnimation(itemGrid(2, 1), 0.1)
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 16
+        item.y = item.y + item.sprite:getHeight() / 2 - 8
+
+    elseif id == 7 then
+        sounds.getItem:play()
+        item.sprite = sprites.fairy
+        local itemGrid = anim8.newGrid(8, 16, item.sprite:getWidth(), item.sprite:getHeight())
+        item.spriteAnim = anim8.newAnimation(itemGrid('1-2', 1), 0.07)
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 4
+        item.y = item.y + item.sprite:getHeight() / 2 - 8
+
+    elseif id == 8 then
+        item.sprite = sprites.map
+        local itemGrid = anim8.newGrid(8, 16, item.sprite:getWidth(), item.sprite:getHeight())
+        item.spriteAnim = anim8.newAnimation(itemGrid(1, 1), 1)
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 4
+        item.y = item.y + item.sprite:getHeight() / 2 - 8
+
+    elseif id == 9 then
+        item.sprite = sprites.compass
+        local itemGrid = anim8.newGrid(15, 16, item.sprite:getWidth(), item.sprite:getHeight())
+        item.spriteAnim = anim8.newAnimation(itemGrid(1, 1), 1)
+
+        item.x = item.x + item.sprite:getWidth() / 2 - 7.5
+        item.y = item.y + item.sprite:getHeight() / 2 - 8
+        
+    elseif id == 10 then
         item.sprite = sprites.woodenSword
         item.spriteAnim = Sword.up
 

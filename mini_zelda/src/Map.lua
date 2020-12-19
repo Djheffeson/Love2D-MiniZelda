@@ -114,7 +114,7 @@ function Map:init()
 
     Map.nextMap = ''
     changing_room = false
-    direct = 'up'
+    direct = ''
 
     createRoomCollisions()
     enemiesPerRoom()
@@ -209,7 +209,7 @@ end
 
 function Map:draw()
 
-    if gameState == 'shardCollected' then
+    if gameState == 'shardCollected' or gameState == 'death' then
         return
     end
     
@@ -524,6 +524,12 @@ function roomsLogic()
                 shard1Spawn = true
             end
 
+        elseif currentDungeonRoom == 9 and Player.hasMap1 == false then
+            if map1Spawn == false then
+                spawnItem(8, 196, 136)
+                map1Spawn = true
+            end
+
         elseif currentDungeonRoom == 11 and key11Collected == false and key11Spawn == false then
             spawnItem(2, 160, 180)
             key11Spawn = true
@@ -532,6 +538,12 @@ function roomsLogic()
             if enemiesDungeon1_rooms[currentDungeonRoom][3] <= 0 and key15Spawn == false then
                 spawnItem(2, 144, 100)
                 key15Spawn = true
+            end
+
+        elseif currentDungeonRoom == 16 and Player.hasCompass1 == false then
+            if compass1Spawn == false then
+                spawnItem(9, 192, 136)
+                compass1Spawn = true
             end
 
         elseif currentDungeonRoom == 26 and key26Collected == false then
@@ -549,7 +561,7 @@ function roomsLogic()
 
         if currentDungeonRoom == 7 and gameState == 'running' then
             if #NPCs == 0 then
-                npcSpawn(120, 121, 1)
+                npcSpawn(120, 121, 3)
             end
         end
 
@@ -566,6 +578,8 @@ function roomsLogic()
         key15Spawn = false
         key26Spawn = false
         key28Spawn = false
+        map1Spawn = false
+        compass1Spawn = false
         heartContainer1Spawn = false
     end
 end

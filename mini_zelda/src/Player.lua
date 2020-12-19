@@ -5,6 +5,7 @@ PLAYER_HEIGHT = 16
 WALK_SPEED = 80
 
 function playerRespawn()
+    minimap:init()
     baw = false
     Player.hearts = 3
     Player.x = 130
@@ -48,11 +49,14 @@ function Player:init()
     Player.isHealing = false
     Player.itemInHand = nil
 
+    Player.hasMap1 = false
+    Player.hasCompass1 = false
+
     Player.slot1 = nil
     Player.slot2 = nil
 
     Player.maxMoney = 255
-    Player.money = 20
+    Player.money = 0
     Player.keys = 0
     Player.bombs = 0
     Player.max_hearts = 3
@@ -439,9 +443,40 @@ function Player:pickupItems()
                 sounds.getItem:play()
                 Player.itemInHand = 'shard'
             end
-        end
 
-        if item.id == 10 and item.collected == false then
+        elseif item.id == 6 and item.collected == false then
+            if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
+                Player.money = Player.money + 5
+                item.collected = true
+                sounds.pickupRupee:stop()
+                sounds.pickupRupee:play()
+            end
+
+        elseif item.id == 7 and item.collected == false then
+            if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
+                Player.hearts = Player.hearts + 3
+                item.collected = true
+                sounds.getItem:stop()
+                sounds.getItem:play()
+            end
+        
+        elseif item.id == 8 and item.collected == false then
+            if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
+                Player.hasMap1 = true
+                item.collected = true
+                sounds.getItem:stop()
+                sounds.getItem:play()
+            end
+
+        elseif item.id == 9 and item.collected == false then
+            if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
+                Player.hasCompass1 = true
+                item.collected = true
+                sounds.getItem:stop()
+                sounds.getItem:play()
+            end
+
+        elseif item.id == 10 and item.collected == false then
             if distanceFrom(Player.x-8, Player.y-8, item.x, item.y) < 10 then
                 sounds.newItem:play()
                 Player.state = 'holding_weapon'
@@ -513,6 +548,7 @@ function checkPlayerEnterInDoor()
 end
 
 function playerWasReleased()
+    minimap:init()
     deleteItems()
     loading = true
     currentDungeonRoom = 27

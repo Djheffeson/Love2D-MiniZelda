@@ -19,6 +19,8 @@ function npcSpawn(x, y, type)
         npc.sprite = sprites.oldman
     elseif npc.type == 2 then
         npc.sprite = sprites.merchant
+    elseif npc.type == 3 then
+        npc.sprite = sprites.oldmanDungeon
     end
 
     npc.timerDisappear = 0

@@ -294,9 +294,9 @@ function enemyDrops()
     elseif enemyDeathCount == 3 then
         return 3
     elseif enemyDeathCount == 4 then
-        return 1 -- fairy
+        return 7
     elseif enemyDeathCount == 5 then
-        return 3
+        return 6
     elseif enemyDeathCount == 6 then
         return 1
     elseif enemyDeathCount == 7 then

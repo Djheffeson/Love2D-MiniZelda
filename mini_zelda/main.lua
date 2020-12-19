@@ -62,7 +62,7 @@ function love.draw()
         enemies:draw()
     end
 
-    if Map.type == 'dungeon_1' and gameState ~= 'game_over' and gameState ~= 'menu_continue' and gameState ~= 'shardCollected' then
+    if Map.type == 'dungeon_1' and gameState ~= 'game_over' and gameState ~= 'menu_continue' and gameState ~= 'shardCollected' and gameState ~= 'death' then
         Map:drawDungeonWalls()
     end
 
@@ -85,38 +85,9 @@ function love.draw()
 end
 
 function love.keypressed(key)
-
-    if key == 'escape' then
-        love.event.quit()
-    end
-
     love.keyboard.keysPressed[key] = true
-
-    -- keys for debug:
-
-    if key == 'k' then
-        playerDamage(3)
-    end
-    if key == 'v' then
-        playerDamage(0.5)
-    end
-    if key == 'b' then
-        playerHeal(0.5)
-    end
-    if key == '1' then
-        spawnItem(1, 132, 100)
-    end
-    if key == '2' then
-        spawnItem(2, 128, 116)
-    end
-    if key == '3' then
-        spawnItem(3, 148, 104)
-    end
-    if key == '4' then
-        spawnItem(4, 193, 138)
-    end
 end
- 
+
 function love.keyboard.wasPressed(key)
     if love.keyboard.keysPressed[key] then
         return true

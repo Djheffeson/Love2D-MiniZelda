@@ -162,7 +162,7 @@ end
 
 function checkIfPlayerDamageKeese(index)
     local keese = keeses[index]
-    if keese.collider:enter('Weapon') or keese.collider:enter('Weapon') then
+    if keese.collider:enter('Weapon') or keese.collider:enter('Arrow') then
         keese.health = keese.health - Sword.damage
     end
 end
