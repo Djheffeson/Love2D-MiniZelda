@@ -276,6 +276,7 @@ function changeMap(type_map)
         createRoomCollisions()
         deleteAllEntities()
         enemiesPerRoom()
+        clearDoors()
         doorsSpawn()
     end
 

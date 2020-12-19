@@ -19,19 +19,19 @@ function minimap:update(dt)
         minimap.change = false
     end
 
-    if direct == 'up' and gameState ~= 'changingRoom' and minimap.change == false then
+    if direct == 'up' and gameState == 'running' and minimap.change == false then
         minimap.playerY = minimap.playerY - 4
         minimap.change = true
 
-    elseif direct == 'down' and gameState ~= 'changingRoom' and minimap.change == false then
+    elseif direct == 'down' and gameState == 'running' and minimap.change == false then
         minimap.playerY = minimap.playerY + 4
         minimap.change = true
 
-    elseif direct == 'left' and gameState ~= 'changingRoom' and minimap.change == false then
+    elseif direct == 'left' and gameState == 'running' and minimap.change == false then
         minimap.playerX = minimap.playerX - 8
         minimap.change = true
 
-    elseif direct == 'right' and gameState ~= 'changingRoom' and minimap.change == false then
+    elseif direct == 'right' and gameState == 'running' and minimap.change == false then
         minimap.playerX = minimap.playerX + 8
         minimap.change = true
     end
