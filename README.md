@@ -1,7 +1,5 @@
 # Mini Zelda
 
-![](love2d.gif)
-
 ## About
 I tried to recreate some mechanics from *"The Legend of Zelda 1986"* using LOVE2D for my CS50 Final Project.
 
@@ -35,3 +33,5 @@ Maps made in [Tiled](https://www.mapeditor.org/).
 * [push](https://github.com/Ulydev/push)
 
 ### Credits: Nintendo
+
+![](love2d.gif)
