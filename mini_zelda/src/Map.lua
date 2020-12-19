@@ -97,6 +97,8 @@ function respawnDungeon1()
     currentDungeonRoom = 27
     changeMap('dungeon_1')
     Player.enter = true
+    clearDoors()
+    doorsSpawn()
 end
 
 function Map:init()

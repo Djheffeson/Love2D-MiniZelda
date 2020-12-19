@@ -55,7 +55,7 @@ function doors:update(dt)
 end
 
 function doors:draw()
-    if Map.type == 'dungeon_1' then
+    if Map.type == 'dungeon_1' and gameState ~= 'death' then
         
         for i, door in ipairs(currentDoors) do
             door.currentDoor:draw(sprites.dungeonDoors, door.x, door.y) 
