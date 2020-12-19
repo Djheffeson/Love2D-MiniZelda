@@ -23,6 +23,7 @@ I tried to recreate some mechanics from *"The Legend of Zelda 1986"* using LOVE2
 
 ## Tecnology used
 Coded in Lua using the Love2D Framework.
+
 Maps made in [Tiled](https://www.mapeditor.org/).
 
 ## Libraries
